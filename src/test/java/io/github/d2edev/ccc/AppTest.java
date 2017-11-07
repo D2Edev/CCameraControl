@@ -1,4 +1,4 @@
-package io.github.d2edev.cgi_camera_wrapper;
+package io.github.d2edev.ccc;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
