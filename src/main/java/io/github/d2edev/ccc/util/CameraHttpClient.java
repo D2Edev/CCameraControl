@@ -51,9 +51,28 @@ public class CameraHttpClient {
 		if(useAuth){
 			rqb.addHeader("Authorization", authData);
 		}
+		System.out.println("request: "+command);
 		Response response=client.newCall(rqb.build()).execute();
 		if(response.isSuccessful()){
 			return unmarshaller.unmarshall(response.body().charStream(), responseClass);
+		}else{
+			return null;
+		}
+		
+	}
+	
+	//blocking, helper method
+	public String processRequest(Object request) throws MarshallException, IOException, UnmarshallException{
+		String query=marshaller.marshall(request);
+		String command=new StringBuilder(basicUrl).append(query).toString();
+		
+		Builder rqb = new Request.Builder().url(command);
+		if(useAuth){
+			rqb.addHeader("Authorization", authData);
+		}
+		Response response=client.newCall(rqb.build()).execute();
+		if(response.isSuccessful()){
+			return response.body().string();
 		}else{
 			return null;
 		}

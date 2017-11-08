@@ -2,11 +2,11 @@ package io.github.d2edev.ccc.objects.support;
 
 import io.github.d2edev.ccc.objects.base.ValueProvider;
 
-public enum TVFormat implements ValueProvider{
+public enum Status implements ValueProvider{
 	
-	PAL("P"), NTSC("N");
+	ON("on"), OFF("off"), FAILED("failed"), OUT("out");
 
-	private TVFormat(String id) {
+	private Status(String id) {
 		this.id = id;
 	}
 
@@ -20,5 +20,4 @@ public enum TVFormat implements ValueProvider{
 	public String stringValue() {
 		return id;
 	}
-
 }

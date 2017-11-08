@@ -3,14 +3,25 @@ package io.github.d2edev.ccc;
 import java.io.IOException;
 import java.util.Base64;
 
+import io.github.d2edev.ccc.objects.base.CameraRequest;
+import io.github.d2edev.ccc.objects.models.ServerTime;
 import io.github.d2edev.ccc.objects.models.SimpleResponse;
 import io.github.d2edev.ccc.objects.models.VideoEncoderProperties;
 import io.github.d2edev.ccc.objects.models.VideoProperties;
+import io.github.d2edev.ccc.objects.requests.GetConnectedUsersNumber;
+import io.github.d2edev.ccc.objects.requests.GetDeviceType;
+import io.github.d2edev.ccc.objects.requests.GetServerInfo;
+import io.github.d2edev.ccc.objects.requests.GetServerTime;
 import io.github.d2edev.ccc.objects.requests.GetVideoEncoderProperties;
+import io.github.d2edev.ccc.objects.requests.GetVideoProperties;
+import io.github.d2edev.ccc.objects.requests.GetWirelessProperties;
+import io.github.d2edev.ccc.objects.requests.SetServerTime;
 import io.github.d2edev.ccc.objects.requests.SetVideoProperties;
 import io.github.d2edev.ccc.objects.support.H264profile;
+import io.github.d2edev.ccc.objects.support.Status;
 import io.github.d2edev.ccc.objects.support.StreamID;
 import io.github.d2edev.ccc.objects.support.TVFormat;
+import io.github.d2edev.ccc.objects.support.TimeZone;
 import io.github.d2edev.ccc.objects.support.VideoMode;
 import io.github.d2edev.ccc.util.CameraHttpClient;
 import io.github.d2edev.ccc.util.MarshallException;
@@ -27,119 +38,53 @@ public class HttpTest {
 	private static final String PREFIX = "http://192.168.0.201/"+ENDPOINT+"?";
 
 	public static void main(String[] args) {
-		new HttpTest().set();
+		CameraRequest r=new GetWirelessProperties();
+		HttpTest test=new HttpTest();
+		test.processForString(r);
+		test.processForObject(r);
+//		test.processGetSet();
+		
 	}
 
-	
-	public void get() {
-		System.out.println("running sync get");
+
+	public void processGetSet() {
 		CameraHttpClient client=new CameraHttpClient("192.168.0.201", 80, "admin", "admin", ENDPOINT);
-		GetVideoEncoderProperties gvep=new GetVideoEncoderProperties();
-		gvep.setStreamID(StreamID.Main);
 		try {
-			VideoEncoderProperties properties=client.processRequest(gvep, VideoEncoderProperties.class);
-			System.out.println(properties);
+			GetServerTime request=new GetServerTime();
+			ServerTime time=(ServerTime)client.processRequest(request,request.getExpectedResponseType());
+			System.out.println(time);
+			SetServerTime set=new SetServerTime();
+			time.setTimeZone(TimeZone.EUROPE_ATHENS);
+			time.setDaylightModeStatus(Status.OFF);
+			set.setServerTime(time);
+			System.out.println(client.processRequest(set, set.getExpectedResponseType()));
+			System.out.println(client.processRequest(set, set.getExpectedResponseType()));
 		} catch (MarshallException | IOException | UnmarshallException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	// @Test
-	public void set() {
-		System.out.println("running sync set");
+
+	public void processForObject(CameraRequest obj) {
 		CameraHttpClient client=new CameraHttpClient("192.168.0.201", 80, "admin", "admin", ENDPOINT);
-		VideoProperties props=new VideoProperties();
-		props.setFormat(TVFormat.PAL);
-		props.setProfile(H264profile.BASELINE);
-		props.setVideoMode(VideoMode._1280x720_640x352);
-//		props.setVideoMode(VideoMode._640x480_160x120);
-		SetVideoProperties svp=new SetVideoProperties();
-		svp.setProperties(props);
 		try {
-			SimpleResponse r=client.processRequest(svp, SimpleResponse.class);
-			System.out.println(r);
+			System.out.println(client.processRequest(obj,obj.getExpectedResponseType()));
 		} catch (MarshallException | IOException | UnmarshallException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 	
-	
-	// @Test
-	public void setOld() {
-		System.out.println("running sync set");
-		OkHttpClient client = new OkHttpClient();
-		String auth = "admin:admin";
-		byte[] encoded = Base64.getEncoder().encode(auth.getBytes());
-		String content = "Basic " + new String(encoded);
-		System.out.println(content);
-		VideoProperties props=new VideoProperties();
-		props.setFormat(TVFormat.PAL);
-		props.setProfile(H264profile.BASELINE);
-		props.setVideoMode(VideoMode._1280x720_640x352);
-//		props.setVideoMode(VideoMode._640x480_160x120);
-		SetVideoProperties svp=new SetVideoProperties();
-		svp.setProperties(props);
-		Marshaller m= new Marshaller();
-		
+	private void processForString(Object obj) {
+		CameraHttpClient client=new CameraHttpClient("192.168.0.201", 80, "admin", "admin", ENDPOINT);
 		try {
-			String cmd=PREFIX+m.marshall(svp);
-			System.out.println(cmd);
-			Request rq = new Request.Builder()
-					.url(cmd)
-					.addHeader("Authorization", content).build();
-			Response r = client.newCall(rq).execute();
-			System.out.println(r.body().string());
-		} catch (MarshallException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
+			System.out.println(client.processRequest(obj));
+		} catch (MarshallException | IOException | UnmarshallException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
-	public void getOld() {
-		System.out.println("running sync get");
-		OkHttpClient client = new OkHttpClient();
-		String auth = "admin:admin";
-		byte[] encoded = Base64.getEncoder().encode(auth.getBytes());
-		String content = "Basic " + new String(encoded);
-		System.out.println(content);
-		GetVideoEncoderProperties gvep=new GetVideoEncoderProperties();
-		gvep.setStreamID(StreamID.Sub);
-		Marshaller m= new Marshaller();
-		Unmarshaller um=new Unmarshaller();
 		
-		try {
-			String cmd=PREFIX+m.marshall(gvep);
-			System.out.println(cmd);
-			Request rq = new Request.Builder()
-					.url(cmd)
-					.addHeader("Authorization", content).build();
-			Response r = client.newCall(rq).execute();
-			try {
-				VideoEncoderProperties pp=um.unmarshall(r.body().charStream(),VideoEncoderProperties.class);
-				System.out.println(pp);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-//			BufferedReader reader=new BufferedReader(r.body().charStream());			
-//			String line=null;
-//			while ((line=reader.readLine())!=null) {
-//				System.out.println(line);
-//			}
-//			System.out.println(response.split("\n").length);
-		} catch (MarshallException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 

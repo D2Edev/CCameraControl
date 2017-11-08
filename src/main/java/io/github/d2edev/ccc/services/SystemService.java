@@ -2,9 +2,9 @@ package io.github.d2edev.ccc.services;
 
 import io.github.d2edev.ccc.util.CameraHttpClient;
 
-public class TimeService extends AbstractService{
+public class SystemService extends AbstractService{
 
-	public TimeService(CameraHttpClient client) {
+	public SystemService(CameraHttpClient client) {
 		super(client);
 	}
 

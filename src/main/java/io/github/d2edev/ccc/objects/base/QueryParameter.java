@@ -14,16 +14,24 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 @Target(FIELD)
 public @interface QueryParameter {
+	
+	public static final String EMPTY="";
 
 	/**
-	 * maps to parameter name in response/request
+	 * maps to parameter name when processing response
 	 * @return
 	 */
-	String value();
+	String get();
 	/**
 	 * should value be used in request generation, if 'false' - used only in response processing
 	 * @return
 	 */
 	boolean out() default true;
+	
+	/**
+	 * maps to parameter when creating request
+	 * @return
+	 */
+	String set() default EMPTY;
 	
 }

@@ -94,7 +94,7 @@ public class Unmarshaller {
 			throw new UnmarshallException("No fields in class " + returnClass.getName());
 		for (Field field : fields) {
 			if (field.isAnnotationPresent(QueryParameter.class)) {
-				parseMap.put(field.getAnnotation(QueryParameter.class).value(),
+				parseMap.put(field.getAnnotation(QueryParameter.class).get(),
 						new AbstractMap.SimpleEntry<>(field, null));
 			}
 		}

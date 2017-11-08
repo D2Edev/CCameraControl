@@ -39,7 +39,10 @@ public class Marshaller {
 			if (field.isAnnotationPresent(QueryParameter.class)) {
 				try {
 					if(field.getAnnotation(QueryParameter.class).out()) {
-						String key = field.getAnnotation(QueryParameter.class).value();
+						String key = field.getAnnotation(QueryParameter.class).set();
+						if(QueryParameter.EMPTY.equals(key)){
+							key=field.getAnnotation(QueryParameter.class).get();
+						}
 						Object value = getPropertyFieldValue(field, request);
 						list.add(new AbstractMap.SimpleEntry<>(key, value));						
 					}

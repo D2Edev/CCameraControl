@@ -3,13 +3,15 @@ package io.github.d2edev.ccc.objects.requests;
 import io.github.d2edev.ccc.objects.base.QueryCommand;
 import io.github.d2edev.ccc.objects.base.QueryParameter;
 import io.github.d2edev.ccc.objects.base.QuerySet;
+import io.github.d2edev.ccc.objects.base.CameraRequest;
+import io.github.d2edev.ccc.objects.models.SimpleResponse;
 import io.github.d2edev.ccc.objects.models.VideoEncoderProperties;
 import io.github.d2edev.ccc.objects.support.StreamID;
 
 @QueryCommand("setvencattr")
-public class SetVideoEncoderProperties {
+public class SetVideoEncoderProperties implements CameraRequest{
 	
-	@QueryParameter("chn")
+	@QueryParameter(get = "chn")
 	private StreamID streamID;
 	
 	@QuerySet
@@ -29,6 +31,11 @@ public class SetVideoEncoderProperties {
 
 	public void setProperties(VideoEncoderProperties properties) {
 		this.properties = properties;
+	}
+
+	@Override
+	public Class<?> getExpectedResponseType() {
+		return SimpleResponse.class;
 	}
 
 
