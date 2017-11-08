@@ -77,4 +77,26 @@ public class VideoEncoderProperties {
 		return height;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("VideoEncoderProperties [bps=");
+		builder.append(bps);
+		builder.append(", fps=");
+		builder.append(fps);
+		builder.append(", gop=");
+		builder.append(gop);
+		builder.append(", rateControl=");
+		builder.append(rateControl);
+		builder.append(", quality=");
+		builder.append(quality);
+		builder.append(", width=");
+		builder.append(width);
+		builder.append(", height=");
+		builder.append(height);
+		builder.append("]");
+		return builder.toString();
+	}
+
+	
 }

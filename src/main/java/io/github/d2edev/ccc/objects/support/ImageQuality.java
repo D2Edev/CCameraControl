@@ -15,4 +15,9 @@ public enum ImageQuality implements ValueProvider{
 	public Object value() {
 		return id;
 	}
+	
+	@Override
+	public String stringValue() {
+		return ""+id;
+	}
 }

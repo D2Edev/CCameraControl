@@ -16,4 +16,8 @@ public enum RateControl implements ValueProvider{
 		return id;
 	}
 	
+	@Override
+	public String stringValue() {
+		return ""+id;
+	}
 }

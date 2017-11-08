@@ -16,4 +16,10 @@ public enum H264profile implements ValueProvider {
 		return id;
 	}
 
+	@Override
+	public String stringValue() {
+		return ""+id;
+	}
+
+
 }

@@ -1,15 +1,28 @@
 package io.github.d2edev.ccc.util;
 
+import java.io.IOException;
 import java.util.Base64;
 
+import javax.management.OperationsException;
+
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Request.Builder;
+import okhttp3.Response;
 
 public class CameraHttpClient {
 
 	private OkHttpClient client;
 	private boolean useAuth;
 	private String authData;
-	String basicUrl;
+	private String basicUrl;
+	private Marshaller marshaller=new Marshaller();
+	private Unmarshaller unmarshaller=new Unmarshaller();
+	
+	public CameraHttpClient(String host, int port, String endpoint){
+		this(host, port, null, null, endpoint);
+	} 
+	
 
 	public CameraHttpClient(String host, int port, String login, String password, String endpoint) {
 		client = new OkHttpClient();
@@ -24,13 +37,26 @@ public class CameraHttpClient {
 			basicUrlBuilder.append(":").append(port);
 		}
 		if(endpoint!=null&&!endpoint.isEmpty()&&endpoint.startsWith("/")){
-			basicUrlBuilder.append(endpoint).append("/");
+			basicUrlBuilder.append(endpoint).append("?");
 		}
 		basicUrl = basicUrlBuilder.toString();
 	}
 	
-	public <T>T processRequest(Object request,Class<T> responseClass){
-		return null;
+	//blocking
+	public <T>T processRequest(Object request,Class<T> responseClass) throws MarshallException, IOException, UnmarshallException{
+		String query=marshaller.marshall(request);
+		String command=new StringBuilder(basicUrl).append(query).toString();
+		
+		Builder rqb = new Request.Builder().url(command);
+		if(useAuth){
+			rqb.addHeader("Authorization", authData);
+		}
+		Response response=client.newCall(rqb.build()).execute();
+		if(response.isSuccessful()){
+			return unmarshaller.unmarshall(response.body().charStream(), responseClass);
+		}else{
+			return null;
+		}
 		
 	}
 
