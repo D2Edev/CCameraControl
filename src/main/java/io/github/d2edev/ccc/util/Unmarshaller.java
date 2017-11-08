@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import io.github.d2edev.ccc.objects.base.QueryInputParameterModifier;
+import io.github.d2edev.ccc.objects.base.QueryParameterSplitter;
 import io.github.d2edev.ccc.objects.base.QueryParameter;
 
 public class Unmarshaller {
@@ -17,8 +17,8 @@ public class Unmarshaller {
 	public <T> T unmarshall(Reader charStream, Class<T> returnClass) throws UnmarshallException, IOException {
 		Map<String, Entry<Field, Object>> fieldMap = new HashMap<>();
 		String modifier=null;
-		if(returnClass.isAnnotationPresent(QueryInputParameterModifier.class)){
-			modifier=returnClass.getAnnotation(QueryInputParameterModifier.class).value();
+		if(returnClass.isAnnotationPresent(QueryParameterSplitter.class)){
+			modifier=returnClass.getAnnotation(QueryParameterSplitter.class).value();
 		}
 		Field[] fields = returnClass.getDeclaredFields();
 		if (fields.length == 0)

@@ -1,7 +1,10 @@
 package io.github.d2edev.ccc.util;
 
 import java.lang.reflect.Field;
+import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -17,60 +20,49 @@ public class Marshaller {
 		if (command == null)
 			throw new MarshallException("Object type must be annotated with @QueryCommand");
 		StringBuilder builder = new StringBuilder("cmd").append("=").append(command.value());
-		String parameterString = createParameterString(request);
-		if (parameterString != null) {
-			builder.append("&").append(parameterString);
+		List<Entry<String, Object>> paramList = new ArrayList<>();
+		fillParameterList(request, paramList);
+		if (paramList.size() == 0)
+			return builder.toString();
+		int counter = 0;
+		for (Entry<String, Object> entry : paramList) {
+			builder.append("&").append("-").append(entry.getKey()).append("=").append(entry.getValue());
 		}
 		return builder.toString();
 	}
 
-	private String createParameterString(Object request) throws MarshallException {
+	private void fillParameterList(Object request, List<Entry<String, Object>> list) throws MarshallException {
 		Field[] fields = request.getClass().getDeclaredFields();
 		if (fields.length < 1)
-			return null;
-		StringBuilder builder = new StringBuilder();
-		Map<String, Object> parametersMap = new HashMap<>();
+			return;
 		for (Field field : fields) {
+			if (field.isAnnotationPresent(QueryParameter.class)) {
+				try {
+					if(field.getAnnotation(QueryParameter.class).out()) {
+						String key = field.getAnnotation(QueryParameter.class).value();
+						Object value = getPropertyFieldValue(field, request);
+						list.add(new AbstractMap.SimpleEntry<>(key, value));						
+					}
+				} catch (Exception e) {
+					throw new MarshallException(e.getMessage());
+				}
+			}
 			if (field.isAnnotationPresent(QuerySet.class)) {
 				try {
-					boolean accessDenied=!field.isAccessible();
-					if(accessDenied){
+					boolean accessDenied = !field.isAccessible();
+					if (accessDenied) {
 						field.setAccessible(true);
 					}
 					Object value = field.get(request);
-					if(accessDenied){
+					if (accessDenied) {
 						field.setAccessible(false);
 					}
-					builder.append(createParameterString(value));
-				} catch (Exception e) {
-					throw new MarshallException(e.getMessage());
-				}
-			}
-			if (field.isAnnotationPresent(QueryParameter.class)) {
-				try {
-					String key = field.getAnnotation(QueryParameter.class).value();
-					Object value= getPropertyFieldValue(field, request);
-					parametersMap.put(key, value);
+					fillParameterList(value, list);
 				} catch (Exception e) {
 					throw new MarshallException(e.getMessage());
 				}
 			}
 		}
-		if (parametersMap.size() > 0) {
-			int counter = 0;
-			for (Entry<String, Object> entry : parametersMap.entrySet()) {
-				counter++;
-				builder
-				.append("-")
-				.append(entry.getKey())
-				.append("=")
-				.append(entry.getValue());
-				if (counter == parametersMap.size())
-					continue;
-				builder.append("&");
-			}
-		}
-		return builder.toString();
 	}
 
 	private Object getPropertyFieldValue(Field field, Object request)

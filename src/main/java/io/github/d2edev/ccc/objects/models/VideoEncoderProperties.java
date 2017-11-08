@@ -1,11 +1,11 @@
 package io.github.d2edev.ccc.objects.models;
 
-import io.github.d2edev.ccc.objects.base.QueryInputParameterModifier;
+import io.github.d2edev.ccc.objects.base.QueryParameterSplitter;
 import io.github.d2edev.ccc.objects.base.QueryParameter;
 import io.github.d2edev.ccc.objects.support.ImageQuality;
 import io.github.d2edev.ccc.objects.support.RateControl;
 
-@QueryInputParameterModifier("_")
+@QueryParameterSplitter("_")
 public class VideoEncoderProperties {
 	
 	@QueryParameter("bps")
@@ -17,16 +17,16 @@ public class VideoEncoderProperties {
 	@QueryParameter("gop")
 	private int gop;
 	
-	@QueryParameter("gop")
+	@QueryParameter("brmode")
 	private RateControl rateControl;
 	
 	@QueryParameter("imagegrade")
 	private ImageQuality quality;
 		
-	@QueryParameter("width")
+	@QueryParameter(value="width",out=false)
 	private int width;
 	
-	@QueryParameter("width")
+	@QueryParameter(value="height",out=false)
 	private int height;
 
 	public int getBps() {
@@ -73,19 +73,8 @@ public class VideoEncoderProperties {
 		return width;
 	}
 
-	public void setWidth(int width) {
-		this.width = width;
-	}
-
 	public int getHeight() {
 		return height;
 	}
-
-	public void setHeight(int height) {
-		this.height = height;
-	}
-	
-	
-	
 
 }
