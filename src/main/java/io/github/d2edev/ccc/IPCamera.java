@@ -5,9 +5,9 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 
+import io.github.d2edev.ccc.base.CameraHttpClient;
 import io.github.d2edev.ccc.services.SystemService;
 import io.github.d2edev.ccc.services.VideoService;
-import io.github.d2edev.ccc.util.CameraHttpClient;
 
 public class IPCamera {
 	

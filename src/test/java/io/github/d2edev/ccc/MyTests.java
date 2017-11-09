@@ -1,12 +1,12 @@
 package io.github.d2edev.ccc;
 
-import io.github.d2edev.ccc.objects.models.VideoProperties;
-import io.github.d2edev.ccc.objects.requests.SetVideoProperties;
-import io.github.d2edev.ccc.objects.support.H264profile;
-import io.github.d2edev.ccc.objects.support.TVFormat;
-import io.github.d2edev.ccc.objects.support.VideoMode;
-import io.github.d2edev.ccc.util.MarshallException;
-import io.github.d2edev.ccc.util.Marshaller;
+import io.github.d2edev.ccc.api.MarshallException;
+import io.github.d2edev.ccc.base.Marshaller;
+import io.github.d2edev.ccc.enums.H264profile;
+import io.github.d2edev.ccc.enums.TVFormat;
+import io.github.d2edev.ccc.enums.VideoMode;
+import io.github.d2edev.ccc.models.VideoProperties;
+import io.github.d2edev.ccc.requests.SetVideoProperties;
 
 public class MyTests {
 	public static void main(String[] args) {

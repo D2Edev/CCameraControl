@@ -1,6 +1,6 @@
 package io.github.d2edev.ccc.services;
 
-import io.github.d2edev.ccc.util.CameraHttpClient;
+import io.github.d2edev.ccc.base.CameraHttpClient;
 
 public abstract class AbstractService {
 	

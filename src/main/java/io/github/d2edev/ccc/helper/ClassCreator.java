@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import io.github.d2edev.ccc.objects.requests.GetWirelessProperties;
-import io.github.d2edev.ccc.util.MarshallException;
-import io.github.d2edev.ccc.util.Marshaller;
+import io.github.d2edev.ccc.api.MarshallException;
+import io.github.d2edev.ccc.base.Marshaller;
+import io.github.d2edev.ccc.requests.GetWirelessProperties;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;

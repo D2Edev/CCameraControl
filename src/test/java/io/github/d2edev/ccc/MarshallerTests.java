@@ -1,13 +1,13 @@
 package io.github.d2edev.ccc;
 
 
-import io.github.d2edev.ccc.objects.models.VideoEncoderProperties;
-import io.github.d2edev.ccc.objects.requests.SetVideoEncoderProperties;
-import io.github.d2edev.ccc.objects.support.ImageQuality;
-import io.github.d2edev.ccc.objects.support.RateControl;
-import io.github.d2edev.ccc.objects.support.StreamID;
-import io.github.d2edev.ccc.util.MarshallException;
-import io.github.d2edev.ccc.util.Marshaller;
+import io.github.d2edev.ccc.api.MarshallException;
+import io.github.d2edev.ccc.base.Marshaller;
+import io.github.d2edev.ccc.enums.ImageQuality;
+import io.github.d2edev.ccc.enums.RateControl;
+import io.github.d2edev.ccc.enums.StreamID;
+import io.github.d2edev.ccc.models.VideoEncoderProperties;
+import io.github.d2edev.ccc.requests.SetVideoEncoderProperties;
 
 public class MarshallerTests {
 
