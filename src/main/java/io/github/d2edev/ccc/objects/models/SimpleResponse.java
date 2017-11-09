@@ -1,6 +1,8 @@
 package io.github.d2edev.ccc.objects.models;
 
+import io.github.d2edev.ccc.objects.base.ModelType;
 
+@ModelType(ModelType.SIMPLE)
 public class SimpleResponse {
 	//possible replies:
 	//[Succeed]set ok.

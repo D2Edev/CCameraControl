@@ -2,7 +2,7 @@ package io.github.d2edev.ccc.objects.support;
 
 import io.github.d2edev.ccc.objects.base.ValueProvider;
 
-public enum TimeZone implements ValueProvider{
+public enum CameraTimeZone implements ValueProvider{
 	
 	ETC_GMT_12 ("Etc/GMT-12","(GMT-12:00) date line west"),
 	PACIFIC_APIA ("Pacific/Apia","(GMT-11:00) Midway, Samoan Islands"),
@@ -80,7 +80,7 @@ public enum TimeZone implements ValueProvider{
 	PACIFIC_TONGATAPU ("Pacific/Tongatapu","(GMT +13:00) Nuku'alofa");
 
 
-	private TimeZone(String id,String details) {
+	private CameraTimeZone(String id,String details) {
 		this.id = id;
 	}
 

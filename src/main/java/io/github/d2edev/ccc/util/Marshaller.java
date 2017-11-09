@@ -1,22 +1,22 @@
 package io.github.d2edev.ccc.util;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
-import io.github.d2edev.ccc.objects.base.QueryCommand;
-import io.github.d2edev.ccc.objects.base.QueryParameter;
-import io.github.d2edev.ccc.objects.base.QuerySet;
+import io.github.d2edev.ccc.objects.base.GetModelValue;
+import io.github.d2edev.ccc.objects.base.Request;
+import io.github.d2edev.ccc.objects.base.GetModel;
 import io.github.d2edev.ccc.objects.base.ValueProvider;
 
 public class Marshaller {
 
 	public String marshall(Object request) throws MarshallException {
-		QueryCommand command = request.getClass().getAnnotation(QueryCommand.class);
+		Request command = request.getClass().getAnnotation(Request.class);
 		if (command == null)
 			throw new MarshallException("Object type must be annotated with @QueryCommand");
 		StringBuilder builder = new StringBuilder("cmd").append("=").append(command.value());
@@ -32,33 +32,29 @@ public class Marshaller {
 	}
 
 	private void fillParameterList(Object request, List<Entry<String, Object>> list) throws MarshallException {
+		Method[] methods = request.getClass().getDeclaredMethods();
 		Field[] fields = request.getClass().getDeclaredFields();
 		if (fields.length < 1)
 			return;
-		for (Field field : fields) {
-			if (field.isAnnotationPresent(QueryParameter.class)) {
+		for (Method method : methods) {
+			if (method.isAnnotationPresent(GetModelValue.class)) {
 				try {
-					if(field.getAnnotation(QueryParameter.class).out()) {
-						String key = field.getAnnotation(QueryParameter.class).set();
-						if(QueryParameter.EMPTY.equals(key)){
-							key=field.getAnnotation(QueryParameter.class).get();
-						}
-						Object value = getPropertyFieldValue(field, request);
-						list.add(new AbstractMap.SimpleEntry<>(key, value));						
-					}
+					String key = method.getAnnotation(GetModelValue.class).key();
+					Object value = getPropertyFieldValue(method, request);
+					list.add(new AbstractMap.SimpleEntry<>(key, value));
 				} catch (Exception e) {
 					throw new MarshallException(e.getMessage());
 				}
 			}
-			if (field.isAnnotationPresent(QuerySet.class)) {
+			if (method.isAnnotationPresent(GetModel.class)) {
 				try {
-					boolean accessDenied = !field.isAccessible();
+					boolean accessDenied = !method.isAccessible();
 					if (accessDenied) {
-						field.setAccessible(true);
+						method.setAccessible(true);
 					}
-					Object value = field.get(request);
+					Object value = method.invoke(request);
 					if (accessDenied) {
-						field.setAccessible(false);
+						method.setAccessible(false);
 					}
 					fillParameterList(value, list);
 				} catch (Exception e) {
@@ -68,16 +64,16 @@ public class Marshaller {
 		}
 	}
 
-	private Object getPropertyFieldValue(Field field, Object request)
-			throws IllegalArgumentException, IllegalAccessException {
+	private Object getPropertyFieldValue(Method method, Object request)
+			throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		Object value;
-		boolean accessDenied = !field.isAccessible();
+		boolean accessDenied = !method.isAccessible();
 		if (accessDenied) {
-			field.setAccessible(true);
+			method.setAccessible(true);
 		}
-		value = field.get(request);
+		value = method.invoke(request);
 		if (accessDenied) {
-			field.setAccessible(false);
+			method.setAccessible(false);
 		}
 		if (value instanceof ValueProvider) {
 			value = ((ValueProvider) value).value();

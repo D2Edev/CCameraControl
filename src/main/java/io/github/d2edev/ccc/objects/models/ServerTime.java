@@ -1,48 +1,67 @@
 package io.github.d2edev.ccc.objects.models;
 
-import io.github.d2edev.ccc.objects.base.QueryParameter;
-import io.github.d2edev.ccc.objects.support.Status;
-import io.github.d2edev.ccc.objects.support.TimeZone;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.TimeZone;
 
+import io.github.d2edev.ccc.objects.base.GetModelValue;
+import io.github.d2edev.ccc.objects.base.ModelType;
+import io.github.d2edev.ccc.objects.base.SetModelValue;
+import io.github.d2edev.ccc.objects.support.Status;
+import io.github.d2edev.ccc.objects.support.CameraTimeZone;
+
+@ModelType(ModelType.COMPLEX)
 public class ServerTime {
-	//reply example
-	//var time="20171108095655";
+	// reply example
 	// var timeZone="America/New_York";
 	// var dstmode="on";
-	
-//	Current date and time
-//	[yyyy][mm][dd][hh][mm][ss]
-	@QueryParameter(get="time")
-	private String time;
-	
-	//time zone
-	@QueryParameter(get="timeZone",set="timezone")
-	private TimeZone timeZone;
-	
-	//daylight saving
-	@QueryParameter(get="dstmode")	
+
+	// Current date and time
+	private Calendar cal=Calendar.getInstance();
+	SimpleDateFormat inputFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+	SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
+	SimpleDateFormat stringFormat = new SimpleDateFormat("yyyy-MM-dd Z HH:mm:ss");
+
+
+	// daylight saving
 	private Status daylightModeStatus;
 
+	@GetModelValue(key = "time")
 	public String getTime() {
-		return time;
+		if (cal == null)
+			return null;
+		return outputFormat.format(cal.getTime());
 	}
 
-	public void setTime(String time) {
-		this.time = time;
+	// data comes as
+	// var time="20171108095655";
+	// [yyyy][mm][dd][hh][mm][ss]
+	@SetModelValue(key = "time")
+	public void setTime(String time) throws ParseException {
+		cal.setTime(inputFormat.parse(time));
 	}
 
-	public TimeZone getTimeZone() {
-		return timeZone;
+	// !!! pls pay attention to parameter names diffenrece
+	// in getter and setter
+	@GetModelValue(key = "timezone")
+	public String getTimeZone() {
+		return cal.getTimeZone().getID();
+		
 	}
 
-	public void setTimeZone(TimeZone timeZone) {
-		this.timeZone = timeZone;
+	@SetModelValue(key = "timeZone")
+	public void setTimeZone(CameraTimeZone timeZone) {
+		TimeZone tz=TimeZone.getTimeZone(timeZone.stringValue());
+		cal.setTimeZone(tz);
 	}
 
+	@GetModelValue(key = "dstmode")
 	public Status getDaylightModeStatus() {
 		return daylightModeStatus;
 	}
 
+	@SetModelValue(key = "dstmode")
 	public void setDaylightModeStatus(Status daylightModeStatus) {
 		this.daylightModeStatus = daylightModeStatus;
 	}
@@ -51,14 +70,13 @@ public class ServerTime {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("ServerTime [time=");
-		builder.append(time);
+		builder.append(stringFormat.format(cal.getTime()));
 		builder.append(", timeZone=");
-		builder.append(timeZone);
+		builder.append(cal.getTimeZone().getID());
 		builder.append(", daylightModeStatus=");
 		builder.append(daylightModeStatus);
 		builder.append("]");
 		return builder.toString();
 	}
-	
-	
+
 }

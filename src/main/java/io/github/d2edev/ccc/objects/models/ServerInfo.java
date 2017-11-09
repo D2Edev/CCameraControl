@@ -1,8 +1,11 @@
 package io.github.d2edev.ccc.objects.models;
 
-import io.github.d2edev.ccc.objects.base.QueryParameter;
+import io.github.d2edev.ccc.objects.base.GetModelValue;
+import io.github.d2edev.ccc.objects.base.ModelType;
+import io.github.d2edev.ccc.objects.base.SetModelValue;
 import io.github.d2edev.ccc.objects.support.Status;
 
+@ModelType(ModelType.COMPLEX)
 public class ServerInfo {
 
 	// Reply example:
@@ -21,108 +24,177 @@ public class ServerInfo {
 	// var sdtotalspace="0";
 
 	// model name
-	@QueryParameter(get = "model")
 	private String model;
 
 	// hadrware version
-	@QueryParameter(get = "hardVersion")
 	private String hardwareVersion;
 
 	// firmware version
-	@QueryParameter(get = "softVersion")
 	private String softwareVersion;
 
 	// web component version?
-	@QueryParameter(get = "webVersion")
 	private String webVersion;
 
 	// onfiv device name
-	@QueryParameter(get = "name")
 	private String name;
 
 	// camera start date and time
-	@QueryParameter(get = "startdate")
 	private String startDateTime;
 
 	// uPNP status
-	@QueryParameter(get = "upnpstatus")
 	private Status unpStatus;
 
 	// manufacture's DDNS status
-	@QueryParameter(get = "facddnsstatus")
 	private Status manufacturerDDNSStatus;
 
 	// Third Party DDNS status:
-	@QueryParameter(get = "th3ddnsstatus")
 	private Status thirdPartyDDNSStatus;
 
 	// ?? unknown
-	@QueryParameter(get = "platformstatus")
 	private int platformStatus;
 
 	// ?? status of sd card
-	@QueryParameter(get = "sdstatus")
 	private Status sdCardStatus;
 
 	// free space of sd card
-	@QueryParameter(get = "sdfreespace")
 	private long sdCardFreeSpace;
 
 	// total space of sd card
-	@QueryParameter(get = "sdfreespace")
 	private long sdCardTotalSpace;
 
+
+	@GetModelValue(key = "model")
 	public String getModel() {
 		return model;
 	}
 
+	@SetModelValue(key = "model")
+	public void setModel(String model) {
+		this.model = model;
+	}
+
+	@GetModelValue(key = "hardVersion")
 	public String getHardwareVersion() {
 		return hardwareVersion;
 	}
 
+	@SetModelValue(key = "hardVersion")
+	public void setHardwareVersion(String hardwareVersion) {
+		this.hardwareVersion = hardwareVersion;
+	}
+
+	@GetModelValue(key = "softVersion")
 	public String getSoftwareVersion() {
 		return softwareVersion;
 	}
 
+	@SetModelValue(key = "softVersion")
+	public void setSoftwareVersion(String softwareVersion) {
+		this.softwareVersion = softwareVersion;
+	}
+
+	@GetModelValue(key = "webVersion")
 	public String getWebVersion() {
 		return webVersion;
 	}
 
+	@SetModelValue(key = "webVersion")
+	public void setWebVersion(String webVersion) {
+		this.webVersion = webVersion;
+	}
+
+	@GetModelValue(key = "name")
 	public String getName() {
 		return name;
 	}
 
+	@SetModelValue(key = "name")
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@GetModelValue(key = "startdate")
 	public String getStartDateTime() {
 		return startDateTime;
 	}
 
+	@SetModelValue(key = "startdate")
+	public void setStartDateTime(String startDateTime) {
+		this.startDateTime = startDateTime;
+	}
+
+	@GetModelValue(key = "upnpstatus")
 	public Status getUnpStatus() {
 		return unpStatus;
 	}
 
+	@SetModelValue(key = "upnpstatus")
+	public void setUnpStatus(Status unpStatus) {
+		this.unpStatus = unpStatus;
+	}
+
+	@GetModelValue(key = "facddnsstatus")
 	public Status getManufacturerDDNSStatus() {
 		return manufacturerDDNSStatus;
 	}
 
+	@SetModelValue(key = "facddnsstatus")
+	public void setManufacturerDDNSStatus(Status manufacturerDDNSStatus) {
+		this.manufacturerDDNSStatus = manufacturerDDNSStatus;
+	}
+
+	@GetModelValue(key = "th3ddnsstatus")
 	public Status getThirdPartyDDNSStatus() {
 		return thirdPartyDDNSStatus;
 	}
 
+	@SetModelValue(key = "th3ddnsstatus")
+	public void setThirdPartyDDNSStatus(Status thirdPartyDDNSStatus) {
+		this.thirdPartyDDNSStatus = thirdPartyDDNSStatus;
+	}
+
+	@GetModelValue(key = "platformstatus")
 	public int getPlatformStatus() {
 		return platformStatus;
 	}
 
+	@SetModelValue(key = "platformstatus")
+	public void setPlatformStatus(int platformStatus) {
+		this.platformStatus = platformStatus;
+	}
+
+	@GetModelValue(key = "sdstatus")
 	public Status getSdCardStatus() {
 		return sdCardStatus;
 	}
 
+
+	@SetModelValue(key = "sdstatus")
+	public void setSdCardStatus(Status sdCardStatus) {
+		this.sdCardStatus = sdCardStatus;
+	}
+
+	@GetModelValue(key = "sdfreespace")
 	public long getSdCardFreeSpace() {
 		return sdCardFreeSpace;
 	}
 
+	@SetModelValue(key = "sdfreespace")
+	public void setSdCardFreeSpace(long sdCardFreeSpace) {
+		this.sdCardFreeSpace = sdCardFreeSpace;
+	}
+
+	@GetModelValue(key = "sdtotalspace")
 	public long getSdCardTotalSpace() {
 		return sdCardTotalSpace;
 	}
+
+	@SetModelValue(key = "sdtotalspace")
+	public void setSdCardTotalSpace(long sdCardTotalSpace) {
+		this.sdCardTotalSpace = sdCardTotalSpace;
+	}
+
+
 
 	@Override
 	public String toString() {

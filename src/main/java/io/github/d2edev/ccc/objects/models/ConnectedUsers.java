@@ -1,16 +1,24 @@
 package io.github.d2edev.ccc.objects.models;
 
-import io.github.d2edev.ccc.objects.base.QueryParameter;
+import io.github.d2edev.ccc.objects.base.GetModelValue;
+import io.github.d2edev.ccc.objects.base.ModelType;
+import io.github.d2edev.ccc.objects.base.SetModelValue;
 
+@ModelType(ModelType.COMPLEX)
 public class ConnectedUsers {
 	//reply example
 	//var stream_num="0";
 	
-	@QueryParameter(get="stream_num")
 	private int connectedUsersQty;
 	
+	@GetModelValue(key = "stream_num")
 	public int getConnectedUsersQty() {
 		return connectedUsersQty;
+	}
+	
+	@SetModelValue(key = "stream_num")
+	public void setConnectedUsersQty(int connectedUsersQty) {
+		this.connectedUsersQty = connectedUsersQty;
 	}
 
 	@Override

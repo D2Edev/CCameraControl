@@ -1,21 +1,24 @@
 package io.github.d2edev.ccc.objects.requests;
 
-import io.github.d2edev.ccc.objects.base.QueryCommand;
-import io.github.d2edev.ccc.objects.base.QueryParameter;
+import io.github.d2edev.ccc.objects.base.Request;
 import io.github.d2edev.ccc.objects.base.CameraRequest;
+import io.github.d2edev.ccc.objects.base.GetModelValue;
+import io.github.d2edev.ccc.objects.base.SetModelValue;
 import io.github.d2edev.ccc.objects.models.VideoEncoderProperties;
 import io.github.d2edev.ccc.objects.support.StreamID;
 
-@QueryCommand("getvencattr")
+@Request("getvencattr")
 public class GetVideoEncoderProperties implements CameraRequest{
 	
-	@QueryParameter(get = "chn")
 	private StreamID streamID;	
 	
+	
+	@SetModelValue(key="chn")
 	public void setStreamID(StreamID streamID) {
 		this.streamID = streamID;
 	}
 	
+	@GetModelValue(key="chn")
 	public StreamID getStreamID() {
 		return streamID;
 	}

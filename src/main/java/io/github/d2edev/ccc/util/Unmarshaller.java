@@ -3,7 +3,7 @@ package io.github.d2edev.ccc.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.AbstractMap;
 import java.util.HashMap;
@@ -11,67 +11,67 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import io.github.d2edev.ccc.objects.base.QueryParameterSplitter;
+import io.github.d2edev.ccc.objects.base.SetModelValue;
 import io.github.d2edev.ccc.objects.base.ValueProvider;
 import io.github.d2edev.ccc.objects.models.SimpleResponse;
-import io.github.d2edev.ccc.objects.base.QueryParameter;
 
 public class Unmarshaller {
 
 	public <T> T unmarshall(Reader charStream, Class<T> returnClass) throws UnmarshallException {
 		if (returnClass == null)
 			throw new UnmarshallException("Return type not provided");
-		if(SimpleResponse.class.equals(returnClass)){
-			return unmarshallSimpleObject(charStream,returnClass);
-		}else{
-			return unmarshalComplexObject(charStream, returnClass);			
+		if (SimpleResponse.class.equals(returnClass)) {
+			return unmarshallSimpleObject(charStream, returnClass);
+		} else {
+			return unmarshalComplexObject(charStream, returnClass);
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T>T unmarshallSimpleObject(Reader charStream,Class<T> returnClass) throws UnmarshallException {
+	public <T> T unmarshallSimpleObject(Reader charStream, Class<T> returnClass) throws UnmarshallException {
 		BufferedReader reader = new BufferedReader(charStream);
 		try {
-			String line=null;
-			boolean replyDetected=false;
-			StringBuilder contentBuilder=new StringBuilder("Can't process. Unknown structure: ");
-			String result=null;
-			String message=null;
+			String line = null;
+			boolean replyDetected = false;
+			StringBuilder contentBuilder = new StringBuilder("Can't process. Unknown structure: ");
+			String result = null;
+			String message = null;
 			try {
-				while((line=reader.readLine())!=null){
+				while ((line = reader.readLine()) != null) {
 					contentBuilder.append(line).append("<LineEnd>");
-					if(line.startsWith("[")){
+					if (line.startsWith("[")) {
 						result = line.substring(1, line.indexOf("]"));
-						message=line.substring(line.indexOf("]")+1);
-						replyDetected=true;
+						message = line.substring(line.indexOf("]") + 1);
+						replyDetected = true;
 						break;
 					}
 				}
-				if(replyDetected){
+				if (replyDetected) {
 					switch (result.toLowerCase()) {
-					case "succeed":{
-						SimpleResponse response=new SimpleResponse();
+					case "succeed": {
+						SimpleResponse response = new SimpleResponse();
 						response.setSuccessfull(true);
 						response.setMessage(message);
-						return (T)response;
+						return (T) response;
 					}
-					case "error":{
-						SimpleResponse response=new SimpleResponse();
+					case "error": {
+						SimpleResponse response = new SimpleResponse();
 						response.setSuccessfull(false);
 						response.setMessage(message);
-						return (T)response;
-					}		
+						return (T) response;
+					}
 					default:
 						throw new UnmarshallException(contentBuilder.toString());
 					}
-				}else{
-					
+				} else {
+
 					throw new UnmarshallException(contentBuilder.toString());
 				}
 			} catch (IOException e) {
 				throw new UnmarshallException(e.getMessage());
 			}
 		} finally {
-			if(reader!=null){
+			if (reader != null) {
 				try {
 					reader.close();
 				} catch (IOException none) {
@@ -83,19 +83,19 @@ public class Unmarshaller {
 	private <T> T unmarshalComplexObject(Reader charStream, Class<T> returnClass) throws UnmarshallException {
 		// prepare parse map using returnClass
 
-		Map<String, Entry<Field, String>> parseMap = new HashMap<>();
+		Map<String, Entry<Method, String>> parseMap = new HashMap<>();
 		String modifier = null;
 		boolean anyValue = false;
 		if (returnClass.isAnnotationPresent(QueryParameterSplitter.class)) {
 			modifier = returnClass.getAnnotation(QueryParameterSplitter.class).value();
 		}
-		Field[] fields = returnClass.getDeclaredFields();
-		if (fields.length == 0)
+		Method[] methods = returnClass.getDeclaredMethods();
+		if (methods.length == 0)
 			throw new UnmarshallException("No fields in class " + returnClass.getName());
-		for (Field field : fields) {
-			if (field.isAnnotationPresent(QueryParameter.class)) {
-				parseMap.put(field.getAnnotation(QueryParameter.class).get(),
-						new AbstractMap.SimpleEntry<>(field, null));
+		for (Method method : methods) {
+			if (method.isAnnotationPresent(SetModelValue.class)) {
+				parseMap.put(method.getAnnotation(SetModelValue.class).key(),
+						new AbstractMap.SimpleEntry<>(method, null));
 			}
 		}
 		if (parseMap.size() == 0)
@@ -132,15 +132,20 @@ public class Unmarshaller {
 			// inflate values to newly created object
 			try {
 				T result = returnClass.newInstance();
-				for (Entry<Field, String> entry : parseMap.values()) {
-					Class<?> fieldClass = entry.getKey().getType();
+				for (Entry<Method, String> entry : parseMap.values()) {
+					Method m = entry.getKey();
+					Class<?>[] inputTypes = m.getParameterTypes();
+					if (inputTypes.length != 1)
+						throw new UnmarshallException("Wrong arguments number for method " + m.getName()
+								+ ". Expected 1, found " + inputTypes.length);
+					Class<?> clazz = inputTypes[0];// use first parameter
 					String inputValue = entry.getValue();
 					if (inputValue == null || inputValue.isEmpty())
 						continue;
-					if (fieldClass.isEnum()) {
-						if (ValueProvider.class.isAssignableFrom(fieldClass)) {
+					if (clazz.isEnum()) {
+						if (ValueProvider.class.isAssignableFrom(clazz)) {
 							// enum contains value behind it
-							Method method = fieldClass.getMethod("values");
+							Method method = clazz.getMethod("values");
 							Object[] objectArray = (Object[]) method.invoke(null);
 							Object selectedObject = null;
 							for (Object object : objectArray) {
@@ -154,17 +159,17 @@ public class Unmarshaller {
 							}
 							if (selectedObject == null)
 								continue;
-							setFieldValue(entry.getKey(), result, selectedObject);
+							invokeMethod(m, result, selectedObject);
 						} else {
 							// enum is just enum - get specific one using
 							// 'valueOf'
-							Method method = fieldClass.getMethod("valueOf", String.class);
+							Method method = clazz.getMethod("valueOf", String.class);
 							Object enumValue = method.invoke(null, inputValue);
-							setFieldValue(entry.getKey(), result, enumValue);
+							invokeMethod(m, result, enumValue);
 						}
 					} else {
-						Object fieldValue = getTypedValue(inputValue, fieldClass);
-						setFieldValue(entry.getKey(), result, fieldValue);
+						Object fieldValue = getTypedValue(inputValue, clazz);
+						invokeMethod(m, result, fieldValue);
 					}
 				}
 				return result;
@@ -182,15 +187,15 @@ public class Unmarshaller {
 		}
 	}
 
-	private <T> void setFieldValue(Field field, T result, Object fieldValue)
-			throws IllegalArgumentException, IllegalAccessException {
-		boolean accesDenied = !field.isAccessible();
+	private <T> void invokeMethod(Method method, T result, Object fieldValue)
+			throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+		boolean accesDenied = !method.isAccessible();
 		if (accesDenied) {
-			field.setAccessible(true);
+			method.setAccessible(true);
 		}
-		field.set(result, fieldValue);
+		method.invoke(result, fieldValue);
 		if (accesDenied) {
-			field.setAccessible(false);
+			method.setAccessible(false);
 		}
 
 	}

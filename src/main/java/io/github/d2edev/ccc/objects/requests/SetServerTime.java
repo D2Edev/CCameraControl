@@ -1,25 +1,28 @@
 package io.github.d2edev.ccc.objects.requests;
 
 import io.github.d2edev.ccc.objects.base.CameraRequest;
-import io.github.d2edev.ccc.objects.base.QueryCommand;
-import io.github.d2edev.ccc.objects.base.QuerySet;
+import io.github.d2edev.ccc.objects.base.Request;
+import io.github.d2edev.ccc.objects.base.SetModel;
+import io.github.d2edev.ccc.objects.base.GetModel;
 import io.github.d2edev.ccc.objects.models.ServerTime;
 import io.github.d2edev.ccc.objects.models.SimpleResponse;
 
-@QueryCommand("setservertime")
+@Request("setservertime")
 public class SetServerTime implements CameraRequest{
 
-	@QuerySet
 	private ServerTime serverTime;
 		
+	@GetModel
 	public ServerTime getServerTime() {
 		return serverTime;
 	}
 
+	@SetModel
 	public void setServerTime(ServerTime serverTime) {
 		this.serverTime = serverTime;
 	}
 
+	
 	@Override
 	public Class<?> getExpectedResponseType() {
 		return SimpleResponse.class;
