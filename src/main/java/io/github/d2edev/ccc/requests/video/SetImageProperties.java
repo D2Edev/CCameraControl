@@ -1,24 +1,24 @@
-package io.github.d2edev.ccc.requests;
+package io.github.d2edev.ccc.requests.video;
 
 import io.github.d2edev.ccc.api.CameraRequest;
 import io.github.d2edev.ccc.api.GetModel;
 import io.github.d2edev.ccc.api.Request;
 import io.github.d2edev.ccc.api.SetModel;
+import io.github.d2edev.ccc.models.ImageProperties;
 import io.github.d2edev.ccc.models.SimpleResponse;
-import io.github.d2edev.ccc.models.WirelessProperties;
 
-@Request("setwirelessattr")
-public class SetWirelessProperties implements CameraRequest{
+@Request("setimageattr")
+public class SetImageProperties implements CameraRequest{
 	
-	private WirelessProperties properties;
+	private ImageProperties properties;
 
 	@GetModel
-	public WirelessProperties getProperties() {
+	public ImageProperties getProperties() {
 		return properties;
 	}
 
 	@SetModel
-	public void setProperties(WirelessProperties properties) {
+	public void setProperties(ImageProperties properties) {
 		this.properties = properties;
 	}
 
@@ -26,5 +26,7 @@ public class SetWirelessProperties implements CameraRequest{
 	public Class<?> getExpectedResponseType() {
 		return SimpleResponse.class;
 	}
+	
+	
 
 }

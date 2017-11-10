@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.net.SocketAddress;
 
 import io.github.d2edev.ccc.base.CameraHttpClient;
+import io.github.d2edev.ccc.services.NetworkService;
 import io.github.d2edev.ccc.services.SystemService;
 import io.github.d2edev.ccc.services.VideoService;
 
@@ -18,8 +19,9 @@ public class IPCamera {
 	private String login;
 	private String password;
 
-	private SystemService timeService;
+	private SystemService systemService;
 	private VideoService videoService;
+	private NetworkService networkService;
 	private CameraHttpClient client;
 	private String endpoint;
 	
@@ -49,6 +51,9 @@ public class IPCamera {
 	private void init() throws Exception {
 		checkIfOnline();
 		client=new CameraHttpClient(host,port,login,password,endpoint);
+		videoService=new VideoService(client);
+		systemService=new SystemService(client);
+		networkService=new NetworkService(client);
 		
 	}
 
@@ -88,4 +93,18 @@ public class IPCamera {
 		return endpoint;
 	}
 
+	public SystemService getSystemService() {
+		return systemService;
+	}
+
+	public VideoService getVideoService() {
+		return videoService;
+	}
+
+	public NetworkService getNetworkService() {
+		return networkService;
+	}
+
+	
+	
 }

@@ -3,13 +3,14 @@ package io.github.d2edev.ccc.models;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.TimeZone;
 
 import io.github.d2edev.ccc.api.GetModelValue;
 import io.github.d2edev.ccc.api.ModelType;
 import io.github.d2edev.ccc.api.SetModelValue;
 import io.github.d2edev.ccc.enums.CameraTimeZone;
-import io.github.d2edev.ccc.enums.Status;
+import io.github.d2edev.ccc.enums.StringState;
 
 @ModelType(ModelType.COMPLEX)
 public class ServerTime {
@@ -25,7 +26,7 @@ public class ServerTime {
 
 
 	// daylight saving
-	private Status daylightModeStatus;
+	private StringState daylightModeStatus;
 
 	@GetModelValue(key = "time")
 	public String getTime() {
@@ -42,7 +43,7 @@ public class ServerTime {
 		cal.setTime(inputFormat.parse(time));
 	}
 
-	// !!! pls pay attention to parameter names diffenrece
+	// !!! pls pay attention to parameter names difference
 	// in getter and setter
 	@GetModelValue(key = "timezone")
 	public String getTimeZone() {
@@ -57,15 +58,24 @@ public class ServerTime {
 	}
 
 	@GetModelValue(key = "dstmode")
-	public Status getDaylightModeStatus() {
+	public StringState getDaylightModeStatus() {
 		return daylightModeStatus;
 	}
 
 	@SetModelValue(key = "dstmode")
-	public void setDaylightModeStatus(Status daylightModeStatus) {
+	public void setDaylightModeStatus(StringState daylightModeStatus) {
 		this.daylightModeStatus = daylightModeStatus;
 	}
 
+	
+	public void setDateTime(Date dateTime){
+		cal.setTime(dateTime);
+	}
+	
+	public Date getDateTime(){
+		return cal.getTime();
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();

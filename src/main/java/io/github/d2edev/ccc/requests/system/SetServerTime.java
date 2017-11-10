@@ -1,4 +1,4 @@
-package io.github.d2edev.ccc.requests;
+package io.github.d2edev.ccc.requests.system;
 
 import io.github.d2edev.ccc.api.CameraRequest;
 import io.github.d2edev.ccc.api.GetModel;

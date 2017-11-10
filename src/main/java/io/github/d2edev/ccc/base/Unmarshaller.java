@@ -21,7 +21,7 @@ public class Unmarshaller {
 
 	public <T> T unmarshall(Reader charStream, Class<T> returnClass) throws UnmarshallException {
 		if (returnClass == null)
-			throw new UnmarshallException("Return type not provided");
+			throw new UnmarshallException("Null return argument");
 		if(!returnClass.isAnnotationPresent(ModelType.class)){
 			throw new UnmarshallException("Model type not set");
 		}

@@ -8,7 +8,7 @@ import io.github.d2edev.ccc.enums.TVFormat;
 import io.github.d2edev.ccc.enums.VideoMode;
 
 @ModelType(ModelType.COMPLEX)
-public class VideoProperties {
+public class VideoSourceProperties {
 	
 	private VideoMode resolutionMode;
 	private TVFormat tvFormat;
@@ -47,7 +47,7 @@ public class VideoProperties {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("VideoProperties [videoMode=");
+		builder.append("VideoSourceProperties [videoMode=");
 		builder.append(resolutionMode);
 		builder.append(", format=");
 		builder.append(tvFormat);

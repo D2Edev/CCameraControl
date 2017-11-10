@@ -1,9 +1,7 @@
 package io.github.d2edev.ccc.models;
 
-import io.github.d2edev.ccc.api.GetModelValue;
 import io.github.d2edev.ccc.api.ModelType;
 import io.github.d2edev.ccc.api.SetModelValue;
-import io.github.d2edev.ccc.enums.Status;
 
 @ModelType(ModelType.COMPLEX)
 public class ServerInfo {
@@ -42,28 +40,27 @@ public class ServerInfo {
 	private String startDateTime;
 
 	// uPNP status
-	private Status unpStatus;
+	private String unpStatus;
 
 	// manufacture's DDNS status
-	private Status manufacturerDDNSStatus;
+	private String manufacturerDDNSStatus;
 
 	// Third Party DDNS status:
-	private Status thirdPartyDDNSStatus;
+	private String thirdPartyDDNSStatus;
 
 	// ?? unknown
 	private int platformStatus;
 
 	// ?? status of sd card
-	private Status sdCardStatus;
+	private String sdCardStatus;
 
-	// free space of sd card
+	// free space of sd card, kB
 	private long sdCardFreeSpace;
 
-	// total space of sd card
+	// total space of sd card, kB
 	private long sdCardTotalSpace;
 
 
-	@GetModelValue(key = "model")
 	public String getModel() {
 		return model;
 	}
@@ -73,7 +70,6 @@ public class ServerInfo {
 		this.model = model;
 	}
 
-	@GetModelValue(key = "hardVersion")
 	public String getHardwareVersion() {
 		return hardwareVersion;
 	}
@@ -83,7 +79,6 @@ public class ServerInfo {
 		this.hardwareVersion = hardwareVersion;
 	}
 
-	@GetModelValue(key = "softVersion")
 	public String getSoftwareVersion() {
 		return softwareVersion;
 	}
@@ -93,7 +88,6 @@ public class ServerInfo {
 		this.softwareVersion = softwareVersion;
 	}
 
-	@GetModelValue(key = "webVersion")
 	public String getWebVersion() {
 		return webVersion;
 	}
@@ -103,7 +97,6 @@ public class ServerInfo {
 		this.webVersion = webVersion;
 	}
 
-	@GetModelValue(key = "name")
 	public String getName() {
 		return name;
 	}
@@ -113,7 +106,6 @@ public class ServerInfo {
 		this.name = name;
 	}
 
-	@GetModelValue(key = "startdate")
 	public String getStartDateTime() {
 		return startDateTime;
 	}
@@ -123,37 +115,32 @@ public class ServerInfo {
 		this.startDateTime = startDateTime;
 	}
 
-	@GetModelValue(key = "upnpstatus")
-	public Status getUnpStatus() {
+	public String getUnpStatus() {
 		return unpStatus;
 	}
 
 	@SetModelValue(key = "upnpstatus")
-	public void setUnpStatus(Status unpStatus) {
+	public void setUnpStatus(String unpStatus) {
 		this.unpStatus = unpStatus;
 	}
 
-	@GetModelValue(key = "facddnsstatus")
-	public Status getManufacturerDDNSStatus() {
+	public String getManufacturerDDNSStatus() {
 		return manufacturerDDNSStatus;
 	}
 
 	@SetModelValue(key = "facddnsstatus")
-	public void setManufacturerDDNSStatus(Status manufacturerDDNSStatus) {
+	public void setManufacturerDDNSStatus(String manufacturerDDNSStatus) {
 		this.manufacturerDDNSStatus = manufacturerDDNSStatus;
 	}
 
-	@GetModelValue(key = "th3ddnsstatus")
-	public Status getThirdPartyDDNSStatus() {
+	public String getThirdPartyDDNSStatus() {
 		return thirdPartyDDNSStatus;
 	}
 
-	@SetModelValue(key = "th3ddnsstatus")
-	public void setThirdPartyDDNSStatus(Status thirdPartyDDNSStatus) {
+	public void setThirdPartyDDNSStatus(String thirdPartyDDNSStatus) {
 		this.thirdPartyDDNSStatus = thirdPartyDDNSStatus;
 	}
 
-	@GetModelValue(key = "platformstatus")
 	public int getPlatformStatus() {
 		return platformStatus;
 	}
@@ -163,18 +150,16 @@ public class ServerInfo {
 		this.platformStatus = platformStatus;
 	}
 
-	@GetModelValue(key = "sdstatus")
-	public Status getSdCardStatus() {
+	public String getSdCardStatus() {
 		return sdCardStatus;
 	}
 
 
 	@SetModelValue(key = "sdstatus")
-	public void setSdCardStatus(Status sdCardStatus) {
+	public void setSdCardStatus(String sdCardStatus) {
 		this.sdCardStatus = sdCardStatus;
 	}
 
-	@GetModelValue(key = "sdfreespace")
 	public long getSdCardFreeSpace() {
 		return sdCardFreeSpace;
 	}
@@ -184,7 +169,6 @@ public class ServerInfo {
 		this.sdCardFreeSpace = sdCardFreeSpace;
 	}
 
-	@GetModelValue(key = "sdtotalspace")
 	public long getSdCardTotalSpace() {
 		return sdCardTotalSpace;
 	}

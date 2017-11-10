@@ -3,7 +3,7 @@ package io.github.d2edev.ccc.models;
 import io.github.d2edev.ccc.api.GetModelValue;
 import io.github.d2edev.ccc.api.ModelType;
 import io.github.d2edev.ccc.api.SetModelValue;
-import io.github.d2edev.ccc.enums.State;
+import io.github.d2edev.ccc.enums.IntegerState;
 import io.github.d2edev.ccc.enums.WiFiEncryption;
 import io.github.d2edev.ccc.enums.WiFiKeyEncoding;
 import io.github.d2edev.ccc.enums.WiFiMode;
@@ -11,13 +11,15 @@ import io.github.d2edev.ccc.enums.WiFiMode;
 @ModelType(ModelType.COMPLEX)
 public class WirelessProperties {
 
+	public static final int MAX_SSID_NAME_LENGTH = 32;
+
 	// ***Generated automatically ***
 
 	// response example:
 	// var wf_enable="1";
-	// var wf_ssid="PiAP";
+	// var wf_ssid="MySuperDuperAP";
 	// var wf_auth="3";
-	// var wf_key="4321oleg";
+	// var wf_key="mysecretkey";
 	// var wf_enc="1";
 	// var wf_mode="0";
 
@@ -34,7 +36,7 @@ public class WirelessProperties {
 	private String passphrase;
 
 	// switch on or off
-	private State state;
+	private IntegerState state;
 
 	// SSID
 	private String ssid;
@@ -95,20 +97,25 @@ public class WirelessProperties {
 
 	// comment for setter related to [wf_enable] goes here
 	@SetModelValue(key = "wf_enable")
-	public void setState(State state) {
+	public void setState(IntegerState state) {
 		this.state = state;
 	}
 
 	// comment for getter related to [wf_enable] goes here
 	@GetModelValue(key = "wf_enable")
-	public State getState() {
+	public IntegerState getState() {
 		return state;
 	}
 
-	// comment for setter related to [wf_ssid] goes here
+	// cam supports max 32 characters
 	@SetModelValue(key = "wf_ssid")
 	public void setSSID(String ssid) {
-		this.ssid = ssid;
+		if(ssid==null||ssid.isEmpty())return;
+		if(ssid.length()>MAX_SSID_NAME_LENGTH){
+			this.ssid=ssid.substring(0, MAX_SSID_NAME_LENGTH-1);
+		}else{
+			this.ssid = ssid;			
+		}
 	}
 
 	// comment for getter related to [wf_ssid] goes here

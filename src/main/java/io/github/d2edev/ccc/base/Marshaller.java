@@ -19,13 +19,12 @@ public class Marshaller {
 	public String marshall(Object request) throws MarshallException {
 		Request command = request.getClass().getAnnotation(Request.class);
 		if (command == null)
-			throw new MarshallException("Object type must be annotated with @QueryCommand");
+			throw new MarshallException("Object type must be annotated with @Request");
 		StringBuilder builder = new StringBuilder("cmd").append("=").append(command.value());
 		List<Entry<String, Object>> paramList = new ArrayList<>();
 		fillParameterList(request, paramList);
 		if (paramList.size() == 0)
 			return builder.toString();
-		int counter = 0;
 		for (Entry<String, Object> entry : paramList) {
 			builder.append("&").append("-").append(entry.getKey()).append("=").append(entry.getValue());
 		}
@@ -78,6 +77,9 @@ public class Marshaller {
 		}
 		if (value instanceof ValueProvider) {
 			value = ((ValueProvider) value).value();
+		}
+		if (value instanceof String) {
+			value = ((String) value).replace(' ', '+');
 		}
 		return value;
 	}

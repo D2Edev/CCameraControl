@@ -2,15 +2,16 @@ package io.github.d2edev.ccc.enums;
 
 import io.github.d2edev.ccc.api.ValueProvider;
 
-public enum Status implements ValueProvider{
+public enum OSDRegion implements ValueProvider{
 	
-	ON("on"), OFF("off"), FAILED("failed"), OUT("out");
+	
+	DATE_TIME(0), CAPTION(1);
 
-	private Status(String id) {
+	private OSDRegion(int id) {
 		this.id = id;
 	}
 
-	private String id;
+	private int id;
 
 	public Object value() {
 		return id;
@@ -18,6 +19,7 @@ public enum Status implements ValueProvider{
 	
 	@Override
 	public String stringValue() {
-		return id;
+		return ""+id;
 	}
+
 }

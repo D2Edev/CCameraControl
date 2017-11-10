@@ -7,7 +7,7 @@ import io.github.d2edev.ccc.enums.ImageQuality;
 import io.github.d2edev.ccc.enums.RateControl;
 import io.github.d2edev.ccc.enums.StreamID;
 import io.github.d2edev.ccc.models.VideoEncoderProperties;
-import io.github.d2edev.ccc.requests.SetVideoEncoderProperties;
+import io.github.d2edev.ccc.requests.video.SetVideoEncoderProperties;
 
 public class MarshallerTests {
 
