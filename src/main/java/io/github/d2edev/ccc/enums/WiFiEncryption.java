@@ -24,5 +24,24 @@ public enum WiFiEncryption implements ValueProvider{
 	public String stringValue() {
 		return ""+id;
 	}
+	
+	public static WiFiEncryption parseString(String input) {
+		switch (input) {
+		case "WPA(2)-PSK":{
+			return WiFiEncryption.WPA2_PSK;
+		}
+		case "WPA-PSK":{
+			return WiFiEncryption.WPA_PSK;
+		}
+		case "WEP":{
+			return WiFiEncryption.WEP;
+		}
+		case "NONE":{
+			return WiFiEncryption.NONE;
+		}
+		default:
+			return null;
+		}
+	}
 
 }

@@ -1,5 +1,8 @@
 package io.github.d2edev.ccc;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Base64;
@@ -27,6 +30,7 @@ import io.github.d2edev.ccc.models.ServerTime;
 import io.github.d2edev.ccc.models.SimpleResponse;
 import io.github.d2edev.ccc.models.VideoEncoderProperties;
 import io.github.d2edev.ccc.models.VideoSourceProperties;
+import io.github.d2edev.ccc.models.WirelessNetworks;
 import io.github.d2edev.ccc.models.WirelessProperties;
 import io.github.d2edev.ccc.requests.network.GetWirelessNetworks;
 import io.github.d2edev.ccc.requests.network.GetWirelessProperties;
@@ -53,14 +57,28 @@ public class HttpTest {
 	private static final String PREFIX = "http://192.168.0.201/" + ENDPOINT + "?";
 
 	public static void main(String[] args) {
-		HttpTest test = new HttpTest();
-//		System.out.println("YYYY-MM-DD hh:mm:ss".length());
-		GetOverlayProperties gop=new GetOverlayProperties();
-		gop.setRegion(OSDRegion.DATE_TIME);
+		try {
+			File file=new File("nets_reply.txt");
+			FileReader reader=new FileReader(file);
+			Unmarshaller um=new Unmarshaller();
+			WirelessNetworks nets=um.unmarshall(reader, WirelessNetworks.class);
+			System.out.println(nets.getNetworks());
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//		System.out.println("var waccess_points=\"2\"".length());
+//		HttpTest test = new HttpTest();
+//		GetOverlayProperties gop=new GetOverlayProperties();
+//		gop.setRegion(OSDRegion.DATE_TIME);
 //		 CameraRequest r=gop;
 //		 test.processForString(r);
 //		 test.processForObject(r);
-		test.processGetSetOverLay();
+//		test.processGetSetOverLay();
+ catch (UnmarshallException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 

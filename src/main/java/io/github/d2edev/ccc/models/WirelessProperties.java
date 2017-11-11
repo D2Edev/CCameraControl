@@ -157,9 +157,15 @@ public class WirelessProperties {
 		builder.append(state);
 		builder.append(", ssid=");
 		builder.append(ssid);
+		builder.append(", channel=");
+		builder.append(channel);
+		builder.append(", strength=");
+		builder.append(strength);
 		builder.append("]");
 		return builder.toString();
 	}
+
+
 
 	
 	

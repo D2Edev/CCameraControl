@@ -8,9 +8,29 @@ import io.github.d2edev.ccc.api.SetModel;
 
 @ModelType(ModelType.NETWORKLIST)
 public class WirelessNetworks {
-	
+	// reply example:
+	// var waccess_points="2" ;
+	// var wchannel=new Array();
+	// var wrssi=new Array();
+	// var wessid=new Array();
+	// var wenc=new Array();
+	// var wauth=new Array();
+	// var wnet=new Array();
+	// wchannel[0]="6" ;
+	// wrssi[0]="-82" ;
+	// wessid[0]="Fumax wireless" ;
+	// wenc[0]="AES" ;
+	// wauth[0]="WPA(2)-PSK" ;
+	// wnet[0]="Infra" ;
+	// wchannel[1]="11" ;
+	// wrssi[1]="-62" ;
+	// wessid[1]="linksys" ;
+	// wenc[1]="TKIP" ;
+	// wauth[1]="WPA(2)-PSK" ;
+	// wnet[1]="Infra" ;
+
 	private List<WirelessProperties> networks;
-	
+
 	@GetModel
 	public List<WirelessProperties> getNetworks() {
 		return networks;
@@ -20,7 +40,5 @@ public class WirelessNetworks {
 	public void setNetworks(List<WirelessProperties> networks) {
 		this.networks = networks;
 	}
-	
-	
 
 }

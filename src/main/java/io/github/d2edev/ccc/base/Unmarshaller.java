@@ -6,45 +6,123 @@ import java.io.Reader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.github.d2edev.ccc.api.ModelType;
 import io.github.d2edev.ccc.api.QueryParameterSplitter;
 import io.github.d2edev.ccc.api.SetModelValue;
 import io.github.d2edev.ccc.api.UnmarshallException;
 import io.github.d2edev.ccc.api.ValueProvider;
+import io.github.d2edev.ccc.enums.WiFiEncryption;
+import io.github.d2edev.ccc.enums.WiFiKeyEncoding;
 import io.github.d2edev.ccc.models.SimpleResponse;
+import io.github.d2edev.ccc.models.WirelessNetworks;
+import io.github.d2edev.ccc.models.WirelessProperties;
 
 public class Unmarshaller {
+	
+	Pattern netElementPattern=Pattern.compile("(\\w+)\\[(\\d+)\\]=\\\"(.+)\\\".*");
 
 	public <T> T unmarshall(Reader charStream, Class<T> returnClass) throws UnmarshallException {
 		if (returnClass == null)
 			throw new UnmarshallException("Null return argument");
-		if(!returnClass.isAnnotationPresent(ModelType.class)){
+		if (!returnClass.isAnnotationPresent(ModelType.class)) {
 			throw new UnmarshallException("Model type not set");
 		}
-		String modelType=returnClass.getAnnotation(ModelType.class).value();
-				switch (modelType) {
-				case ModelType.SIMPLE:{
-					return unmarshallSimpleObject(charStream, returnClass);
-				}
-				case ModelType.COMPLEX:{
-					return unmarshalComplexObject(charStream, returnClass);
-				}
-				case ModelType.NETWORKLIST:{
-					return unmarshalNetworkList(charStream, returnClass);
-				}	
+		String modelType = returnClass.getAnnotation(ModelType.class).value();
+		switch (modelType) {
+		case ModelType.SIMPLE: {
+			return unmarshallSimpleObject(charStream, returnClass);
+		}
+		case ModelType.COMPLEX: {
+			return unmarshalComplexObject(charStream, returnClass);
+		}
+		case ModelType.NETWORKLIST: {
+			return unmarshalNetworkList(charStream, returnClass);
+		}
 
-				default:
-					throw new UnmarshallException("Unknown return type");
-				}
+		default:
+			throw new UnmarshallException("Unknown return type");
+		}
 	}
 
-	private <T>T unmarshalNetworkList(Reader charStream, Class<T> returnClass) {
+	@SuppressWarnings("unchecked")
+	private <T> T unmarshalNetworkList(Reader charStream, Class<T> returnClass) throws UnmarshallException {
 		BufferedReader reader = new BufferedReader(charStream);
-		return null;
+		try {
+			String line = null;
+			boolean replyDetected = false;
+			StringBuilder contentBuilder = new StringBuilder("Can't process. Unknown structure: ");
+			Map<String, WirelessProperties> networkMap=new HashMap<>();
+			try {
+				while ((line = reader.readLine()) != null) {
+					Matcher eltMatcher=netElementPattern.matcher(line);
+					if(eltMatcher.matches()) {
+						String varName=eltMatcher.group(1);
+						String key=eltMatcher.group(2);
+						String value=eltMatcher.group(3);
+						System.out.println(varName+":"+key+":"+value);
+						WirelessProperties network=networkMap.get(key);
+						if(network==null) {
+							network=new WirelessProperties();
+							networkMap.put(key, network);
+						}
+						try {
+							updateNetworkParameter(network,varName,value);
+						} catch (Exception e) {
+							// TODO process somehow?
+						}
+					}
+				}
+				if(networkMap.isEmpty())throw new UnmarshallException("No network data in input stream");
+				WirelessNetworks networks = new WirelessNetworks();
+				networks.setNetworks(new ArrayList<>(networkMap.values()));
+				return (T)networks;
+			} catch (IOException e) {
+				throw new UnmarshallException(e.getMessage());
+			}
+		} finally {
+			if (reader != null) {
+				try {
+					reader.close();
+				} catch (IOException none) {
+				}
+			}
+		}
+	}
+
+	private void updateNetworkParameter (WirelessProperties network, String varName, String value) throws Exception{
+		switch (varName) {
+		case "wchannel":{
+			network.setChannel((int)getTypedValue(value, int.class));
+			break;
+		}
+		case "wrssi":{
+			network.setStrength((int)getTypedValue(value, int.class));
+			break;
+		}	
+		case "wenc":{
+			network.setKeyEncoding(WiFiKeyEncoding.valueOf(value));
+			break;
+		}
+		case "wessid":{
+			network.setSSID(value);
+			break;
+		}
+		case "wauth":{
+			network.setWiFiEncryption(WiFiEncryption.parseString(value));
+			break;
+		}
+		default:
+			break;
+		}
+		
 	}
 
 	@SuppressWarnings("unchecked")
