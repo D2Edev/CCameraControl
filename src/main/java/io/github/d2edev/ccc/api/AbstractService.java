@@ -1,4 +1,4 @@
-package io.github.d2edev.ccc.services;
+package io.github.d2edev.ccc.api;
 
 import io.github.d2edev.ccc.base.CameraHttpClient;
 

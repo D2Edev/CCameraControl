@@ -31,11 +31,11 @@ import io.github.d2edev.ccc.models.SimpleResponse;
 import io.github.d2edev.ccc.models.VideoEncoderProperties;
 import io.github.d2edev.ccc.models.VideoSourceProperties;
 import io.github.d2edev.ccc.models.WirelessNetworks;
-import io.github.d2edev.ccc.models.WirelessProperties;
-import io.github.d2edev.ccc.requests.network.GetWirelessNetworks;
+import io.github.d2edev.ccc.models.WirelessNetwork;
+import io.github.d2edev.ccc.requests.network.ScanWirelessNetworks;
 import io.github.d2edev.ccc.requests.network.GetWirelessProperties;
 import io.github.d2edev.ccc.requests.network.SetWirelessProperties;
-import io.github.d2edev.ccc.requests.system.GetConnectedUsersNumber;
+import io.github.d2edev.ccc.requests.system.GetActiveStreamsQ;
 import io.github.d2edev.ccc.requests.system.GetDeviceType;
 import io.github.d2edev.ccc.requests.system.GetServerInfo;
 import io.github.d2edev.ccc.requests.system.GetServerTime;
@@ -108,7 +108,7 @@ public class HttpTest {
 		CameraHttpClient client = new CameraHttpClient("192.168.0.201", 80, "admin", "admin", ENDPOINT);
 		try {
 			GetWirelessProperties request = new GetWirelessProperties();
-			WirelessProperties props = (WirelessProperties) client.processRequest(request,
+			WirelessNetwork props = (WirelessNetwork) client.processRequest(request,
 					request.getExpectedResponseType());
 			System.out.println("reply: " + props);
 			SetWirelessProperties set = new SetWirelessProperties();
@@ -119,7 +119,7 @@ public class HttpTest {
 			set.setProperties(props);
 			System.out.println("setting: " + props);
 			System.out.println(client.processRequest(set, set.getExpectedResponseType()));
-			props = (WirelessProperties) client.processRequest(request, request.getExpectedResponseType());
+			props = (WirelessNetwork) client.processRequest(request, request.getExpectedResponseType());
 			System.out.println("check:" + props);
 		} catch (MarshallException | IOException | UnmarshallException e) {
 			// TODO Auto-generated catch block

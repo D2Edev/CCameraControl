@@ -2,14 +2,14 @@ package io.github.d2edev.ccc.requests.system;
 
 import io.github.d2edev.ccc.api.CameraRequest;
 import io.github.d2edev.ccc.api.Request;
-import io.github.d2edev.ccc.models.ConnectedUsers;
+import io.github.d2edev.ccc.models.ActiveStreamsQ;
 
 @Request("getstreamnum")
-public class GetConnectedUsersNumber implements CameraRequest{
+public class GetActiveStreamsQ implements CameraRequest{
 
 	@Override
 	public Class<?> getExpectedResponseType() {
-		return ConnectedUsers.class;
+		return ActiveStreamsQ.class;
 	}
 
 }

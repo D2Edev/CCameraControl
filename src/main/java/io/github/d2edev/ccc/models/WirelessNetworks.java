@@ -29,15 +29,15 @@ public class WirelessNetworks {
 	// wauth[1]="WPA(2)-PSK" ;
 	// wnet[1]="Infra" ;
 
-	private List<WirelessProperties> networks;
+	private List<WirelessNetwork> networks;
 
 	@GetModel
-	public List<WirelessProperties> getNetworks() {
+	public List<WirelessNetwork> getNetworks() {
 		return networks;
 	}
 
 	@SetModel
-	public void setNetworks(List<WirelessProperties> networks) {
+	public void setNetworks(List<WirelessNetwork> networks) {
 		this.networks = networks;
 	}
 

@@ -5,30 +5,31 @@ import io.github.d2edev.ccc.api.ModelType;
 import io.github.d2edev.ccc.api.SetModelValue;
 
 @ModelType(ModelType.COMPLEX)
-public class ConnectedUsers {
+public class ActiveStreamsQ {
 	//reply example
 	//var stream_num="0";
 	
-	private int connectedUsersQty;
-	
+	private int quantity;
+		
 	@GetModelValue(key = "stream_num")
-	public int getConnectedUsersQty() {
-		return connectedUsersQty;
+	public int getQuantity() {
+		return quantity;
 	}
-	
+
 	@SetModelValue(key = "stream_num")
-	public void setConnectedUsersQty(int connectedUsersQty) {
-		this.connectedUsersQty = connectedUsersQty;
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("ConnectedUsers [");
-		builder.append(connectedUsersQty);
+		builder.append("ActiveStreams [quantity=");
+		builder.append(quantity);
 		builder.append("]");
 		return builder.toString();
 	}
+
 	
 	
 

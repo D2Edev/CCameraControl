@@ -9,7 +9,7 @@ import io.github.d2edev.ccc.enums.WiFiKeyEncoding;
 import io.github.d2edev.ccc.enums.WiFiMode;
 
 @ModelType(ModelType.COMPLEX)
-public class WirelessProperties {
+public class WirelessNetwork {
 
 	public static final int MAX_SSID_NAME_LENGTH = 32;
 
@@ -145,7 +145,7 @@ public class WirelessProperties {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("WirelessProperties [encoding=");
+		builder.append("WirelessNetwork [encoding=");
 		builder.append(encoding);
 		builder.append(", mode=");
 		builder.append(mode);

@@ -23,7 +23,7 @@ import io.github.d2edev.ccc.enums.WiFiEncryption;
 import io.github.d2edev.ccc.enums.WiFiKeyEncoding;
 import io.github.d2edev.ccc.models.SimpleResponse;
 import io.github.d2edev.ccc.models.WirelessNetworks;
-import io.github.d2edev.ccc.models.WirelessProperties;
+import io.github.d2edev.ccc.models.WirelessNetwork;
 
 public class Unmarshaller {
 	
@@ -59,7 +59,7 @@ public class Unmarshaller {
 			String line = null;
 			boolean replyDetected = false;
 			StringBuilder contentBuilder = new StringBuilder("Can't process. Unknown structure: ");
-			Map<String, WirelessProperties> networkMap=new HashMap<>();
+			Map<String, WirelessNetwork> networkMap=new HashMap<>();
 			try {
 				while ((line = reader.readLine()) != null) {
 					Matcher eltMatcher=netElementPattern.matcher(line);
@@ -68,9 +68,9 @@ public class Unmarshaller {
 						String key=eltMatcher.group(2);
 						String value=eltMatcher.group(3);
 						System.out.println(varName+":"+key+":"+value);
-						WirelessProperties network=networkMap.get(key);
+						WirelessNetwork network=networkMap.get(key);
 						if(network==null) {
-							network=new WirelessProperties();
+							network=new WirelessNetwork();
 							networkMap.put(key, network);
 						}
 						try {
@@ -97,7 +97,7 @@ public class Unmarshaller {
 		}
 	}
 
-	private void updateNetworkParameter (WirelessProperties network, String varName, String value) throws Exception{
+	private void updateNetworkParameter (WirelessNetwork network, String varName, String value) throws Exception{
 		switch (varName) {
 		case "wchannel":{
 			network.setChannel((int)getTypedValue(value, int.class));
