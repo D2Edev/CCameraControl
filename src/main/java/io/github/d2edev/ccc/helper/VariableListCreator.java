@@ -12,8 +12,15 @@ import java.util.Map.Entry;
 
 import io.github.d2edev.ccc.api.MarshallException;
 import io.github.d2edev.ccc.base.Marshaller;
+import io.github.d2edev.ccc.enums.IntegerState;
 import io.github.d2edev.ccc.enums.OSDRegion;
+import io.github.d2edev.ccc.enums.WiFiSecurityMode;
+import io.github.d2edev.ccc.enums.WifiInfrastructureMode;
+import io.github.d2edev.ccc.enums.WifiKeyEncryption;
+import io.github.d2edev.ccc.models.WirelessNetwork;
+import io.github.d2edev.ccc.requests.network.PrepareWirelessValidation;
 import io.github.d2edev.ccc.requests.network.GetWirelessProperties;
+import io.github.d2edev.ccc.requests.network.GetWirelessValidation;
 import io.github.d2edev.ccc.requests.video.GetImageProperties;
 import io.github.d2edev.ccc.requests.video.GetOverlayProperties;
 import okhttp3.OkHttpClient;
@@ -34,9 +41,8 @@ public class VariableListCreator {
 
 	public static void main(String[] args) {
 		try {
-			GetOverlayProperties g=new GetOverlayProperties();
-			g.setRegion(OSDRegion.CAPTION);
-			String reply = VariableListCreator.createBase(g);
+			
+			String reply = VariableListCreator.createBase(new GetWirelessValidation());
 			System.out.println(reply);
 		} catch (IOException | MarshallException e) {
 			// TODO Auto-generated catch block

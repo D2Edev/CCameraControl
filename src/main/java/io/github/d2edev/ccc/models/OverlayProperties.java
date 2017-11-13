@@ -1,13 +1,13 @@
 package io.github.d2edev.ccc.models;
 
 import io.github.d2edev.ccc.api.GetModelValue;
-import io.github.d2edev.ccc.api.ModelType;
+import io.github.d2edev.ccc.api.Model;
 import io.github.d2edev.ccc.api.QueryParameterSplitter;
 import io.github.d2edev.ccc.api.SetModelValue;
 import io.github.d2edev.ccc.enums.IntegerState;
 import io.github.d2edev.ccc.helper.Key;
 
-@ModelType(ModelType.COMPLEX)
+@Model(Model.COMPLEX)
 @QueryParameterSplitter("_")
 public class OverlayProperties {
 
@@ -142,4 +142,33 @@ public class OverlayProperties {
 		return builder.toString();
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((show == null) ? 0 : show.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		OverlayProperties other = (OverlayProperties) obj;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (show != other.show)
+			return false;
+		return true;
+	}
+
+	
 }

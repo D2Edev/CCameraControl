@@ -7,12 +7,12 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import io.github.d2edev.ccc.api.GetModelValue;
-import io.github.d2edev.ccc.api.ModelType;
+import io.github.d2edev.ccc.api.Model;
 import io.github.d2edev.ccc.api.SetModelValue;
 import io.github.d2edev.ccc.enums.CameraTimeZone;
 import io.github.d2edev.ccc.enums.StringState;
 
-@ModelType(ModelType.COMPLEX)
+@Model(Model.COMPLEX)
 public class ServerTime {
 	// reply example
 	// var timeZone="America/New_York";

@@ -14,13 +14,13 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import io.github.d2edev.ccc.api.ModelType;
+import io.github.d2edev.ccc.api.Model;
 import io.github.d2edev.ccc.api.QueryParameterSplitter;
 import io.github.d2edev.ccc.api.SetModelValue;
 import io.github.d2edev.ccc.api.UnmarshallException;
 import io.github.d2edev.ccc.api.ValueProvider;
-import io.github.d2edev.ccc.enums.WiFiEncryption;
-import io.github.d2edev.ccc.enums.WiFiKeyEncoding;
+import io.github.d2edev.ccc.enums.WiFiSecurityMode;
+import io.github.d2edev.ccc.enums.WifiKeyEncryption;
 import io.github.d2edev.ccc.models.SimpleResponse;
 import io.github.d2edev.ccc.models.WirelessNetworks;
 import io.github.d2edev.ccc.models.WirelessNetwork;
@@ -32,18 +32,18 @@ public class Unmarshaller {
 	public <T> T unmarshall(Reader charStream, Class<T> returnClass) throws UnmarshallException {
 		if (returnClass == null)
 			throw new UnmarshallException("Null return argument");
-		if (!returnClass.isAnnotationPresent(ModelType.class)) {
+		if (!returnClass.isAnnotationPresent(Model.class)) {
 			throw new UnmarshallException("Model type not set");
 		}
-		String modelType = returnClass.getAnnotation(ModelType.class).value();
+		String modelType = returnClass.getAnnotation(Model.class).value();
 		switch (modelType) {
-		case ModelType.SIMPLE: {
+		case Model.SIMPLE: {
 			return unmarshallSimpleObject(charStream, returnClass);
 		}
-		case ModelType.COMPLEX: {
+		case Model.COMPLEX: {
 			return unmarshalComplexObject(charStream, returnClass);
 		}
-		case ModelType.NETWORKLIST: {
+		case Model.NETWORKLIST: {
 			return unmarshalNetworkList(charStream, returnClass);
 		}
 
@@ -108,7 +108,7 @@ public class Unmarshaller {
 			break;
 		}	
 		case "wenc":{
-			network.setKeyEncoding(WiFiKeyEncoding.valueOf(value));
+			network.setKeyEncryption(WifiKeyEncryption.valueOf(value));
 			break;
 		}
 		case "wessid":{
@@ -116,7 +116,7 @@ public class Unmarshaller {
 			break;
 		}
 		case "wauth":{
-			network.setWiFiEncryption(WiFiEncryption.parseString(value));
+			network.setWiFiSecurityMode(WiFiSecurityMode.parseString(value));
 			break;
 		}
 		default:
@@ -301,7 +301,7 @@ public class Unmarshaller {
 	private Object getTypedValue(String value, Class<?> clazz) {
 		// wrapper
 		if (Boolean.class == clazz)
-			return Boolean.parseBoolean(value);
+			return treatAsBoolean(value);
 		if (Byte.class == clazz)
 			return Byte.parseByte(value);
 		if (Short.class == clazz)
@@ -316,7 +316,7 @@ public class Unmarshaller {
 			return Double.parseDouble(value);
 		// primitive
 		if (boolean.class == clazz)
-			return Boolean.parseBoolean(value);
+			return treatAsBoolean(value);
 		if (byte.class == clazz)
 			return Byte.parseByte(value);
 		if (short.class == clazz)
@@ -330,6 +330,19 @@ public class Unmarshaller {
 		if (double.class == clazz)
 			return Double.parseDouble(value);
 		return value;
+	}
+
+	private Object treatAsBoolean(String value) {
+		if("on".equals(value.toLowerCase()))return Boolean.TRUE;
+		if("enabled".equals(value.toLowerCase()))return Boolean.TRUE;
+		if("1".equals(value.toLowerCase()))return Boolean.TRUE;
+		if("true".equals(value.toLowerCase()))return Boolean.TRUE;
+		if("off".equals(value.toLowerCase()))return Boolean.FALSE;
+		if("disabled".equals(value.toLowerCase()))return Boolean.FALSE;
+		if("0".equals(value.toLowerCase()))return Boolean.FALSE;
+		if("false".equals(value.toLowerCase()))return Boolean.FALSE;
+		throw new IllegalArgumentException("Cant't treat as boolean: "+value);
+		
 	}
 
 }

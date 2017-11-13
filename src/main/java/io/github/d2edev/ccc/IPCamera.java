@@ -45,6 +45,7 @@ public class IPCamera {
 		this.host = host;
 		this.login = login;
 		this.password = password;
+		this.endpoint=endpoint;
 		init();
 	}
 	

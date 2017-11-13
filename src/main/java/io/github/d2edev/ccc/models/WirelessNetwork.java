@@ -1,14 +1,14 @@
 package io.github.d2edev.ccc.models;
 
 import io.github.d2edev.ccc.api.GetModelValue;
-import io.github.d2edev.ccc.api.ModelType;
+import io.github.d2edev.ccc.api.Model;
 import io.github.d2edev.ccc.api.SetModelValue;
 import io.github.d2edev.ccc.enums.IntegerState;
-import io.github.d2edev.ccc.enums.WiFiEncryption;
-import io.github.d2edev.ccc.enums.WiFiKeyEncoding;
-import io.github.d2edev.ccc.enums.WiFiMode;
+import io.github.d2edev.ccc.enums.WiFiSecurityMode;
+import io.github.d2edev.ccc.enums.WifiKeyEncryption;
+import io.github.d2edev.ccc.enums.WifiInfrastructureMode;
 
-@ModelType(ModelType.COMPLEX)
+@Model(Model.COMPLEX)
 public class WirelessNetwork {
 
 	public static final int MAX_SSID_NAME_LENGTH = 32;
@@ -24,13 +24,13 @@ public class WirelessNetwork {
 	// var wf_mode="0";
 
 	// Key type
-	private WiFiKeyEncoding encoding;
+	private WifiKeyEncryption keyEncryption;
 
 	// Connection mode:
-	private WiFiMode mode;
+	private WifiInfrastructureMode mode;
 
-	// encryption
-	private WiFiEncryption encryption;
+	// security
+	private WiFiSecurityMode security;
 
 	// wifi password
 	private String passphrase;
@@ -40,47 +40,47 @@ public class WirelessNetwork {
 
 	// SSID
 	private String ssid;
-	
-	//wifi channel 
+
+	// wifi channel
 	private int channel;
-	
-	//network strength
+
+	// network strength
 	private int strength;
 
 	// comment for setter related to [wf_enc] goes here
 	@SetModelValue(key = "wf_enc")
-	public void setKeyEncoding(WiFiKeyEncoding encoding) {
-		this.encoding = encoding;
+	public void setKeyEncryption(WifiKeyEncryption keyEncryption) {
+		this.keyEncryption = keyEncryption;
 	}
 
 	// comment for getter related to [wf_enc] goes here
 	@GetModelValue(key = "wf_enc")
-	public WiFiKeyEncoding getKeyEncoding() {
-		return encoding;
+	public WifiKeyEncryption getKeyEncryption() {
+		return keyEncryption;
 	}
 
 	// comment for setter related to [wf_mode] goes here
 	@SetModelValue(key = "wf_mode")
-	public void setWiFiMode(WiFiMode wf_mode) {
-		this.mode = wf_mode;
+	public void setInfrastructureMode(WifiInfrastructureMode ifmode) {
+		this.mode = ifmode;
 	}
 
 	// comment for getter related to [wf_mode] goes here
 	@GetModelValue(key = "wf_mode")
-	public WiFiMode getWiFiMode() {
+	public WifiInfrastructureMode getInfrastructureMode() {
 		return mode;
 	}
 
 	// comment for setter related to [wf_auth] goes here
 	@SetModelValue(key = "wf_auth")
-	public void setWiFiEncryption(WiFiEncryption encryption) {
-		this.encryption = encryption;
+	public void setWiFiSecurityMode(WiFiSecurityMode smode) {
+		this.security = smode;
 	}
 
 	// comment for getter related to [wf_auth] goes here
 	@GetModelValue(key = "wf_auth")
-	public WiFiEncryption getWiFiEncryption() {
-		return encryption;
+	public WiFiSecurityMode getWiFiSecurityMode() {
+		return security;
 	}
 
 	// comment for setter related to [wf_key] goes here
@@ -110,11 +110,12 @@ public class WirelessNetwork {
 	// cam supports max 32 characters
 	@SetModelValue(key = "wf_ssid")
 	public void setSSID(String ssid) {
-		if(ssid==null||ssid.isEmpty())return;
-		if(ssid.length()>MAX_SSID_NAME_LENGTH){
-			this.ssid=ssid.substring(0, MAX_SSID_NAME_LENGTH-1);
-		}else{
-			this.ssid = ssid;			
+		if (ssid == null || ssid.isEmpty())
+			return;
+		if (ssid.length() > MAX_SSID_NAME_LENGTH) {
+			this.ssid = ssid.substring(0, MAX_SSID_NAME_LENGTH - 1);
+		} else {
+			this.ssid = ssid;
 		}
 	}
 
@@ -123,8 +124,6 @@ public class WirelessNetwork {
 	public String getSSID() {
 		return ssid;
 	}
-	
-	
 
 	public int getChannel() {
 		return channel;
@@ -145,12 +144,12 @@ public class WirelessNetwork {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("WirelessNetwork [encoding=");
-		builder.append(encoding);
+		builder.append("WirelessNetwork [keyEncryption=");
+		builder.append(keyEncryption);
 		builder.append(", mode=");
 		builder.append(mode);
-		builder.append(", encryption=");
-		builder.append(encryption);
+		builder.append(", security=");
+		builder.append(security);
 		builder.append(", passphrase=");
 		builder.append(passphrase);
 		builder.append(", state=");
@@ -165,7 +164,48 @@ public class WirelessNetwork {
 		return builder.toString();
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((keyEncryption == null) ? 0 : keyEncryption.hashCode());
+		result = prime * result + ((mode == null) ? 0 : mode.hashCode());
+		result = prime * result + ((passphrase == null) ? 0 : passphrase.hashCode());
+		result = prime * result + ((security == null) ? 0 : security.hashCode());
+		result = prime * result + ((ssid == null) ? 0 : ssid.hashCode());
+		result = prime * result + ((state == null) ? 0 : state.hashCode());
+		return result;
+	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		WirelessNetwork other = (WirelessNetwork) obj;
+		if (keyEncryption != other.keyEncryption)
+			return false;
+		if (mode != other.mode)
+			return false;
+		if (passphrase == null) {
+			if (other.passphrase != null)
+				return false;
+		} else if (!passphrase.equals(other.passphrase))
+			return false;
+		if (security != other.security)
+			return false;
+		if (ssid == null) {
+			if (other.ssid != null)
+				return false;
+		} else if (!ssid.equals(other.ssid))
+			return false;
+		if (state != other.state)
+			return false;
+		return true;
+	}
 
 	
 	

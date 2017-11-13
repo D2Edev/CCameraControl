@@ -3,10 +3,10 @@ package io.github.d2edev.ccc.models;
 import java.util.List;
 
 import io.github.d2edev.ccc.api.GetModel;
-import io.github.d2edev.ccc.api.ModelType;
+import io.github.d2edev.ccc.api.Model;
 import io.github.d2edev.ccc.api.SetModel;
 
-@ModelType(ModelType.NETWORKLIST)
+@Model(Model.NETWORKLIST)
 public class WirelessNetworks {
 	// reply example:
 	// var waccess_points="2" ;
@@ -41,4 +41,19 @@ public class WirelessNetworks {
 		this.networks = networks;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Networks:");
+		if(networks==null||networks.size()<1){
+			builder.append("[none]");
+		}
+		;
+		for (WirelessNetwork wirelessNetwork : networks) {
+			builder.append("\n").append(wirelessNetwork);
+		}
+		return builder.toString();
+	}
+
+	
 }

@@ -53,7 +53,7 @@ public class CameraHttpClient {
 		if(useAuth){
 			rqb.addHeader("Authorization", authData);
 		}
-		System.out.println("request: "+command);
+//		System.out.println("request: "+command);
 		Response response=client.newCall(rqb.build()).execute();
 		if(response.isSuccessful()){
 			return unmarshaller.unmarshall(response.body().charStream(), responseClass);

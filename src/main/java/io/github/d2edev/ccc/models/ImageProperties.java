@@ -1,7 +1,7 @@
 package io.github.d2edev.ccc.models;
 
 import io.github.d2edev.ccc.api.GetModelValue;
-import io.github.d2edev.ccc.api.ModelType;
+import io.github.d2edev.ccc.api.Model;
 import io.github.d2edev.ccc.api.SetModelValue;
 import io.github.d2edev.ccc.enums.ExposureType;
 import io.github.d2edev.ccc.enums.IntegerState;
@@ -13,7 +13,7 @@ import io.github.d2edev.ccc.helper.Key;
  * @author ddmitry
  *
  */
-@ModelType(ModelType.COMPLEX)
+@Model(Model.COMPLEX)
 public class ImageProperties {
 
 	// ***Generated automatically ***
@@ -390,4 +390,82 @@ public class ImageProperties {
 		return builder.toString();
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + brightness;
+		result = prime * result + ((colorMode == null) ? 0 : colorMode.hashCode());
+		result = prime * result + contrast;
+		result = prime * result + exposure;
+		result = prime * result + ((exposureType == null) ? 0 : exposureType.hashCode());
+		result = prime * result + flashShutter;
+		result = prime * result + ((flipMode == null) ? 0 : flipMode.hashCode());
+		result = prime * result + gamma;
+		result = prime * result + gc;
+		result = prime * result + hue;
+		result = prime * result + ((mirrorMode == null) ? 0 : mirrorMode.hashCode());
+		result = prime * result + ((nightMode == null) ? 0 : nightMode.hashCode());
+		result = prime * result + noise;
+		result = prime * result + ((optimization == null) ? 0 : optimization.hashCode());
+		result = prime * result + saturation;
+		result = prime * result + sharpness;
+		result = prime * result + shutter;
+		result = prime * result + valueAE;
+		result = prime * result + ((wideDynamicRange == null) ? 0 : wideDynamicRange.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ImageProperties other = (ImageProperties) obj;
+		if (brightness != other.brightness)
+			return false;
+		if (colorMode != other.colorMode)
+			return false;
+		if (contrast != other.contrast)
+			return false;
+		if (exposure != other.exposure)
+			return false;
+		if (exposureType != other.exposureType)
+			return false;
+		if (flashShutter != other.flashShutter)
+			return false;
+		if (flipMode != other.flipMode)
+			return false;
+		if (gamma != other.gamma)
+			return false;
+		if (gc != other.gc)
+			return false;
+		if (hue != other.hue)
+			return false;
+		if (mirrorMode != other.mirrorMode)
+			return false;
+		if (nightMode != other.nightMode)
+			return false;
+		if (noise != other.noise)
+			return false;
+		if (optimization != other.optimization)
+			return false;
+		if (saturation != other.saturation)
+			return false;
+		if (sharpness != other.sharpness)
+			return false;
+		if (shutter != other.shutter)
+			return false;
+		if (valueAE != other.valueAE)
+			return false;
+		if (wideDynamicRange != other.wideDynamicRange)
+			return false;
+		return true;
+	}
+
+	
+	
 }

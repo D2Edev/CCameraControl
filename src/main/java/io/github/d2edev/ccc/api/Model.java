@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RUNTIME)
 @Target(TYPE)
-public @interface ModelType {
+public @interface Model {
 	
 	public static final String COMPLEX="complex";
 	public static final String NETWORKLIST="dynamic";

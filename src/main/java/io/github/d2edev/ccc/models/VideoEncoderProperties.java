@@ -1,13 +1,13 @@
 package io.github.d2edev.ccc.models;
 
 import io.github.d2edev.ccc.api.GetModelValue;
-import io.github.d2edev.ccc.api.ModelType;
+import io.github.d2edev.ccc.api.Model;
 import io.github.d2edev.ccc.api.QueryParameterSplitter;
 import io.github.d2edev.ccc.api.SetModelValue;
 import io.github.d2edev.ccc.enums.ImageQuality;
 import io.github.d2edev.ccc.enums.RateControl;
 
-@ModelType(ModelType.COMPLEX)
+@Model(Model.COMPLEX)
 @QueryParameterSplitter("_")
 public class VideoEncoderProperties {
 
@@ -120,4 +120,39 @@ public class VideoEncoderProperties {
 		return builder.toString();
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + bps;
+		result = prime * result + fps;
+		result = prime * result + gop;
+		result = prime * result + ((quality == null) ? 0 : quality.hashCode());
+		result = prime * result + ((rateControl == null) ? 0 : rateControl.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		VideoEncoderProperties other = (VideoEncoderProperties) obj;
+		if (bps != other.bps)
+			return false;
+		if (fps != other.fps)
+			return false;
+		if (gop != other.gop)
+			return false;
+		if (quality != other.quality)
+			return false;
+		if (rateControl != other.rateControl)
+			return false;
+		return true;
+	}
+
+	
 }

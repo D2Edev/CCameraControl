@@ -2,15 +2,15 @@ package io.github.d2edev.ccc.enums;
 
 import io.github.d2edev.ccc.api.ValueProvider;
 
-public enum WiFiEncryption implements ValueProvider{
+public enum WiFiSecurityMode implements ValueProvider{
 	
 	
-	NONE(0),
+	OPEN(0),
 	WEP(1),
 	WPA_PSK(2),
 	WPA2_PSK(3)	;
 
-	private WiFiEncryption(int id) {
+	private WiFiSecurityMode(int id) {
 		this.id = id;
 	}
 
@@ -25,19 +25,19 @@ public enum WiFiEncryption implements ValueProvider{
 		return ""+id;
 	}
 	
-	public static WiFiEncryption parseString(String input) {
+	public static WiFiSecurityMode parseString(String input) {
 		switch (input) {
-		case "WPA(2)-PSK":{
-			return WiFiEncryption.WPA2_PSK;
+		case "WPA2-PSK":{
+			return WiFiSecurityMode.WPA2_PSK;
 		}
 		case "WPA-PSK":{
-			return WiFiEncryption.WPA_PSK;
+			return WiFiSecurityMode.WPA_PSK;
 		}
 		case "WEP":{
-			return WiFiEncryption.WEP;
+			return WiFiSecurityMode.WEP;
 		}
-		case "NONE":{
-			return WiFiEncryption.NONE;
+		case "OPEN":{
+			return WiFiSecurityMode.OPEN;
 		}
 		default:
 			return null;

@@ -10,9 +10,12 @@ import io.github.d2edev.ccc.base.CameraHttpClient;
 import io.github.d2edev.ccc.models.SimpleResponse;
 import io.github.d2edev.ccc.models.WirelessNetwork;
 import io.github.d2edev.ccc.models.WirelessNetworks;
+import io.github.d2edev.ccc.models.WirelessValidationResult;
 import io.github.d2edev.ccc.requests.network.ScanWirelessNetworks;
 import io.github.d2edev.ccc.requests.network.SetWirelessProperties;
 import io.github.d2edev.ccc.requests.network.GetWirelessProperties;
+import io.github.d2edev.ccc.requests.network.GetWirelessValidation;
+import io.github.d2edev.ccc.requests.network.PrepareWirelessValidation;
 
 public class NetworkService extends AbstractService{
 
@@ -37,6 +40,19 @@ public class NetworkService extends AbstractService{
 		request.setProperties(net);
 		SimpleResponse response=(SimpleResponse) client.processRequest(request, request.getExpectedResponseType());
 		return response.isSuccessfull();
+	}
+	
+	public boolean isWirelessConfigurationValid(WirelessNetwork network) throws MarshallException, IOException, UnmarshallException{
+		PrepareWirelessValidation prepare=new PrepareWirelessValidation();
+		prepare.setNetwork(network);
+		SimpleResponse tmpResp=(SimpleResponse) client.processRequest(prepare, prepare.getExpectedResponseType());
+		if(tmpResp.isSuccessfull()){
+			GetWirelessValidation request=new GetWirelessValidation();
+			WirelessValidationResult response=(WirelessValidationResult) client.processRequest(request, request.getExpectedResponseType());
+			return response.isValidated();
+		}else{
+			return false;
+		}
 	}
 	
 }

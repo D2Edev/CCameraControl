@@ -1,10 +1,10 @@
 package io.github.d2edev.ccc.models;
 
 import io.github.d2edev.ccc.api.GetModelValue;
-import io.github.d2edev.ccc.api.ModelType;
+import io.github.d2edev.ccc.api.Model;
 import io.github.d2edev.ccc.api.SetModelValue;
 
-@ModelType(ModelType.COMPLEX)
+@Model(Model.COMPLEX)
 public class ActiveStreamsQ {
 	//reply example
 	//var stream_num="0";
