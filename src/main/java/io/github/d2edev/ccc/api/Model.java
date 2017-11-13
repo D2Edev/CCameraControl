@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 /**
  * Describes command to be used in query after marshalling1
- * i.e @QueryCommand("getvideoattr") gives "...?cmd=getvideoattr.."
+ * i.e @Request("getvideoattr") gives "...?cmd=getvideoattr.."
  * @author ddmitry
  *
  */

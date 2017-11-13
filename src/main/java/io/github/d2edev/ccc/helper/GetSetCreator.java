@@ -14,6 +14,7 @@ import java.util.Map.Entry;
 import io.github.d2edev.ccc.api.MarshallException;
 import io.github.d2edev.ccc.base.Marshaller;
 import io.github.d2edev.ccc.models.ImageProperties;
+import io.github.d2edev.ccc.models.NetworkProperties;
 import io.github.d2edev.ccc.models.OverlayProperties;
 import io.github.d2edev.ccc.models.WirelessValidationResult;
 import io.github.d2edev.ccc.requests.network.GetWirelessProperties;
@@ -34,7 +35,7 @@ public class GetSetCreator {
 
 	public static void main(String[] args) {
 		try {
-			String reply = GetSetCreator.createGetSet(WirelessValidationResult.class);
+			String reply = GetSetCreator.createGetSet(NetworkProperties.class);
 			System.out.println(reply);
 		} catch (IOException | MarshallException e) {
 			// TODO Auto-generated catch block

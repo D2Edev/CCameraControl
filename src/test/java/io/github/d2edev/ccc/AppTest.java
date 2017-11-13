@@ -22,6 +22,7 @@ import io.github.d2edev.ccc.enums.WiFiSecurityMode;
 import io.github.d2edev.ccc.enums.WifiInfrastructureMode;
 import io.github.d2edev.ccc.enums.WifiKeyEncryption;
 import io.github.d2edev.ccc.models.ImageProperties;
+import io.github.d2edev.ccc.models.NetworkProperties;
 import io.github.d2edev.ccc.models.OverlayProperties;
 import io.github.d2edev.ccc.models.VideoEncoderProperties;
 import io.github.d2edev.ccc.models.VideoSourceProperties;
@@ -154,11 +155,11 @@ public class AppTest{
 		}
 	}
 	
-	@Test
+//	@Test
 	public void testWifiCheck() {
 		try {
-			String YOUR_SSID="";
-			String YOUR_PSWD="";
+			String YOUR_SSID=null;
+			String YOUR_PSWD=null;
 			NetworkService service=camera.getNetworkService();
 			PrepareWirelessValidation setup=new PrepareWirelessValidation();
 			WirelessNetwork net=new WirelessNetwork();
@@ -180,7 +181,26 @@ public class AppTest{
 		}
 	}
 	
-	
+	@Test
+	public void testNetworkGetSet() {
+		try {
+			NetworkService service=camera.getNetworkService();
+			NetworkProperties props=service.getNetworkProperties();
+			System.out.println(props);
+			props.setFirstDnsIP("8.8.8.8");
+			props.setSecondDnsIP("8.8.8.4");
+			service.setNetworkProperties(props);
+			NetworkProperties anotherProps=service.getNetworkProperties();
+			System.out.println(anotherProps);
+			assertEquals(props, anotherProps);
+		} catch (MarshallException e) {
+			fail("Cannot marshall request: "+e.getMessage());
+		} catch (IOException e) {
+			fail("Message process fail: "+e.getMessage());
+		} catch (UnmarshallException e) {
+			fail("Cannot unmarshall reply: "+e.getMessage());
+		}
+	}
 	
 	
 }

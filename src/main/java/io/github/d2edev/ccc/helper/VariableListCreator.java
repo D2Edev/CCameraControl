@@ -19,6 +19,7 @@ import io.github.d2edev.ccc.enums.WifiInfrastructureMode;
 import io.github.d2edev.ccc.enums.WifiKeyEncryption;
 import io.github.d2edev.ccc.models.WirelessNetwork;
 import io.github.d2edev.ccc.requests.network.PrepareWirelessValidation;
+import io.github.d2edev.ccc.requests.network.GetNetworkProperties;
 import io.github.d2edev.ccc.requests.network.GetWirelessProperties;
 import io.github.d2edev.ccc.requests.network.GetWirelessValidation;
 import io.github.d2edev.ccc.requests.video.GetImageProperties;
@@ -42,7 +43,7 @@ public class VariableListCreator {
 	public static void main(String[] args) {
 		try {
 			
-			String reply = VariableListCreator.createBase(new GetWirelessValidation());
+			String reply = VariableListCreator.createBase(new GetNetworkProperties());
 			System.out.println(reply);
 		} catch (IOException | MarshallException e) {
 			// TODO Auto-generated catch block

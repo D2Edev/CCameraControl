@@ -33,6 +33,7 @@ import io.github.d2edev.ccc.models.VideoSourceProperties;
 import io.github.d2edev.ccc.models.WirelessNetworks;
 import io.github.d2edev.ccc.models.WirelessNetwork;
 import io.github.d2edev.ccc.requests.network.ScanWirelessNetworks;
+import io.github.d2edev.ccc.requests.network.GetNetworkProperties;
 import io.github.d2edev.ccc.requests.network.GetWirelessProperties;
 import io.github.d2edev.ccc.requests.network.SetWirelessProperties;
 import io.github.d2edev.ccc.requests.system.GetActiveStreamsQ;
@@ -57,6 +58,11 @@ public class ComponentTest {
 	private static final String PREFIX = "http://192.168.0.201/" + ENDPOINT + "?";
 
 	public static void main(String[] args) {
+		ComponentTest cp=new ComponentTest();
+		GetNetworkProperties gnp=new GetNetworkProperties();
+		CameraRequest rq=gnp;
+		cp.processForString(rq);
+		cp.processForObject(rq);
 
 	}
 
