@@ -1,20 +1,42 @@
 package io.github.d2edev.ccc;
 
 
+import java.util.Date;
+
 import io.github.d2edev.ccc.api.MarshallException;
 import io.github.d2edev.ccc.base.Marshaller;
+import io.github.d2edev.ccc.enums.CameraTimeZone;
 import io.github.d2edev.ccc.enums.ImageQuality;
 import io.github.d2edev.ccc.enums.RateControl;
 import io.github.d2edev.ccc.enums.StreamID;
+import io.github.d2edev.ccc.models.ServerTime;
 import io.github.d2edev.ccc.models.VideoEncoderProperties;
 import io.github.d2edev.ccc.requests.video.SetVideoEncoderProperties;
+import io.github.d2edev.ccc.services.SystemService;
 
-public class MarshallerTests {
+public class QuickTest {
 
-	private static final String PREFIX = "http://192.168.0.201/cgi-bin/hi3510/param.cgi?";
+	private static final String ENDPOINT = "/cgi-bin/hi3510/param.cgi";
 
 	public static void main(String[] args) {
-		new MarshallerTests().set();
+//		new QuickTest().set();
+		new QuickTest().time();
+	}
+
+	private void time() {
+		try {
+			IPCamera camera=new IPCamera("192.168.43.20", 80, ENDPOINT, "admin", "admin");
+			SystemService service=camera.getSystemService();
+			ServerTime time=service.getServerTime();
+			time.setDateTime(new Date());
+			time.setTimeZone(CameraTimeZone.EUROPE_ATHENS);
+//			service.setServerTime(time);
+			System.out.println(time);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	// @Test
