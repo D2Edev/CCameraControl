@@ -8,7 +8,7 @@ import java.text.ParseException;
 import java.util.Base64;
 import java.util.Date;
 
-import io.github.d2edev.ccc.api.CameraRequest;
+
 import io.github.d2edev.ccc.api.MarshallException;
 import io.github.d2edev.ccc.api.UnmarshallException;
 import io.github.d2edev.ccc.base.CameraHttpClient;
@@ -25,6 +25,7 @@ import io.github.d2edev.ccc.enums.VideoMode;
 import io.github.d2edev.ccc.enums.VideoOptimization;
 import io.github.d2edev.ccc.enums.WifiKeyEncryption;
 import io.github.d2edev.ccc.models.ImageProperties;
+import io.github.d2edev.ccc.models.NetworkProperties;
 import io.github.d2edev.ccc.models.OverlayProperties;
 import io.github.d2edev.ccc.models.ServerTime;
 import io.github.d2edev.ccc.models.SimpleResponse;
@@ -60,16 +61,15 @@ public class ComponentTest {
 	public static void main(String[] args) {
 		ComponentTest cp=new ComponentTest();
 		GetNetworkProperties gnp=new GetNetworkProperties();
-		CameraRequest rq=gnp;
-		cp.processForString(rq);
-		cp.processForObject(rq);
+		cp.processForString(gnp);
+		cp.processForObject(gnp,NetworkProperties.class);
 
 	}
 
-	public void processForObject(CameraRequest obj) {
+	public void processForObject(Object request, Class<?> respClass) {
 		CameraHttpClient client = new CameraHttpClient("192.168.0.201", 80, "admin", "admin", ENDPOINT);
 		try {
-			System.out.println(client.processRequest(obj, obj.getExpectedResponseType()));
+			System.out.println(client.processRequest(request, respClass));
 		} catch (MarshallException | IOException | UnmarshallException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -90,7 +90,7 @@ public class ComponentTest {
 		CameraHttpClient client = new CameraHttpClient("192.168.0.201", 80, "admin", "admin", ENDPOINT);
 		try {
 			GetServerTime request = new GetServerTime();
-			ServerTime time = (ServerTime) client.processRequest(request, request.getExpectedResponseType());
+			ServerTime time = client.processRequest(request, ServerTime.class);
 			System.out.println("reply: " + time);
 			SetServerTime set = new SetServerTime();
 			time.setTimeZone(CameraTimeZone.AMERICA_NEWYORK);
@@ -99,8 +99,8 @@ public class ComponentTest {
 			time.setDateTime(new Date());
 			set.setServerTime(time);
 			System.out.println("setting: " + time);
-			System.out.println(client.processRequest(set, set.getExpectedResponseType()));
-			time = (ServerTime) client.processRequest(request, request.getExpectedResponseType());
+			System.out.println(client.processRequest(set, SimpleResponse.class));
+			time = client.processRequest(request, ServerTime.class);
 			System.out.println("check:" + time);
 		} catch (MarshallException | IOException | UnmarshallException e) {
 			// TODO Auto-generated catch block

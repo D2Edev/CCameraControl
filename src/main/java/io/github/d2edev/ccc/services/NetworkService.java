@@ -20,53 +20,56 @@ import io.github.d2edev.ccc.requests.network.GetWirelessProperties;
 import io.github.d2edev.ccc.requests.network.GetWirelessValidation;
 import io.github.d2edev.ccc.requests.network.PrepareWirelessValidation;
 
-public class NetworkService extends AbstractService{
+public class NetworkService extends AbstractService {
 
 	public NetworkService(CameraHttpClient client) {
 		super(client);
 
 	}
-	
-	public List<WirelessNetwork> scanWirelessNetworks() throws MarshallException, IOException, UnmarshallException{
-		ScanWirelessNetworks request=new ScanWirelessNetworks();
-		WirelessNetworks nets= (WirelessNetworks)client.processRequest(request, request.getExpectedResponseType());
+
+	public List<WirelessNetwork> scanWirelessNetworks() throws MarshallException, IOException, UnmarshallException {
+		ScanWirelessNetworks request = new ScanWirelessNetworks();
+		WirelessNetworks nets = client.processRequest(request, WirelessNetworks.class);
 		return nets.getNetworks();
 	}
 
 	public WirelessNetwork getWirelessSettings() throws MarshallException, IOException, UnmarshallException {
-		GetWirelessProperties request=new GetWirelessProperties();
-		return (WirelessNetwork)client.processRequest(request, request.getExpectedResponseType());
+		GetWirelessProperties request = new GetWirelessProperties();
+		return client.processRequest(request, WirelessNetwork.class);
 	}
 
 	public boolean setWirelessNetwork(WirelessNetwork net) throws MarshallException, IOException, UnmarshallException {
-		SetWirelessProperties request=new SetWirelessProperties();
+		SetWirelessProperties request = new SetWirelessProperties();
 		request.setProperties(net);
-		SimpleResponse response=(SimpleResponse) client.processRequest(request, request.getExpectedResponseType());
+		SimpleResponse response = client.processRequest(request, SimpleResponse.class);
 		return response.isSuccessfull();
 	}
-	
-	public boolean isWirelessConfigurationValid(WirelessNetwork network) throws MarshallException, IOException, UnmarshallException{
-		PrepareWirelessValidation prepare=new PrepareWirelessValidation();
+
+	public boolean isWirelessConfigurationValid(WirelessNetwork network)
+			throws MarshallException, IOException, UnmarshallException {
+		PrepareWirelessValidation prepare = new PrepareWirelessValidation();
 		prepare.setNetwork(network);
-		SimpleResponse tmpResp=(SimpleResponse) client.processRequest(prepare, prepare.getExpectedResponseType());
-		if(tmpResp.isSuccessfull()){
-			GetWirelessValidation request=new GetWirelessValidation();
-			WirelessValidationResult response=(WirelessValidationResult) client.processRequest(request, request.getExpectedResponseType());
+		SimpleResponse tmpResp = client.processRequest(prepare, SimpleResponse.class );
+		if (tmpResp.isSuccessfull()) {
+			GetWirelessValidation request = new GetWirelessValidation();
+			WirelessValidationResult response = client.processRequest(request,
+					WirelessValidationResult.class);
 			return response.isValidated();
-		}else{
+		} else {
 			return false;
 		}
 	}
-	
-	public NetworkProperties getNetworkProperties() throws MarshallException, IOException, UnmarshallException{
-		GetNetworkProperties request=new GetNetworkProperties();
-		return (NetworkProperties) client.processRequest(request, request.getExpectedResponseType());
+
+	public NetworkProperties getNetworkProperties() throws MarshallException, IOException, UnmarshallException {
+		GetNetworkProperties request = new GetNetworkProperties();
+		return client.processRequest(request, NetworkProperties.class);
 	}
-	
-	public boolean setNetworkProperties(NetworkProperties props) throws MarshallException, IOException, UnmarshallException{
-		SetNetworkProperties request=new SetNetworkProperties();
+
+	public boolean setNetworkProperties(NetworkProperties props)
+			throws MarshallException, IOException, UnmarshallException {
+		SetNetworkProperties request = new SetNetworkProperties();
 		request.setProperties(props);
-		SimpleResponse response=(SimpleResponse) client.processRequest(request,request.getExpectedResponseType());
+		SimpleResponse response = client.processRequest(request, SimpleResponse.class );
 		return response.isSuccessfull();
 	}
 }

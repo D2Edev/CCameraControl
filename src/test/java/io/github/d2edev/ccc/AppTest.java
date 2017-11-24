@@ -33,13 +33,13 @@ import io.github.d2edev.ccc.requests.video.SetImageProperties;
 import io.github.d2edev.ccc.services.NetworkService;
 import io.github.d2edev.ccc.services.VideoService;
 
-public class AppTest{ 
+public class AppTest {
 	private static final String ENDPOINT = "/cgi-bin/hi3510/param.cgi";
 	IPCamera camera;
 	Random random;
 
-	@Before
-	public void init(){
+	//@Before
+	public void init() {
 		try {
 			camera = new IPCamera("192.168.0.201", 80, ENDPOINT, "admin", "admin");
 			random = new Random();
@@ -47,122 +47,123 @@ public class AppTest{
 			fail("Failed initing camera");
 		}
 	}
-	
-	@Test
-	public void testVideoPropertiesGetSet(){
+
+	//@Test
+	public void testVideoPropertiesGetSet() {
 		try {
-			VideoService service=camera.getVideoService();
-			VideoSourceProperties props=service.getVideoSourceProperties();
+			VideoService service = camera.getVideoService();
+			VideoSourceProperties props = service.getVideoSourceProperties();
 			props.setProfile(H264profile.MAIN);
 			service.setVideoSourceProperties(props);
-			VideoSourceProperties anotherProps=service.getVideoSourceProperties();
+			VideoSourceProperties anotherProps = service.getVideoSourceProperties();
 			assertEquals(props, anotherProps);
 		} catch (MarshallException e) {
-			fail("Cannot marshall request: "+e.getMessage());
+			fail("Cannot marshall request: " + e.getMessage());
 		} catch (IOException e) {
-			fail("Message process fail: "+e.getMessage());
+			fail("Message process fail: " + e.getMessage());
 		} catch (UnmarshallException e) {
-			fail("Cannot unmarshall reply: "+e.getMessage());
+			fail("Cannot unmarshall reply: " + e.getMessage());
 		}
 	}
-	
-	@Test
-	public void testVideoEncoderPropertiesGetSet(){
+
+	//@Test
+	public void testVideoEncoderPropertiesGetSet() {
 		try {
-			VideoService service=camera.getVideoService();
-			VideoEncoderProperties props=service.getVideoEncoderProperties(StreamID.Main);
+			VideoService service = camera.getVideoService();
+			VideoEncoderProperties props = service.getVideoEncoderProperties(StreamID.Main);
 			System.out.println(props);
-			int bps=256+random.nextInt(256);
+			int bps = 256 + random.nextInt(256);
 			props.setBps(bps);
 			service.setVideoEncoderProperties(props, StreamID.Main);
-			VideoEncoderProperties anotherProps=service.getVideoEncoderProperties(StreamID.Main);
+			VideoEncoderProperties anotherProps = service.getVideoEncoderProperties(StreamID.Main);
 			assertEquals(props, anotherProps);
 			System.out.println(anotherProps);
 		} catch (MarshallException e) {
-			fail("Cannot marshall request: "+e.getMessage());
+			fail("Cannot marshall request: " + e.getMessage());
 		} catch (IOException e) {
-			fail("Message process fail: "+e.getMessage());
+			fail("Message process fail: " + e.getMessage());
 		} catch (UnmarshallException e) {
-			fail("Cannot unmarshall reply: "+e.getMessage());
+			fail("Cannot unmarshall reply: " + e.getMessage());
 		}
 	}
-	
-	@Test
+
+	//@Test
 	public void testImagePropertiesGetSet() {
 		try {
-			VideoService service=camera.getVideoService();
-			ImageProperties props=service.getImageProperties();
+			VideoService service = camera.getVideoService();
+			ImageProperties props = service.getImageProperties();
 			System.out.println(props);
-			props.setBrightness(random.nextInt(100));;
-			props.setFlipMode(random.nextBoolean()?StringState.DISABLED:StringState.ENABLED);
-			props.setOptimization(random.nextBoolean()?VideoOptimization.ILLUMINANCE:VideoOptimization.FRAMERATE);
-			props.setMirrorMode(random.nextBoolean()?StringState.DISABLED:StringState.ENABLED);
+			props.setBrightness(random.nextInt(100));
+			;
+			props.setFlipMode(random.nextBoolean() ? StringState.DISABLED : StringState.ENABLED);
+			props.setOptimization(random.nextBoolean() ? VideoOptimization.ILLUMINANCE : VideoOptimization.FRAMERATE);
+			props.setMirrorMode(random.nextBoolean() ? StringState.DISABLED : StringState.ENABLED);
 			service.setImageProperties(props);
-			ImageProperties anotherProps=service.getImageProperties();
+			ImageProperties anotherProps = service.getImageProperties();
 			assertEquals(props, anotherProps);
 			System.out.println(anotherProps);
 		} catch (MarshallException e) {
-			fail("Cannot marshall request: "+e.getMessage());
+			fail("Cannot marshall request: " + e.getMessage());
 		} catch (IOException e) {
-			fail("Message process fail: "+e.getMessage());
+			fail("Message process fail: " + e.getMessage());
 		} catch (UnmarshallException e) {
-			fail("Cannot unmarshall reply: "+e.getMessage());
+			fail("Cannot unmarshall reply: " + e.getMessage());
 		}
 	}
-	
-	
-	@Test
+
+	//@Test
 	public void testOverlayPropertiesGetSet() {
 		try {
-			VideoService service=camera.getVideoService();
-			OverlayProperties props=service.getOverlayProperties(OSDRegion.CAPTION);
+			VideoService service = camera.getVideoService();
+			OverlayProperties props = service.getOverlayProperties(OSDRegion.CAPTION);
 			System.out.println(props);
-			props.setShow(random.nextBoolean()?IntegerState.ENABLED:IntegerState.DISABLED);
-			props.setName(UUID.randomUUID().toString().substring(0,11));
+			props.setShow(random.nextBoolean() ? IntegerState.ENABLED : IntegerState.DISABLED);
+			props.setName(UUID.randomUUID().toString().substring(0, 11));
 			service.setOverlayProperties(props, OSDRegion.CAPTION);
-			OverlayProperties anotherProps=service.getOverlayProperties(OSDRegion.CAPTION);
+			OverlayProperties anotherProps = service.getOverlayProperties(OSDRegion.CAPTION);
 			assertEquals(props, anotherProps);
 			System.out.println(anotherProps);
 		} catch (MarshallException e) {
-			fail("Cannot marshall request: "+e.getMessage());
+			fail("Cannot marshall request: " + e.getMessage());
 		} catch (IOException e) {
-			fail("Message process fail: "+e.getMessage());
+			fail("Message process fail: " + e.getMessage());
 		} catch (UnmarshallException e) {
-			fail("Cannot unmarshall reply: "+e.getMessage());
+			fail("Cannot unmarshall reply: " + e.getMessage());
 		}
 	}
-	
-	@Test
+
+	//@Test
 	public void testWifiNetworkGetSet() {
 		try {
-			NetworkService service=camera.getNetworkService();
-			WirelessNetwork props=service.getWirelessSettings();
+			NetworkService service = camera.getNetworkService();
+			WirelessNetwork props = service.getWirelessSettings();
 			System.out.println(props);
-			props.setWiFiSecurityMode(random.nextBoolean()?WiFiSecurityMode.WPA_PSK:WiFiSecurityMode.WPA2_PSK);
-			props.setInfrastructureMode(random.nextBoolean()?WifiInfrastructureMode.PEER2PEER:WifiInfrastructureMode.ROUTE);
-			props.setState(random.nextBoolean()?IntegerState.ENABLED:IntegerState.DISABLED);
+			props.setWiFiSecurityMode(random.nextBoolean() ? WiFiSecurityMode.WPA_PSK : WiFiSecurityMode.WPA2_PSK);
+			props.setInfrastructureMode(
+					random.nextBoolean() ? WifiInfrastructureMode.PEER2PEER : WifiInfrastructureMode.ROUTE);
+			props.setState(random.nextBoolean() ? IntegerState.ENABLED : IntegerState.DISABLED);
 			props.setSSID(UUID.randomUUID().toString());
 			service.setWirelessNetwork(props);
-			WirelessNetwork anotherProps=service.getWirelessSettings();
+			WirelessNetwork anotherProps = service.getWirelessSettings();
 			System.out.println(anotherProps);
 			assertEquals(props, anotherProps);
 		} catch (MarshallException e) {
-			fail("Cannot marshall request: "+e.getMessage());
+			fail("Cannot marshall request: " + e.getMessage());
 		} catch (IOException e) {
-			fail("Message process fail: "+e.getMessage());
+			fail("Message process fail: " + e.getMessage());
 		} catch (UnmarshallException e) {
-			fail("Cannot unmarshall reply: "+e.getMessage());
+			fail("Cannot unmarshall reply: " + e.getMessage());
 		}
 	}
-	
-//	@Test
+
+	//@Test
 	public void testWifiCheck() {
 		try {
-			String YOUR_SSID=null;
-			String YOUR_PSWD=null;
-			NetworkService service=camera.getNetworkService();
-			PrepareWirelessValidation setup=new PrepareWirelessValidation();
-			WirelessNetwork net=new WirelessNetwork();
+			String YOUR_SSID = null;
+			String YOUR_PSWD = null;
+			NetworkService service = camera.getNetworkService();
+			PrepareWirelessValidation setup = new PrepareWirelessValidation();
+			WirelessNetwork net = new WirelessNetwork();
 			net.setInfrastructureMode(WifiInfrastructureMode.ROUTE);
 			net.setWiFiSecurityMode(WiFiSecurityMode.WPA2_PSK);
 			net.setKeyEncryption(WifiKeyEncryption.AES);
@@ -171,36 +172,35 @@ public class AppTest{
 			net.setPassphrase(YOUR_PSWD);
 			setup.setNetwork(net);
 			assertTrue(service.isWirelessConfigurationValid(net));
-			WirelessNetwork props=service.getWirelessSettings();
+			WirelessNetwork props = service.getWirelessSettings();
 		} catch (MarshallException e) {
-			fail("Cannot marshall request: "+e.getMessage());
+			fail("Cannot marshall request: " + e.getMessage());
 		} catch (IOException e) {
-			fail("Message process fail: "+e.getMessage());
+			fail("Message process fail: " + e.getMessage());
 		} catch (UnmarshallException e) {
-			fail("Cannot unmarshall reply: "+e.getMessage());
+			fail("Cannot unmarshall reply: " + e.getMessage());
 		}
 	}
-	
-	@Test
+
+	//@Test
 	public void testNetworkGetSet() {
 		try {
-			NetworkService service=camera.getNetworkService();
-			NetworkProperties props=service.getNetworkProperties();
+			NetworkService service = camera.getNetworkService();
+			NetworkProperties props = service.getNetworkProperties();
 			System.out.println(props);
 			props.setFirstDnsIP("8.8.8.8");
 			props.setSecondDnsIP("8.8.8.4");
 			service.setNetworkProperties(props);
-			NetworkProperties anotherProps=service.getNetworkProperties();
+			NetworkProperties anotherProps = service.getNetworkProperties();
 			System.out.println(anotherProps);
 			assertEquals(props, anotherProps);
 		} catch (MarshallException e) {
-			fail("Cannot marshall request: "+e.getMessage());
+			fail("Cannot marshall request: " + e.getMessage());
 		} catch (IOException e) {
-			fail("Message process fail: "+e.getMessage());
+			fail("Message process fail: " + e.getMessage());
 		} catch (UnmarshallException e) {
-			fail("Cannot unmarshall reply: "+e.getMessage());
+			fail("Cannot unmarshall reply: " + e.getMessage());
 		}
 	}
-	
-	
+
 }

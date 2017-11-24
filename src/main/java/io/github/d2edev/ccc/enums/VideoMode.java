@@ -17,11 +17,13 @@ public enum VideoMode implements ValueProvider{
 	_320x176_640x352(35),
 	_320x176_320x176(36);
 
+	private int id;
+	
+
 	private VideoMode(int id) {
 		this.id = id;
 	}
 
-	private int id;
 
 	public Object value() {
 		return id;

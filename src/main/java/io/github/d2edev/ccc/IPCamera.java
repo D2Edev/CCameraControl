@@ -12,8 +12,8 @@ import io.github.d2edev.ccc.services.VideoService;
 
 public class IPCamera {
 	
-	private static final int DEFAULT_HTTP_PORT = 80;
-	private static final String DEFAULT_ENDPOINT = "/cgi-bin/hi3510/param.cgi";
+	public static final int DEFAULT_HTTP_PORT = 80;
+	public static final String DEFAULT_ENDPOINT = "/cgi-bin/hi3510/param.cgi";
 	private String host;
 	private int port=DEFAULT_HTTP_PORT;;
 	private String login;

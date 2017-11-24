@@ -1,6 +1,6 @@
 package io.github.d2edev.ccc.requests.network;
 
-import io.github.d2edev.ccc.api.CameraRequest;
+
 import io.github.d2edev.ccc.api.GetModel;
 import io.github.d2edev.ccc.api.Request;
 import io.github.d2edev.ccc.api.SetModel;
@@ -8,7 +8,7 @@ import io.github.d2edev.ccc.models.SimpleResponse;
 import io.github.d2edev.ccc.models.WirelessNetwork;
 
 @Request("setwirelessattr")
-public class SetWirelessProperties implements CameraRequest{
+public class SetWirelessProperties{
 	
 	private WirelessNetwork properties;
 
@@ -20,11 +20,6 @@ public class SetWirelessProperties implements CameraRequest{
 	@SetModel
 	public void setProperties(WirelessNetwork properties) {
 		this.properties = properties;
-	}
-
-	@Override
-	public Class<?> getExpectedResponseType() {
-		return SimpleResponse.class;
 	}
 
 }

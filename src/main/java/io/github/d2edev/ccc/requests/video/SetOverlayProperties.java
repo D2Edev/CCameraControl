@@ -1,6 +1,6 @@
 package io.github.d2edev.ccc.requests.video;
 
-import io.github.d2edev.ccc.api.CameraRequest;
+
 import io.github.d2edev.ccc.api.GetModel;
 import io.github.d2edev.ccc.api.GetModelValue;
 import io.github.d2edev.ccc.api.Request;
@@ -9,7 +9,7 @@ import io.github.d2edev.ccc.models.OverlayProperties;
 import io.github.d2edev.ccc.models.SimpleResponse;
 
 @Request("setoverlayattr")
-public class SetOverlayProperties implements CameraRequest{
+public class SetOverlayProperties{
 	
 	private OSDRegion region;
 	
@@ -31,11 +31,6 @@ public class SetOverlayProperties implements CameraRequest{
 
 	public void setProperties(OverlayProperties properties) {
 		this.properties = properties;
-	}
-
-	@Override
-	public Class<?> getExpectedResponseType() {
-		return SimpleResponse.class;
 	}
 	
 	

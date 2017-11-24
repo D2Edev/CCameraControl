@@ -30,56 +30,60 @@ public class VideoService extends AbstractService {
 
 	public ImageProperties getImageProperties() throws MarshallException, IOException, UnmarshallException {
 		GetImageProperties request = new GetImageProperties();
-		return (ImageProperties) client.processRequest(request, request.getExpectedResponseType());
+		return client.processRequest(request, ImageProperties.class );
 	}
 
 	public OverlayProperties getOverlayProperties(OSDRegion region)
 			throws MarshallException, IOException, UnmarshallException {
 		GetOverlayProperties request = new GetOverlayProperties();
 		request.setRegion(region);
-		return (OverlayProperties) client.processRequest(request, request.getExpectedResponseType());
+		return  client.processRequest(request, OverlayProperties.class);
 	}
 
 	public VideoEncoderProperties getVideoEncoderProperties(StreamID streamID)
 			throws MarshallException, IOException, UnmarshallException {
 		GetVideoEncoderProperties request = new GetVideoEncoderProperties();
 		request.setStreamID(streamID);
-		return (VideoEncoderProperties) client.processRequest(request, request.getExpectedResponseType());
+		return  client.processRequest(request, VideoEncoderProperties.class);
 	}
-	
+
 	public VideoSourceProperties getVideoSourceProperties() throws MarshallException, IOException, UnmarshallException {
-		GetVideoSourceProperties request=new GetVideoSourceProperties();
-		return (VideoSourceProperties) client.processRequest(request, request.getExpectedResponseType());
+		GetVideoSourceProperties request = new GetVideoSourceProperties();
+		return  client.processRequest(request, VideoSourceProperties.class);
 	}
-	
-	public boolean setImageProperties(ImageProperties props) throws MarshallException, IOException, UnmarshallException {
-		SetImageProperties request=new SetImageProperties();
+
+	public boolean setImageProperties(ImageProperties props)
+			throws MarshallException, IOException, UnmarshallException {
+		SetImageProperties request = new SetImageProperties();
 		request.setProperties(props);
-		SimpleResponse response=(SimpleResponse) client.processRequest(request, request.getExpectedResponseType());
+		SimpleResponse response =  client.processRequest(request, SimpleResponse.class);
 		return response.isSuccessfull();
-	} 
-	
-	public boolean setOverlayProperties(OverlayProperties props, OSDRegion region) throws MarshallException, IOException, UnmarshallException {
-		SetOverlayProperties request=new SetOverlayProperties();
+	}
+
+	public boolean setOverlayProperties(OverlayProperties props, OSDRegion region)
+			throws MarshallException, IOException, UnmarshallException {
+		SetOverlayProperties request = new SetOverlayProperties();
 		request.setProperties(props);
 		request.setRegion(region);
-		SimpleResponse response=(SimpleResponse) client.processRequest(request, request.getExpectedResponseType());
+		SimpleResponse response =client.processRequest(request,  SimpleResponse.class);
 		return response.isSuccessfull();
 	}
-	
-	public boolean setVideoEncoderProperties(VideoEncoderProperties props, StreamID streamID) throws MarshallException, IOException, UnmarshallException {
-		SetVideoEncoderProperties request=new SetVideoEncoderProperties();
+
+	public boolean setVideoEncoderProperties(VideoEncoderProperties props, StreamID streamID)
+			throws MarshallException, IOException, UnmarshallException {
+		SetVideoEncoderProperties request = new SetVideoEncoderProperties();
 		request.setProperties(props);
 		request.setStreamID(streamID);
-		SimpleResponse response=(SimpleResponse) client.processRequest(request, request.getExpectedResponseType());
+		SimpleResponse response = client.processRequest(request, SimpleResponse.class );
 		return response.isSuccessfull();
-	} 
-	
-	public boolean setVideoSourceProperties(VideoSourceProperties props) throws MarshallException, IOException, UnmarshallException {
-		SetVideoSourceProperties request=new SetVideoSourceProperties();
+	}
+
+	public boolean setVideoSourceProperties(VideoSourceProperties props)
+			throws MarshallException, IOException, UnmarshallException {
+		SetVideoSourceProperties request = new SetVideoSourceProperties();
 		request.setProperties(props);
-		SimpleResponse response=(SimpleResponse) client.processRequest(request, request.getExpectedResponseType());
+		SimpleResponse response =  client.processRequest(request, SimpleResponse.class);
 		return response.isSuccessfull();
-	} 
+	}
 
 }

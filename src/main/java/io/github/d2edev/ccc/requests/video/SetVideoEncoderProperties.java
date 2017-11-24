@@ -1,6 +1,6 @@
 package io.github.d2edev.ccc.requests.video;
 
-import io.github.d2edev.ccc.api.CameraRequest;
+
 import io.github.d2edev.ccc.api.GetModel;
 import io.github.d2edev.ccc.api.GetModelValue;
 import io.github.d2edev.ccc.api.Request;
@@ -11,7 +11,7 @@ import io.github.d2edev.ccc.models.SimpleResponse;
 import io.github.d2edev.ccc.models.VideoEncoderProperties;
 
 @Request("setvencattr")
-public class SetVideoEncoderProperties implements CameraRequest{
+public class SetVideoEncoderProperties{
 	
 	private StreamID streamID;
 	
@@ -35,15 +35,6 @@ public class SetVideoEncoderProperties implements CameraRequest{
 	@SetModel
 	public void setProperties(VideoEncoderProperties properties) {
 		this.properties = properties;
-	}
-
-	@Override
-	public Class<?> getExpectedResponseType() {
-		return SimpleResponse.class;
-	}
-
-
-	
-	
+	}	
 
 }

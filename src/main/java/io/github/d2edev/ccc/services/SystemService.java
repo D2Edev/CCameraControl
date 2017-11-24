@@ -17,39 +17,38 @@ import io.github.d2edev.ccc.requests.system.GetServerInfo;
 import io.github.d2edev.ccc.requests.system.GetServerTime;
 import io.github.d2edev.ccc.requests.system.SetServerTime;
 
-public class SystemService extends AbstractService{
+public class SystemService extends AbstractService {
 
 	public SystemService(CameraHttpClient client) {
 		super(client);
 	}
-	
-	
+
 	public int getActiveStreamQuantity() throws MarshallException, IOException, UnmarshallException {
-		GetActiveStreamsQ request=new GetActiveStreamsQ();
-		ActiveStreamsQ streams=(ActiveStreamsQ)client.processRequest(request,request.getExpectedResponseType());
+		GetActiveStreamsQ request = new GetActiveStreamsQ();
+		ActiveStreamsQ streams = client.processRequest(request, ActiveStreamsQ.class);
 		return streams.getQuantity();
 	}
 
 	public String getDeviceType() throws MarshallException, IOException, UnmarshallException {
-		GetDeviceType request=new GetDeviceType();
-		DeviceType result=(DeviceType)client.processRequest(request,request.getExpectedResponseType());
+		GetDeviceType request = new GetDeviceType();
+		DeviceType result = client.processRequest(request, DeviceType.class );
 		return result.getEncodedDeviceType();
 	}
-	
+
 	public ServerInfo getServerInfo() throws MarshallException, IOException, UnmarshallException {
-		GetServerInfo request=new GetServerInfo();
-		return (ServerInfo)client.processRequest(request, request.getExpectedResponseType());
+		GetServerInfo request = new GetServerInfo();
+		return client.processRequest(request, ServerInfo.class );
 	}
-	
+
 	public ServerTime getServerTime() throws MarshallException, IOException, UnmarshallException {
-		GetServerTime request=new GetServerTime();
-		return (ServerTime)client.processRequest(request, request.getExpectedResponseType());
+		GetServerTime request = new GetServerTime();
+		return  client.processRequest(request, ServerTime.class);
 	}
-	
+
 	public boolean setServerTime(ServerTime time) throws MarshallException, IOException, UnmarshallException {
-		SetServerTime request=new SetServerTime();
+		SetServerTime request = new SetServerTime();
 		request.setServerTime(time);
-		return ((SimpleResponse)client.processRequest(request, request.getExpectedResponseType())).isSuccessfull();
-		
+		return client.processRequest(request, SimpleResponse.class).isSuccessfull();
+
 	}
 }

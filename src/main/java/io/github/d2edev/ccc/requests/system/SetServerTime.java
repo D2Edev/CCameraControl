@@ -1,6 +1,6 @@
 package io.github.d2edev.ccc.requests.system;
 
-import io.github.d2edev.ccc.api.CameraRequest;
+
 import io.github.d2edev.ccc.api.GetModel;
 import io.github.d2edev.ccc.api.Request;
 import io.github.d2edev.ccc.api.SetModel;
@@ -8,7 +8,7 @@ import io.github.d2edev.ccc.models.ServerTime;
 import io.github.d2edev.ccc.models.SimpleResponse;
 
 @Request("setservertime")
-public class SetServerTime implements CameraRequest{
+public class SetServerTime{
 
 	private ServerTime serverTime;
 		
@@ -20,12 +20,6 @@ public class SetServerTime implements CameraRequest{
 	@SetModel
 	public void setServerTime(ServerTime serverTime) {
 		this.serverTime = serverTime;
-	}
-
-	
-	@Override
-	public Class<?> getExpectedResponseType() {
-		return SimpleResponse.class;
 	}
 
 }
