@@ -8,7 +8,6 @@ import java.text.ParseException;
 import java.util.Base64;
 import java.util.Date;
 
-
 import io.github.d2edev.ccc.api.MarshallException;
 import io.github.d2edev.ccc.api.UnmarshallException;
 import io.github.d2edev.ccc.base.CameraHttpClient;
@@ -27,6 +26,7 @@ import io.github.d2edev.ccc.enums.WifiKeyEncryption;
 import io.github.d2edev.ccc.models.ImageProperties;
 import io.github.d2edev.ccc.models.NetworkProperties;
 import io.github.d2edev.ccc.models.OverlayProperties;
+import io.github.d2edev.ccc.models.RTSPPort;
 import io.github.d2edev.ccc.models.ServerTime;
 import io.github.d2edev.ccc.models.SimpleResponse;
 import io.github.d2edev.ccc.models.VideoEncoderProperties;
@@ -35,6 +35,7 @@ import io.github.d2edev.ccc.models.WirelessNetworks;
 import io.github.d2edev.ccc.models.WirelessNetwork;
 import io.github.d2edev.ccc.requests.network.ScanWirelessNetworks;
 import io.github.d2edev.ccc.requests.network.GetNetworkProperties;
+import io.github.d2edev.ccc.requests.network.GetRTSPPort;
 import io.github.d2edev.ccc.requests.network.GetWirelessProperties;
 import io.github.d2edev.ccc.requests.network.SetWirelessProperties;
 import io.github.d2edev.ccc.requests.system.GetActiveStreamsQ;
@@ -59,10 +60,11 @@ public class ComponentTest {
 	private static final String PREFIX = "http://192.168.0.201/" + ENDPOINT + "?";
 
 	public static void main(String[] args) {
-		ComponentTest cp=new ComponentTest();
-		GetNetworkProperties gnp=new GetNetworkProperties();
-		cp.processForString(gnp);
-		cp.processForObject(gnp,NetworkProperties.class);
+		ComponentTest cp = new ComponentTest();
+		GetRTSPPort grp = new GetRTSPPort();
+		Object req = grp;
+		cp.processForString(req);
+		cp.processForObject(req, RTSPPort.class);
 
 	}
 

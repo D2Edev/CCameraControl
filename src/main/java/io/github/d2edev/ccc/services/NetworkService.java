@@ -77,6 +77,6 @@ public class NetworkService extends AbstractService {
 
 	public int getRTSPport() throws MarshallException, IOException, UnmarshallException {
 		GetRTSPPort request=new GetRTSPPort();
-		return client.processRequest(request, RTSPPort.class).getPort();
+		return client.processRequest(request, RTSPPort.class).getRTSPport();
 	}
 }
