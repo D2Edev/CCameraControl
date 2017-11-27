@@ -29,10 +29,10 @@
 			<artifactId>okhttp</artifactId>
 			<version>3.5.0</version>
 		</dependency>
-		<dependency>
-			<groupId>io.github.d2edev</groupId>
-			<artifactId>vidhelper</artifactId>
-			<version>0.0.1</version>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>io.github.d2edev</groupId> -->
+<!-- 			<artifactId>vidhelper</artifactId> -->
+<!-- 			<version>0.0.1</version> -->
+<!-- 		</dependency> -->
 	</dependencies>
 </project>

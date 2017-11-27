@@ -8,6 +8,7 @@ import io.github.d2edev.ccc.api.MarshallException;
 import io.github.d2edev.ccc.api.UnmarshallException;
 import io.github.d2edev.ccc.base.CameraHttpClient;
 import io.github.d2edev.ccc.models.NetworkProperties;
+import io.github.d2edev.ccc.models.RTSPPort;
 import io.github.d2edev.ccc.models.SimpleResponse;
 import io.github.d2edev.ccc.models.WirelessNetwork;
 import io.github.d2edev.ccc.models.WirelessNetworks;
@@ -16,6 +17,7 @@ import io.github.d2edev.ccc.requests.network.ScanWirelessNetworks;
 import io.github.d2edev.ccc.requests.network.SetNetworkProperties;
 import io.github.d2edev.ccc.requests.network.SetWirelessProperties;
 import io.github.d2edev.ccc.requests.network.GetNetworkProperties;
+import io.github.d2edev.ccc.requests.network.GetRTSPPort;
 import io.github.d2edev.ccc.requests.network.GetWirelessProperties;
 import io.github.d2edev.ccc.requests.network.GetWirelessValidation;
 import io.github.d2edev.ccc.requests.network.PrepareWirelessValidation;
@@ -71,5 +73,10 @@ public class NetworkService extends AbstractService {
 		request.setProperties(props);
 		SimpleResponse response = client.processRequest(request, SimpleResponse.class );
 		return response.isSuccessfull();
+	}
+
+	public int getRTSPport() throws MarshallException, IOException, UnmarshallException {
+		GetRTSPPort request=new GetRTSPPort();
+		return client.processRequest(request, RTSPPort.class).getPort();
 	}
 }
