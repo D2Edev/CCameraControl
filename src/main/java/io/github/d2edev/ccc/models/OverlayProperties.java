@@ -29,7 +29,7 @@ public class OverlayProperties {
 	// reply example: var show_0="1";
 	// comment for variable linked to key [show_0] goes here
 	@Key("show")
-	private IntegerState show;
+	private IntegerState enabled;
 
 	// reply example: var x_0="976";
 	// x position
@@ -69,7 +69,10 @@ public class OverlayProperties {
 		}
 	}
 
-	// comment for getter related to [name] goes here
+	/**
+	 * Caption content
+	 * @return caption content
+	 */
 	@GetModelValue(key = "name")
 	public String getName() {		
 		return name;
@@ -77,14 +80,14 @@ public class OverlayProperties {
 
 	// comment for setter related to [show] goes here
 	@SetModelValue(key = "show")
-	public void setShow(IntegerState show) {
-		this.show = show;
+	public void setEnabled(IntegerState state) {
+		this.enabled = state;
 	}
 
 	// comment for getter related to [show] goes here
 	@GetModelValue(key = "show")
-	public IntegerState getShow() {
-		return show;
+	public IntegerState isEnabled() {
+		return enabled;
 	}
 
 	// comment for setter related to [x] goes here
@@ -135,7 +138,7 @@ public class OverlayProperties {
 		builder.append(", y=");
 		builder.append(y);
 		builder.append(", show=");
-		builder.append(show);
+		builder.append(enabled);
 		builder.append(", format=");
 		builder.append(format);
 		builder.append("]");
@@ -147,7 +150,7 @@ public class OverlayProperties {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((show == null) ? 0 : show.hashCode());
+		result = prime * result + ((enabled == null) ? 0 : enabled.hashCode());
 		return result;
 	}
 
@@ -165,7 +168,7 @@ public class OverlayProperties {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		if (show != other.show)
+		if (enabled != other.enabled)
 			return false;
 		return true;
 	}

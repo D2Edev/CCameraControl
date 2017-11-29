@@ -117,7 +117,7 @@ public class AppTest {
 			VideoService service = camera.getVideoService();
 			OverlayProperties props = service.getOverlayProperties(OSDRegion.CAPTION);
 			System.out.println(props);
-			props.setShow(random.nextBoolean() ? IntegerState.ENABLED : IntegerState.DISABLED);
+			props.setEnabled(random.nextBoolean() ? IntegerState.ENABLED : IntegerState.DISABLED);
 			props.setName(UUID.randomUUID().toString().substring(0, 11));
 			service.setOverlayProperties(props, OSDRegion.CAPTION);
 			OverlayProperties anotherProps = service.getOverlayProperties(OSDRegion.CAPTION);

@@ -3,7 +3,6 @@ package io.github.d2edev.ccc.base;
 import java.io.IOException;
 import java.util.Base64;
 
-import javax.management.OperationsException;
 
 import io.github.d2edev.ccc.api.MarshallException;
 import io.github.d2edev.ccc.api.UnmarshallException;
@@ -20,28 +19,24 @@ public class CameraHttpClient {
 	private String basicUrl;
 	private Marshaller marshaller=new Marshaller();
 	private Unmarshaller unmarshaller=new Unmarshaller();
+	private String host;
+	private String password;
+	private String login;
+	private int port;
+	private String endpoint;
 	
 	public CameraHttpClient(String host, int port, String endpoint){
 		this(host, port, null, null, endpoint);
 	} 
-	
 
 	public CameraHttpClient(String host, int port, String login, String password, String endpoint) {
+		this.host=host;
+		this.port=port;
+		this.login=login;
+		this.password=password;
+		this.endpoint=endpoint;
 		client = new OkHttpClient();
-		if(login!=null||!login.isEmpty()||password!=null||!password.isEmpty()){
-			useAuth=true;
-			String auth = new StringBuilder(login).append(":").append(password).toString();
-			byte[] encoded = Base64.getEncoder().encode(auth.getBytes());
-			authData = new StringBuilder("Basic ").append(new String(encoded)).toString();
-		}
-		StringBuilder basicUrlBuilder=new StringBuilder("http://").append(host);
-		if(port!=80){
-			basicUrlBuilder.append(":").append(port);
-		}
-		if(endpoint!=null&&!endpoint.isEmpty()&&endpoint.startsWith("/")){
-			basicUrlBuilder.append(endpoint).append("?");
-		}
-		basicUrl = basicUrlBuilder.toString();
+		refreshURL();
 	}
 	
 	//blocking
@@ -78,6 +73,70 @@ public class CameraHttpClient {
 		}else{
 			return null;
 		}
+		
+	}
+
+	
+	public String getHost() {
+		return host;
+	}
+
+	public void setHost(String host) {
+		this.host = host;
+		refreshURL();
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+		refreshURL();
+	}
+
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+		refreshURL();
+	}
+
+	public int getPort() {
+		return port;
+	}
+
+	public void setPort(int port) {
+		this.port = port;
+		refreshURL();
+	}
+
+	public String getEndpoint() {
+		return endpoint;
+	}
+
+	public void setEndpoint(String endpoint) {
+		this.endpoint = endpoint;
+		refreshURL();
+	}
+
+	private void refreshURL() {
+		if(login!=null||!login.isEmpty()||password!=null||!password.isEmpty()){
+			useAuth=true;
+			String auth = new StringBuilder(login).append(":").append(password).toString();
+			byte[] encoded = Base64.getEncoder().encode(auth.getBytes());
+			authData = new StringBuilder("Basic ").append(new String(encoded)).toString();
+		}
+		StringBuilder basicUrlBuilder=new StringBuilder("http://").append(host);
+		if(port!=80){
+			basicUrlBuilder.append(":").append(port);
+		}
+		if(endpoint!=null&&!endpoint.isEmpty()&&endpoint.startsWith("/")){
+			basicUrlBuilder.append(endpoint).append("?");
+		}
+		basicUrl = basicUrlBuilder.toString();
 		
 	}
 

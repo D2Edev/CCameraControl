@@ -14,51 +14,38 @@ public class IPCamera {
 	
 	public static final int DEFAULT_HTTP_PORT = 80;
 	public static final String DEFAULT_ENDPOINT = "/cgi-bin/hi3510/param.cgi";
-	private String host;
-	private int port=DEFAULT_HTTP_PORT;;
-	private String login;
-	private String password;
 
 	private SystemService systemService;
 	private VideoService videoService;
 	private NetworkService networkService;
 	private CameraHttpClient client;
-	private String endpoint;
 	
 	
 
-	public IPCamera(String host) throws Exception {
+	public IPCamera(String host) {
 		this(host, 0,DEFAULT_ENDPOINT,null, null);
 	}
 
-	public IPCamera(String host, int port) throws Exception {
+	public IPCamera(String host, int port){
 		this(host, port, DEFAULT_ENDPOINT,null, null);
 	}
 
 
 
-	public IPCamera(String host, int port,String endpoint,String login, String password) throws Exception {
+	public IPCamera(String host, int port,String endpoint,String login, String password) {
 		if(host==null||host.isEmpty())throw new IllegalArgumentException("Hostname not valid");
-		if(port>1024&&port<65535){
-			this.port = port;			
+		if(port<1||port>65535){
+			port=DEFAULT_HTTP_PORT;			
 		}
-		this.host = host;
-		this.login = login;
-		this.password = password;
-		this.endpoint=endpoint;
-		init();
-	}
-	
-	private void init() throws Exception {
-		checkIfOnline();
+//		checkIfOnline();
 		client=new CameraHttpClient(host,port,login,password,endpoint);
 		videoService=new VideoService(client);
 		systemService=new SystemService(client);
 		networkService=new NetworkService(client);
-		
 	}
 
-	private void checkIfOnline() throws Exception {
+
+	private void checkIfOnline(String host, int port) throws Exception {
 		Socket socket = null;
 		try {
 			SocketAddress sockaddr = new InetSocketAddress(host, port);
@@ -76,22 +63,45 @@ public class IPCamera {
 		}
 		
 	}
+	
+	public int getPort() {
+		return client.getPort();
+	}
+
+	public void setPort(int port) {
+		client.setPort(port);
+	}
 
 	public String getHost() {
-		return host;
+		return client.getHost();
 	}
 
+	void setHost(String host){
+		client.setHost(host);
+	}
+	
 	public String getLogin() {
-		return login;
+		return client.getLogin();
 	}
 
+	public void setLogin(String login) {
+		client.setLogin(login);
+	}
 
 	public String getPassword() {
-		return password;
+		return client.getPassword();
 	}
 
+	public void setPassword(String password) {
+		client.setPassword(password);
+	}
+	
 	public String getEndpoint() {
-		return endpoint;
+		return client.getEndpoint();
+	}
+	
+	public void setEndpoint(String endpoint) {
+		client.setEndpoint(endpoint);
 	}
 
 	public SystemService getSystemService() {
