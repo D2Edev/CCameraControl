@@ -5,23 +5,23 @@ import io.github.d2edev.ccc.api.Model;
 import io.github.d2edev.ccc.api.SetModelValue;
 import io.github.d2edev.ccc.enums.H264profile;
 import io.github.d2edev.ccc.enums.TVFormat;
-import io.github.d2edev.ccc.enums.VideoMode;
+import io.github.d2edev.ccc.enums.Resolutions;
 
 @Model(Model.COMPLEX)
 public class VideoSourceProperties {
 	
-	private VideoMode resolutionMode;
+	private Resolutions resolutions;
 	private TVFormat tvFormat;
 	private H264profile h264Profile;
 	
 	@GetModelValue(key = "videomode")
-	public VideoMode getVideoMode() {
-		return resolutionMode;
+	public Resolutions getResolutions() {
+		return resolutions;
 	}
 	
 	@SetModelValue(key = "videomode")
-	public void setVideoMode(VideoMode videoMode) {
-		this.resolutionMode = videoMode;
+	public void setResolutions(Resolutions resolutions) {
+		this.resolutions = resolutions;
 	}
 
 	@GetModelValue(key = "vinorm")
@@ -48,7 +48,7 @@ public class VideoSourceProperties {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("VideoSourceProperties [videoMode=");
-		builder.append(resolutionMode);
+		builder.append(resolutions);
 		builder.append(", format=");
 		builder.append(tvFormat);
 		builder.append(", profile=");
@@ -62,7 +62,7 @@ public class VideoSourceProperties {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((h264Profile == null) ? 0 : h264Profile.hashCode());
-		result = prime * result + ((resolutionMode == null) ? 0 : resolutionMode.hashCode());
+		result = prime * result + ((resolutions == null) ? 0 : resolutions.hashCode());
 		result = prime * result + ((tvFormat == null) ? 0 : tvFormat.hashCode());
 		return result;
 	}
@@ -78,7 +78,7 @@ public class VideoSourceProperties {
 		VideoSourceProperties other = (VideoSourceProperties) obj;
 		if (h264Profile != other.h264Profile)
 			return false;
-		if (resolutionMode != other.resolutionMode)
+		if (resolutions != other.resolutions)
 			return false;
 		if (tvFormat != other.tvFormat)
 			return false;

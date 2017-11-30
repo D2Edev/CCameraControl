@@ -189,7 +189,7 @@ public class Unmarshaller {
 		}
 		Method[] methods = returnClass.getDeclaredMethods();
 		if (methods.length == 0)
-			throw new UnmarshallException("No fields in class " + returnClass.getName());
+			throw new UnmarshallException("No methods in object " + returnClass.getName());
 		for (Method method : methods) {
 			if (method.isAnnotationPresent(SetModelValue.class)) {
 				parseMap.put(method.getAnnotation(SetModelValue.class).key(),
@@ -197,7 +197,7 @@ public class Unmarshaller {
 			}
 		}
 		if (parseMap.size() == 0)
-			throw new UnmarshallException("No '@QueryParameter'annotated fields in class " + returnClass.getName());
+			throw new UnmarshallException("Found no marked methods in class " + returnClass.getName());
 		String value = null;
 		BufferedReader reader = new BufferedReader(charStream);
 		try {

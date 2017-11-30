@@ -2,7 +2,7 @@ package io.github.d2edev.ccc.enums;
 
 import io.github.d2edev.ccc.api.ValueProvider;
 
-public enum VideoMode implements ValueProvider{
+public enum Resolutions implements ValueProvider{
 	
 	_640x480_320x240(18),
 	_640x480_160x120(19),
@@ -17,21 +17,21 @@ public enum VideoMode implements ValueProvider{
 	_320x176_640x352(35),
 	_320x176_320x176(36);
 
-	private int id;
+	private int modeID;
 	
 
-	private VideoMode(int id) {
-		this.id = id;
+	private Resolutions(int id) {
+		this.modeID = id;
 	}
 
 
 	public Object value() {
-		return id;
+		return modeID;
 	}
 	
 	@Override
 	public String stringValue() {
-		return ""+id;
+		return ""+modeID;
 	}
 
 

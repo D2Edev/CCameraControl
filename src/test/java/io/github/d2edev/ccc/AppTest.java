@@ -38,17 +38,17 @@ public class AppTest {
 	IPCamera camera;
 	Random random;
 
-	//@Before
+	@Before
 	public void init() {
 		try {
-			camera = new IPCamera("192.168.0.201", 80, ENDPOINT, "admin", "admin");
+			camera = new IPCamera("192.168.0.211", 80, ENDPOINT, "admin", "admin");
 			random = new Random();
 		} catch (Exception e) {
 			fail("Failed initing camera");
 		}
 	}
 
-	//@Test
+	@Test
 	public void testVideoPropertiesGetSet() {
 		try {
 			VideoService service = camera.getVideoService();
