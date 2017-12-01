@@ -15,7 +15,7 @@ import io.github.d2edev.ccc.api.MarshallException;
 import io.github.d2edev.ccc.base.Marshaller;
 import io.github.d2edev.ccc.models.ImageProperties;
 import io.github.d2edev.ccc.models.NetworkProperties;
-import io.github.d2edev.ccc.models.OverlayProperties;
+import io.github.d2edev.ccc.models.OSDProperties;
 import io.github.d2edev.ccc.models.WirelessValidationResult;
 import io.github.d2edev.ccc.requests.network.GetWirelessProperties;
 import io.github.d2edev.ccc.requests.video.GetImageProperties;

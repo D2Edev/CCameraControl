@@ -9,7 +9,7 @@ import io.github.d2edev.ccc.helper.Key;
 
 @Model(Model.COMPLEX)
 @QueryParameterSplitter("_")
-public class OverlayProperties {
+public class OSDProperties {
 
 	public static final int MAX_NAME_LENGTH = 20;
 
@@ -29,7 +29,7 @@ public class OverlayProperties {
 	// reply example: var show_0="1";
 	// comment for variable linked to key [show_0] goes here
 	@Key("show")
-	private IntegerState enabled;
+	private IntegerState state;
 
 	// reply example: var x_0="976";
 	// x position
@@ -80,14 +80,14 @@ public class OverlayProperties {
 
 	// comment for setter related to [show] goes here
 	@SetModelValue(key = "show")
-	public void setEnabled(IntegerState state) {
-		this.enabled = state;
+	public void setState(IntegerState state) {
+		this.state = state;
 	}
 
 	// comment for getter related to [show] goes here
 	@GetModelValue(key = "show")
-	public IntegerState isEnabled() {
-		return enabled;
+	public IntegerState getState() {
+		return state;
 	}
 
 	// comment for setter related to [x] goes here
@@ -138,7 +138,7 @@ public class OverlayProperties {
 		builder.append(", y=");
 		builder.append(y);
 		builder.append(", show=");
-		builder.append(enabled);
+		builder.append(state);
 		builder.append(", format=");
 		builder.append(format);
 		builder.append("]");
@@ -150,7 +150,7 @@ public class OverlayProperties {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((enabled == null) ? 0 : enabled.hashCode());
+		result = prime * result + ((state == null) ? 0 : state.hashCode());
 		return result;
 	}
 
@@ -162,15 +162,23 @@ public class OverlayProperties {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		OverlayProperties other = (OverlayProperties) obj;
+		OSDProperties other = (OSDProperties) obj;
 		if (name == null) {
 			if (other.name != null)
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		if (enabled != other.enabled)
+		if (state != other.state)
 			return false;
 		return true;
+	}
+
+	public static OSDProperties copy(OSDProperties props) {
+		if(props==null)return null;
+		OSDProperties copy=new OSDProperties();
+		copy.setState(props.state);
+		copy.setName(props.name);
+		return copy;
 	}
 
 	

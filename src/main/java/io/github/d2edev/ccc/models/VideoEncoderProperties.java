@@ -154,5 +154,15 @@ public class VideoEncoderProperties {
 		return true;
 	}
 
-	
+	public static VideoEncoderProperties copy(VideoEncoderProperties encoderProps) {
+		if(encoderProps==null)return null;
+		VideoEncoderProperties copy = new VideoEncoderProperties();
+		copy.setBps(encoderProps.bps);
+		copy.setFps(encoderProps.fps);
+		copy.setGop(encoderProps.gop);
+		copy.setQuality(encoderProps.quality);
+		copy.setRateControl(encoderProps.rateControl);
+		return copy;
+	}
+
 }

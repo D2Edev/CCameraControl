@@ -9,7 +9,7 @@ import io.github.d2edev.ccc.base.CameraHttpClient;
 import io.github.d2edev.ccc.enums.OSDRegion;
 import io.github.d2edev.ccc.enums.StreamID;
 import io.github.d2edev.ccc.models.ImageProperties;
-import io.github.d2edev.ccc.models.OverlayProperties;
+import io.github.d2edev.ccc.models.OSDProperties;
 import io.github.d2edev.ccc.models.SimpleResponse;
 import io.github.d2edev.ccc.models.VideoEncoderProperties;
 import io.github.d2edev.ccc.models.VideoSourceProperties;
@@ -33,11 +33,11 @@ public class VideoService extends AbstractService {
 		return client.processRequest(request, ImageProperties.class );
 	}
 
-	public OverlayProperties getOverlayProperties(OSDRegion region)
+	public OSDProperties getOverlayProperties(OSDRegion region)
 			throws MarshallException, IOException, UnmarshallException {
 		GetOverlayProperties request = new GetOverlayProperties();
 		request.setRegion(region);
-		return  client.processRequest(request, OverlayProperties.class);
+		return  client.processRequest(request, OSDProperties.class);
 	}
 
 	public VideoEncoderProperties getVideoEncoderProperties(StreamID streamID)
@@ -60,7 +60,7 @@ public class VideoService extends AbstractService {
 		return response.isSuccessfull();
 	}
 
-	public boolean setOverlayProperties(OverlayProperties props, OSDRegion region)
+	public boolean setOverlayProperties(OSDProperties props, OSDRegion region)
 			throws MarshallException, IOException, UnmarshallException {
 		SetOverlayProperties request = new SetOverlayProperties();
 		request.setProperties(props);

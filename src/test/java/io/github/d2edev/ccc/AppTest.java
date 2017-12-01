@@ -3,6 +3,7 @@ package io.github.d2edev.ccc;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -23,7 +24,7 @@ import io.github.d2edev.ccc.enums.WifiInfrastructureMode;
 import io.github.d2edev.ccc.enums.WifiKeyEncryption;
 import io.github.d2edev.ccc.models.ImageProperties;
 import io.github.d2edev.ccc.models.NetworkProperties;
-import io.github.d2edev.ccc.models.OverlayProperties;
+import io.github.d2edev.ccc.models.OSDProperties;
 import io.github.d2edev.ccc.models.VideoEncoderProperties;
 import io.github.d2edev.ccc.models.VideoSourceProperties;
 import io.github.d2edev.ccc.models.WirelessNetwork;
@@ -32,6 +33,7 @@ import io.github.d2edev.ccc.requests.video.GetImageProperties;
 import io.github.d2edev.ccc.requests.video.SetImageProperties;
 import io.github.d2edev.ccc.services.NetworkService;
 import io.github.d2edev.ccc.services.VideoService;
+import io.github.d2edev.vidhelper.IVideoResolution;
 
 public class AppTest {
 	private static final String ENDPOINT = "/cgi-bin/hi3510/param.cgi";
@@ -53,7 +55,12 @@ public class AppTest {
 		try {
 			VideoService service = camera.getVideoService();
 			VideoSourceProperties props = service.getVideoSourceProperties();
+			System.out.println(props);		
 			props.setProfile(H264profile.MAIN);
+			List<IVideoResolution> ress=props.getResolutions();
+			ress.set(0, VideoSourceProperties.w1280h720);
+			ress.set(1, VideoSourceProperties.w640h352);
+			props.setResolutions(ress);
 			service.setVideoSourceProperties(props);
 			VideoSourceProperties anotherProps = service.getVideoSourceProperties();
 			assertEquals(props, anotherProps);
@@ -115,12 +122,12 @@ public class AppTest {
 	public void testOverlayPropertiesGetSet() {
 		try {
 			VideoService service = camera.getVideoService();
-			OverlayProperties props = service.getOverlayProperties(OSDRegion.CAPTION);
+			OSDProperties props = service.getOverlayProperties(OSDRegion.CAPTION);
 			System.out.println(props);
-			props.setEnabled(random.nextBoolean() ? IntegerState.ENABLED : IntegerState.DISABLED);
+			props.setState(random.nextBoolean() ? IntegerState.ENABLED : IntegerState.DISABLED);
 			props.setName(UUID.randomUUID().toString().substring(0, 11));
 			service.setOverlayProperties(props, OSDRegion.CAPTION);
-			OverlayProperties anotherProps = service.getOverlayProperties(OSDRegion.CAPTION);
+			OSDProperties anotherProps = service.getOverlayProperties(OSDRegion.CAPTION);
 			assertEquals(props, anotherProps);
 			System.out.println(anotherProps);
 		} catch (MarshallException e) {
