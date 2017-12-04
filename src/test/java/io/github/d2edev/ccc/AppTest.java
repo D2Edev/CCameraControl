@@ -10,6 +10,7 @@ import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
 
+import io.github.d2edev.ccc.api.IVideoResolution;
 import io.github.d2edev.ccc.api.MarshallException;
 import io.github.d2edev.ccc.api.UnmarshallException;
 import io.github.d2edev.ccc.base.CameraHttpClient;
@@ -33,7 +34,6 @@ import io.github.d2edev.ccc.requests.video.GetImageProperties;
 import io.github.d2edev.ccc.requests.video.SetImageProperties;
 import io.github.d2edev.ccc.services.NetworkService;
 import io.github.d2edev.ccc.services.VideoService;
-import io.github.d2edev.vidhelper.IVideoResolution;
 
 public class AppTest {
 	private static final String ENDPOINT = "/cgi-bin/hi3510/param.cgi";

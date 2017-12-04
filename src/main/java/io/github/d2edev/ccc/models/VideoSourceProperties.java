@@ -6,12 +6,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import io.github.d2edev.ccc.api.GetModelValue;
+import io.github.d2edev.ccc.api.IVideoResolution;
 import io.github.d2edev.ccc.api.Model;
 import io.github.d2edev.ccc.api.SetModelValue;
 import io.github.d2edev.ccc.enums.H264profile;
 import io.github.d2edev.ccc.enums.TVFormat;
-import io.github.d2edev.vidhelper.IVideoResolution;
-import io.github.d2edev.vidhelper.Resolution;
 
 /**
  * @author ddmitry
