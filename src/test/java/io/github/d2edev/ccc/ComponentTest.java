@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Base64;
 import java.util.Date;
 
@@ -94,10 +96,10 @@ public class ComponentTest {
 			ServerTime time = client.processRequest(request, ServerTime.class);
 			System.out.println("reply: " + time);
 			SetServerTime set = new SetServerTime();
-			time.setTimeZone(CameraTimeZone.AMERICA_NEWYORK);
+			time.setTimeZone(CameraTimeZone.AMERICA_NEWYORK.stringValue());
 			time.setDaylightModeStatus(StringState.DISABLED);
 			// time.setTime("19911107061052");
-			time.setDateTime(new Date());
+			time.setDateTime(ZonedDateTime.now(ZoneId.of(time.getTimeZone())));
 			set.setServerTime(time);
 			System.out.println("setting: " + time);
 			System.out.println(client.processRequest(set, SimpleResponse.class));

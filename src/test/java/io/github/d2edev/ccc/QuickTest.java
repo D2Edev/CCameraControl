@@ -28,8 +28,8 @@ public class QuickTest {
 			IPCamera camera=new IPCamera("192.168.43.20", 80, ENDPOINT, "admin", "admin");
 			SystemService service=camera.getSystemService();
 			ServerTime time=service.getServerTime();
-			time.setDateTime(new Date());
-			time.setTimeZone(CameraTimeZone.EUROPE_ATHENS);
+//			time.setDateTime(new Date());
+//			time.setTimeZone(CameraTimeZone.EUROPE_ATHENS);
 //			service.setServerTime(time);
 			System.out.println(time);
 		} catch (Exception e) {

@@ -2,6 +2,10 @@ package io.github.d2edev.ccc.models;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
@@ -19,42 +23,38 @@ public class ServerTime {
 	// var dstmode="on";
 
 	// Current date and time
-	private Calendar cal=Calendar.getInstance();
-	SimpleDateFormat inputFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-	SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
-	SimpleDateFormat stringFormat = new SimpleDateFormat("yyyy-MM-dd Z HH:mm:ss");
-
+	private ZoneId zid;
+	private LocalDateTime datetime;
+	private DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+	private DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd.HH.mm.ss");
 
 	// daylight saving
 	private StringState daylightModeStatus;
 
 	@GetModelValue(key = "time")
-	public String getTime() {
-		if (cal == null)
-			return null;
-		return outputFormat.format(cal.getTime());
+	public String getDateTimeSpecial() {
+		return datetime.format(outputFormatter);
 	}
 
 	// data comes as
 	// var time="20171108095655";
 	// [yyyy][mm][dd][hh][mm][ss]
 	@SetModelValue(key = "time")
-	public void setTime(String time) throws ParseException {
-		cal.setTime(inputFormat.parse(time));
+	public void setDateTimeSpecial(String time) throws ParseException {
+		datetime = LocalDateTime.parse(time, inputFormatter);
 	}
 
 	// !!! pls pay attention to parameter names difference
 	// in getter and setter
 	@GetModelValue(key = "timezone")
 	public String getTimeZone() {
-		return cal.getTimeZone().getID();
-		
+		return zid.getId();
+
 	}
 
 	@SetModelValue(key = "timeZone")
-	public void setTimeZone(CameraTimeZone timeZone) {
-		TimeZone tz=TimeZone.getTimeZone(timeZone.stringValue());
-		cal.setTimeZone(tz);
+	public void setTimeZone(String timeZone) {
+		zid = ZoneId.of(timeZone);
 	}
 
 	@GetModelValue(key = "dstmode")
@@ -67,22 +67,22 @@ public class ServerTime {
 		this.daylightModeStatus = daylightModeStatus;
 	}
 
-	
-	public void setDateTime(Date dateTime){
-		cal.setTime(dateTime);
+	public void setDateTime(ZonedDateTime zdt) {
+		zid = zdt.getZone();
+		datetime = zdt.toLocalDateTime();
 	}
-	
-	public Date getDateTime(){
-		return cal.getTime();
+
+	public ZonedDateTime getDateTime() {
+		return datetime.atZone(zid);
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("ServerTime [time=");
-		builder.append(stringFormat.format(cal.getTime()));
-		builder.append(", timeZone=");
-		builder.append(cal.getTimeZone().getID());
+		builder.append("ServerTime [zid=");
+		builder.append(zid);
+		builder.append(", datetime=");
+		builder.append(datetime);
 		builder.append(", daylightModeStatus=");
 		builder.append(daylightModeStatus);
 		builder.append("]");
