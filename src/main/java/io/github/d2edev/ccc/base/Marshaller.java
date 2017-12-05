@@ -41,7 +41,10 @@ public class Marshaller {
 				try {
 					String key = method.getAnnotation(GetModelValue.class).key();
 					Object value = getPropertyFieldValue(method, request);
-					list.add(new AbstractMap.SimpleEntry<>(key, value));
+					if(value!=null){
+						//ignore 'null' values
+						list.add(new AbstractMap.SimpleEntry<>(key, value));						
+					}
 				} catch (Exception e) {
 					throw new MarshallException(e.getMessage());
 				}
