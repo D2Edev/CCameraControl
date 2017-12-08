@@ -5,8 +5,8 @@ import io.github.d2edev.ccc.api.Model;
 import io.github.d2edev.ccc.api.SetModelValue;
 import io.github.d2edev.ccc.enums.IntegerState;
 import io.github.d2edev.ccc.enums.WiFiSecurityMode;
-import io.github.d2edev.ccc.enums.WifiKeyEncryption;
 import io.github.d2edev.ccc.enums.WifiInfrastructureMode;
+import io.github.d2edev.ccc.enums.WifiKeyEncryption;
 
 @Model(Model.COMPLEX)
 public class WirelessNetwork {

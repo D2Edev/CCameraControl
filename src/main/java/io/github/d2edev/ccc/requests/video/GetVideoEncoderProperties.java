@@ -5,7 +5,6 @@ import io.github.d2edev.ccc.api.GetModelValue;
 import io.github.d2edev.ccc.api.Request;
 import io.github.d2edev.ccc.api.SetModelValue;
 import io.github.d2edev.ccc.enums.StreamID;
-import io.github.d2edev.ccc.models.VideoEncoderProperties;
 
 @Request("getvencattr")
 public class GetVideoEncoderProperties{

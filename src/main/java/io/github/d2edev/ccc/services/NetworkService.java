@@ -13,14 +13,14 @@ import io.github.d2edev.ccc.models.SimpleResponse;
 import io.github.d2edev.ccc.models.WirelessNetwork;
 import io.github.d2edev.ccc.models.WirelessNetworks;
 import io.github.d2edev.ccc.models.WirelessValidationResult;
-import io.github.d2edev.ccc.requests.network.ScanWirelessNetworks;
-import io.github.d2edev.ccc.requests.network.SetNetworkProperties;
-import io.github.d2edev.ccc.requests.network.SetWirelessProperties;
 import io.github.d2edev.ccc.requests.network.GetNetworkProperties;
 import io.github.d2edev.ccc.requests.network.GetRTSPPort;
 import io.github.d2edev.ccc.requests.network.GetWirelessProperties;
 import io.github.d2edev.ccc.requests.network.GetWirelessValidation;
 import io.github.d2edev.ccc.requests.network.PrepareWirelessValidation;
+import io.github.d2edev.ccc.requests.network.ScanWirelessNetworks;
+import io.github.d2edev.ccc.requests.network.SetNetworkProperties;
+import io.github.d2edev.ccc.requests.network.SetWirelessProperties;
 
 public class NetworkService extends AbstractService {
 

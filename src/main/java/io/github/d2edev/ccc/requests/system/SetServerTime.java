@@ -5,7 +5,6 @@ import io.github.d2edev.ccc.api.GetModel;
 import io.github.d2edev.ccc.api.Request;
 import io.github.d2edev.ccc.api.SetModel;
 import io.github.d2edev.ccc.models.ServerTime;
-import io.github.d2edev.ccc.models.SimpleResponse;
 
 @Request("setservertime")
 public class SetServerTime{

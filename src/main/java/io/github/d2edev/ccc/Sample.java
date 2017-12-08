@@ -2,7 +2,6 @@ package io.github.d2edev.ccc;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Date;
 
 import io.github.d2edev.ccc.enums.CameraTimeZone;
 import io.github.d2edev.ccc.enums.StringState;

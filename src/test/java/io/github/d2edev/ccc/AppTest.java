@@ -1,6 +1,8 @@
 package io.github.d2edev.ccc;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.util.List;
@@ -8,12 +10,10 @@ import java.util.Random;
 import java.util.UUID;
 
 import org.junit.Before;
-import org.junit.Test;
 
 import io.github.d2edev.ccc.api.IVideoResolution;
 import io.github.d2edev.ccc.api.MarshallException;
 import io.github.d2edev.ccc.api.UnmarshallException;
-import io.github.d2edev.ccc.base.CameraHttpClient;
 import io.github.d2edev.ccc.enums.H264profile;
 import io.github.d2edev.ccc.enums.IntegerState;
 import io.github.d2edev.ccc.enums.OSDRegion;
@@ -30,8 +30,6 @@ import io.github.d2edev.ccc.models.VideoEncoderProperties;
 import io.github.d2edev.ccc.models.VideoSourceProperties;
 import io.github.d2edev.ccc.models.WirelessNetwork;
 import io.github.d2edev.ccc.requests.network.PrepareWirelessValidation;
-import io.github.d2edev.ccc.requests.video.GetImageProperties;
-import io.github.d2edev.ccc.requests.video.SetImageProperties;
 import io.github.d2edev.ccc.services.NetworkService;
 import io.github.d2edev.ccc.services.VideoService;
 

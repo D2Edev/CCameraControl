@@ -1,27 +1,10 @@
 package io.github.d2edev.ccc.helper;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.Reader;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import io.github.d2edev.ccc.api.MarshallException;
-import io.github.d2edev.ccc.base.Marshaller;
-import io.github.d2edev.ccc.models.ImageProperties;
 import io.github.d2edev.ccc.models.NetworkProperties;
-import io.github.d2edev.ccc.models.OSDProperties;
-import io.github.d2edev.ccc.models.WirelessValidationResult;
-import io.github.d2edev.ccc.requests.network.GetWirelessProperties;
-import io.github.d2edev.ccc.requests.video.GetImageProperties;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * class creator - based on server reply

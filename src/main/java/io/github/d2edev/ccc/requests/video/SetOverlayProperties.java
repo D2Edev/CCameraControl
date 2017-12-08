@@ -6,7 +6,6 @@ import io.github.d2edev.ccc.api.GetModelValue;
 import io.github.d2edev.ccc.api.Request;
 import io.github.d2edev.ccc.enums.OSDRegion;
 import io.github.d2edev.ccc.models.OSDProperties;
-import io.github.d2edev.ccc.models.SimpleResponse;
 
 @Request("setoverlayattr")
 public class SetOverlayProperties{

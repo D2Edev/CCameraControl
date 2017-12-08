@@ -3,7 +3,6 @@ package io.github.d2edev.ccc.base;
 import java.io.IOException;
 import java.util.Base64;
 
-
 import io.github.d2edev.ccc.api.MarshallException;
 import io.github.d2edev.ccc.api.UnmarshallException;
 import okhttp3.OkHttpClient;

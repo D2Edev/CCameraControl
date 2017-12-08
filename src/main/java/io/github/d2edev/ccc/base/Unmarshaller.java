@@ -8,7 +8,6 @@ import java.lang.reflect.Method;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
@@ -22,8 +21,8 @@ import io.github.d2edev.ccc.api.ValueProvider;
 import io.github.d2edev.ccc.enums.WiFiSecurityMode;
 import io.github.d2edev.ccc.enums.WifiKeyEncryption;
 import io.github.d2edev.ccc.models.SimpleResponse;
-import io.github.d2edev.ccc.models.WirelessNetworks;
 import io.github.d2edev.ccc.models.WirelessNetwork;
+import io.github.d2edev.ccc.models.WirelessNetworks;
 
 public class Unmarshaller {
 	
