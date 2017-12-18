@@ -22,7 +22,7 @@ public class VideoSourceProperties {
 	private static final Map<Integer,Pair<IVideoResolution>> resolutionMap=new HashMap<>();
 	public static final IVideoResolution w160h120=new Resolution(160, 120);
 	public static final IVideoResolution w320h240=new Resolution(320, 240);
-	public static final IVideoResolution w320h176=new Resolution(320, 167);
+	public static final IVideoResolution w320h176=new Resolution(320, 176);
 	public static final IVideoResolution w640h352=new Resolution(640, 352);
 	public static final IVideoResolution w640h480=new Resolution(640, 480);
 	public static final IVideoResolution w1280h720=new Resolution(1280, 720);
