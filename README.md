@@ -6,7 +6,7 @@ http://www.themadhermit.net/wp-content/uploads/2013/03/FI9821W-CGI-Commands.pdf
 
 Cameras from Foscam, Wanscam, ... etc.
 
-NOTE: project still in development; any part of it could be changed without warning
+NOTE: project still in development; any part of it could be changed without warning. Watch 'dev' branch for latest changes.
 
 
 ## Getting Started
