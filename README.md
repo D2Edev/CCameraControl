@@ -46,11 +46,11 @@ Example three - getting and changing camera time:
 ``` java
 	SystemService service=camera.getSystemService();
 	ServerTime time = service.getServerTime();
-	System.out.println("reply: " + time);
-	time.setTimeZone(CameraTimeZone.AMERICA_NEWYORK);
-	time.setDaylightModeStatus(StringState.DISABLED);
-	time.setDateTime(new Date());
-	service.setServerTime(time);
+	ServerTime time=service.getServerTime();
+	time.setDaylightModeStatus(StringState.ENABLED);
+	ZoneId zid=ZoneId.of(CameraTimeZone.EUROPE_MOSCOW.stringValue());
+	ZonedDateTime zdt=ZonedDateTime.now(zid);
+	time.setDateTime(zdt);
 	ServerTime changed= service.getServerTime();
 	System.out.println("check:" + changed);
 ```

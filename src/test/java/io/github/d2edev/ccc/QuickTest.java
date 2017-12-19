@@ -1,11 +1,16 @@
 package io.github.d2edev.ccc;
 
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
 import io.github.d2edev.ccc.api.MarshallException;
 import io.github.d2edev.ccc.base.Marshaller;
+import io.github.d2edev.ccc.enums.CameraTimeZone;
 import io.github.d2edev.ccc.enums.ImageQuality;
 import io.github.d2edev.ccc.enums.RateControl;
 import io.github.d2edev.ccc.enums.StreamID;
+import io.github.d2edev.ccc.enums.StringState;
 import io.github.d2edev.ccc.models.ServerTime;
 import io.github.d2edev.ccc.models.VideoEncoderProperties;
 import io.github.d2edev.ccc.requests.video.SetVideoEncoderProperties;
@@ -25,10 +30,12 @@ public class QuickTest {
 			IPCamera camera=new IPCamera("192.168.43.20", 80, ENDPOINT, "admin", "admin");
 			SystemService service=camera.getSystemService();
 			ServerTime time=service.getServerTime();
-//			time.setDateTime(new Date());
-//			time.setTimeZone(CameraTimeZone.EUROPE_ATHENS);
-//			service.setServerTime(time);
-			System.out.println(time);
+			time.setDaylightModeStatus(StringState.ENABLED);
+			ZoneId zid=ZoneId.of(CameraTimeZone.EUROPE_MOSCOW.stringValue());
+			ZonedDateTime zdt=ZonedDateTime.now(zid);
+			time.setDateTime(zdt);
+			ServerTime changed= service.getServerTime();
+			System.out.println("check:" + changed);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
