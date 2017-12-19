@@ -6,7 +6,7 @@ http://www.themadhermit.net/wp-content/uploads/2013/03/FI9821W-CGI-Commands.pdf
 
 Cameras from Foscam, Wanscam, ... etc.
 
-NOTE: project still in development; any part of it could be changed without warning
+NOTE: project still in development; any part of it could be changed without warning. Watch 'dev' branch for latest changes.
 
 
 ## Getting Started
@@ -46,11 +46,11 @@ Example three - getting and changing camera time:
 ``` java
 	SystemService service=camera.getSystemService();
 	ServerTime time = service.getServerTime();
-	System.out.println("reply: " + time);
-	time.setTimeZone(CameraTimeZone.AMERICA_NEWYORK);
-	time.setDaylightModeStatus(StringState.DISABLED);
-	time.setDateTime(new Date());
-	service.setServerTime(time);
+	ServerTime time=service.getServerTime();
+	time.setDaylightModeStatus(StringState.ENABLED);
+	ZoneId zid=ZoneId.of(CameraTimeZone.EUROPE_MOSCOW.stringValue());
+	ZonedDateTime zdt=ZonedDateTime.now(zid);
+	time.setDateTime(zdt);
 	ServerTime changed= service.getServerTime();
 	System.out.println("check:" + changed);
 ```
