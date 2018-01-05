@@ -2,12 +2,12 @@ package io.github.d2edev.ccc.models;
 
 import io.github.d2edev.ccc.api.IVideoResolution;
 
-public class Resolution implements IVideoResolution{
+public class VideoResolution implements IVideoResolution{
 
 	private int width;
 	private int height;
 	
-	public Resolution(int width, int height) {
+	public VideoResolution(int width, int height) {
 		this.width = width;
 		this.height = height;
 	}
@@ -51,7 +51,7 @@ public class Resolution implements IVideoResolution{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Resolution other = (Resolution) obj;
+		VideoResolution other = (VideoResolution) obj;
 		if (height != other.height)
 			return false;
 		if (width != other.width)
@@ -65,7 +65,7 @@ public class Resolution implements IVideoResolution{
 		return sb.toString();
 	}
 	
-	public static Resolution valueOf(String value) throws Exception{
+	public static VideoResolution valueOf(String value) throws Exception{
 		String []array=value.split("[x|X|*|_|-]");
 		int width;
 		int height;
@@ -81,13 +81,13 @@ public class Resolution implements IVideoResolution{
 		} catch (Exception e) {
 			throw new IllegalArgumentException("Can't understand resolution part: "+array[1]);
 		}
-		return new Resolution(width, height);
+		return new VideoResolution(width, height);
 
 	}
 	
 	public static void main(String[] args) {
 		try {
-			System.out.println(Resolution.valueOf("aaa-480"));
+			System.out.println(VideoResolution.valueOf("aaa-480"));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
