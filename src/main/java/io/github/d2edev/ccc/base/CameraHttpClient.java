@@ -36,8 +36,9 @@ public class CameraHttpClient {
 		this.endpoint=endpoint;
 		client = new OkHttpClient();
 		refreshURL();
+		refreshToken();
 	}
-	
+
 	//blocking
 	public <T>T processRequest(Object request,Class<T> responseClass) throws MarshallException, IOException, UnmarshallException{
 		String query=marshaller.marshall(request);
@@ -91,7 +92,7 @@ public class CameraHttpClient {
 
 	public void setPassword(String password) {
 		this.password = password;
-		refreshURL();
+		refreshToken();
 	}
 
 	public String getLogin() {
@@ -100,7 +101,7 @@ public class CameraHttpClient {
 
 	public void setLogin(String login) {
 		this.login = login;
-		refreshURL();
+		refreshToken();
 	}
 
 	public int getPort() {
@@ -122,12 +123,6 @@ public class CameraHttpClient {
 	}
 
 	private void refreshURL() {
-		if(login!=null||!login.isEmpty()||password!=null||!password.isEmpty()){
-			useAuth=true;
-			String auth = new StringBuilder(login).append(":").append(password).toString();
-			byte[] encoded = Base64.getEncoder().encode(auth.getBytes());
-			authData = new StringBuilder("Basic ").append(new String(encoded)).toString();
-		}
 		StringBuilder basicUrlBuilder=new StringBuilder("http://").append(host);
 		if(port!=80){
 			basicUrlBuilder.append(":").append(port);
@@ -137,6 +132,15 @@ public class CameraHttpClient {
 		}
 		basicUrl = basicUrlBuilder.toString();
 		
+	}
+	
+	private void refreshToken() {
+		if(login!=null||!login.isEmpty()||password!=null||!password.isEmpty()){
+			useAuth=true;
+			String auth = new StringBuilder(login).append(":").append(password).toString();
+			byte[] encoded = Base64.getEncoder().encode(auth.getBytes());
+			authData = new StringBuilder("Basic ").append(new String(encoded)).toString();
+		}
 	}
 
 }
