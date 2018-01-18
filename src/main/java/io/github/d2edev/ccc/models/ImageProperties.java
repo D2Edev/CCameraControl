@@ -47,7 +47,7 @@ public class ImageProperties {
 	@Key("display_mode")
 	private IntegerState colorMode;;
 
-	// enables/disables mirror mode wide dynamic range mode
+	// enables/disables wide dynamic range mode
 	@Key("wdr")
 	private StringState wideDynamicRange;
 
