@@ -11,18 +11,25 @@ import java.util.Map.Entry;
 import io.github.d2edev.ccc.api.GetModel;
 import io.github.d2edev.ccc.api.GetModelValue;
 import io.github.d2edev.ccc.api.MarshallException;
-import io.github.d2edev.ccc.api.Request;
+import io.github.d2edev.ccc.api.Marshaller;
+import io.github.d2edev.ccc.api.AbstractCamRequest;
+import io.github.d2edev.ccc.api.CamRequest;
 import io.github.d2edev.ccc.api.ValueProvider;
+import okhttp3.Request;
 
-public class Marshaller {
+public class RequestMarshaller implements Marshaller<AbstractCamRequest,Request> {
 
-	public String marshall(Object request) throws MarshallException {
-		Request command = request.getClass().getAnnotation(Request.class);
-		if (command == null)
+	@Override
+	public Request marshall(AbstractCamRequest object) throws MarshallException {
+		CamRequest request = object.getClass().getAnnotation(CamRequest.class);
+		if (request == null)
 			throw new MarshallException("Object type must be annotated with @Request");
-		StringBuilder builder = new StringBuilder("cmd").append("=").append(command.value());
+		StringBuilder builder = new StringBuilder(request.endpoint());
+		String command=request.cmd();
+		if(command.isEmpty()) return builder.toString();
+		builder.append("cmd").append("=").append(command);
 		List<Entry<String, Object>> paramList = new ArrayList<>();
-		fillParameterList(request, paramList);
+		fillParameterList(object, paramList);
 		if (paramList.size() == 0)
 			return builder.toString();
 		for (Entry<String, Object> entry : paramList) {

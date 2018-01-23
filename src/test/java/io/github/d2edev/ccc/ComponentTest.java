@@ -18,8 +18,7 @@ import io.github.d2edev.ccc.requests.system.SetServerTime;
 
 public class ComponentTest {
 
-	private static final String ENDPOINT = "/cgi-bin/hi3510/param.cgi";
-	private static final String PREFIX = "http://192.168.0.211/" + ENDPOINT + "?";
+	private static final String IP = "192.168.0.212";
 
 	public static void main(String[] args) {
 		ComponentTest cp = new ComponentTest();
@@ -31,7 +30,7 @@ public class ComponentTest {
 	}
 
 	public void processForObject(Object request, Class<?> respClass) {
-		CameraHttpClient client = new CameraHttpClient("192.168.0.211", 80, "admin", "admin", ENDPOINT);
+		CameraHttpClient client = new CameraHttpClient(IP, 80, "admin", "admin");
 		try {
 			System.out.println(client.processRequest(request, respClass));
 		} catch (MarshallException | IOException | UnmarshallException e) {
@@ -41,7 +40,7 @@ public class ComponentTest {
 	}
 
 	private void processForString(Object obj) {
-		CameraHttpClient client = new CameraHttpClient("192.168.0.211", 80, "admin", "admin", ENDPOINT);
+		CameraHttpClient client = new CameraHttpClient(IP, 80, "admin", "admin");
 		try {
 			System.out.println(client.processRequest(obj));
 		} catch (MarshallException | IOException | UnmarshallException e) {
@@ -51,7 +50,7 @@ public class ComponentTest {
 	}
 
 	public void processGetSetTime() {
-		CameraHttpClient client = new CameraHttpClient("192.168.0.201", 80, "admin", "admin", ENDPOINT);
+		CameraHttpClient client = new CameraHttpClient(IP, 80, "admin", "admin");
 		try {
 			GetServerTime request = new GetServerTime();
 			ServerTime time = client.processRequest(request, ServerTime.class);

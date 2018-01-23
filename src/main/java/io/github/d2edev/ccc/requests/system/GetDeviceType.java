@@ -1,9 +1,10 @@
 package io.github.d2edev.ccc.requests.system;
 
 
-import io.github.d2edev.ccc.api.Request;
+import io.github.d2edev.ccc.api.AbstractCamRequest;
+import io.github.d2edev.ccc.api.CamRequest;
 
-@Request("getdevtype")
-public class GetDeviceType{
-
+@CamRequest(cmd="getdevtype")
+public class GetDeviceType extends AbstractCamRequest{
+	{command="getdevtype";}
 }

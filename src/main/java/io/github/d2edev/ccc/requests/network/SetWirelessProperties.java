@@ -2,15 +2,17 @@ package io.github.d2edev.ccc.requests.network;
 
 
 import io.github.d2edev.ccc.api.GetModel;
-import io.github.d2edev.ccc.api.Request;
+import io.github.d2edev.ccc.api.AbstractCamRequest;
+import io.github.d2edev.ccc.api.CamRequest;
 import io.github.d2edev.ccc.api.SetModel;
 import io.github.d2edev.ccc.models.WirelessNetwork;
 
-@Request("setwirelessattr")
-public class SetWirelessProperties{
+@CamRequest(cmd="setwirelessattr")
+public class SetWirelessProperties extends AbstractCamRequest{
 	
 	private WirelessNetwork properties;
-
+	{command="setwirelessattr";}
+	
 	@GetModel
 	public WirelessNetwork getProperties() {
 		return properties;

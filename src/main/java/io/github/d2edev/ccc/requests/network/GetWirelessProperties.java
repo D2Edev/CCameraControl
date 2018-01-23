@@ -1,9 +1,11 @@
 package io.github.d2edev.ccc.requests.network;
 
 
-import io.github.d2edev.ccc.api.Request;
+import io.github.d2edev.ccc.api.AbstractCamRequest;
+import io.github.d2edev.ccc.api.CamRequest;
 
-@Request("getwirelessattr")
-public class GetWirelessProperties{
+@CamRequest(cmd="getwirelessattr")
+public class GetWirelessProperties extends AbstractCamRequest{
+	{command="getwirelessattr";}
 
 }

@@ -3,16 +3,19 @@ package io.github.d2edev.ccc.requests.video;
 
 import io.github.d2edev.ccc.api.GetModel;
 import io.github.d2edev.ccc.api.GetModelValue;
-import io.github.d2edev.ccc.api.Request;
+import io.github.d2edev.ccc.api.AbstractCamRequest;
+import io.github.d2edev.ccc.api.CamRequest;
 import io.github.d2edev.ccc.enums.OSDRegion;
 import io.github.d2edev.ccc.models.OSDProperties;
 
-@Request("setoverlayattr")
-public class SetOverlayProperties{
+@CamRequest(cmd="setoverlayattr")
+public class SetOverlayProperties extends AbstractCamRequest{
 	
 	private OSDRegion region;
 	
 	private OSDProperties properties;
+	
+	{command="setoverlayattr";}
 
 	@GetModelValue(key="region")
 	public OSDRegion getRegion() {

@@ -5,16 +5,13 @@ import java.util.Base64;
 
 import io.github.d2edev.ccc.api.MarshallException;
 import io.github.d2edev.ccc.api.UnmarshallException;
-import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Request.Builder;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class CameraHttpClient {
+public class CameraGetHttpClient {
 
-	private static final byte[] EMPTY_BODY = new byte[0];
 	private OkHttpClient client;
 	private boolean useAuth;
 	private String authData;
@@ -25,24 +22,26 @@ public class CameraHttpClient {
 	private String password;
 	private String login;
 	private int port;
+	private String endpoint;
 	
-	public CameraHttpClient(String host, int port){
-		this(host, port, null, null);
+	public CameraGetHttpClient(String host, int port, String endpoint){
+		this(host, port, null, null, endpoint);
 	} 
 
-	public CameraHttpClient(String host, int port, String login, String password) {
+	public CameraGetHttpClient(String host, int port, String login, String password, String endpoint) {
 		this.host=host;
 		this.port=port;
 		this.login=login;
 		this.password=password;
+		this.endpoint=endpoint;
 		client = new OkHttpClient();
 		refreshURL();
 		refreshToken();
 	}
 
 	//blocking
-	public <T>T processRequest(Object object,Class<T> responseClass) throws MarshallException, IOException, UnmarshallException{
-		String query=marshaller.marshall(object);
+	public <T>T processRequest(Object request,Class<T> responseClass) throws MarshallException, IOException, UnmarshallException{
+		String query=marshaller.marshall(request);
 		String command=new StringBuilder(basicUrl).append(query).toString();
 		
 		Builder rqb = new Request.Builder().url(command);
@@ -60,16 +59,14 @@ public class CameraHttpClient {
 	}
 	
 	//blocking, helper method
-	public String processRequest(Object object) throws MarshallException, IOException, UnmarshallException{
-		String query=marshaller.marshall(object);
+	public String processRequest(Object request) throws MarshallException, IOException, UnmarshallException{
+		String query=marshaller.marshall(request);
 		String command=new StringBuilder(basicUrl).append(query).toString();
+		
 		Builder rqb = new Request.Builder().url(command);
-//		Builder rqb = new Request.Builder().url(command).post(RequestBody.create(null, EMPTY_BODY));
 		if(useAuth){
 			rqb.addHeader("Authorization", authData);
 		}
-		
-		Request r=rqb.build();
 		Response response=client.newCall(rqb.build()).execute();
 		if(response.isSuccessful()){
 			return response.body().string();
@@ -116,12 +113,25 @@ public class CameraHttpClient {
 		refreshURL();
 	}
 
+	public String getEndpoint() {
+		return endpoint;
+	}
+
+	public void setEndpoint(String endpoint) {
+		this.endpoint = endpoint;
+		refreshURL();
+	}
+
 	private void refreshURL() {
 		StringBuilder basicUrlBuilder=new StringBuilder("http://").append(host);
 		if(port!=80){
 			basicUrlBuilder.append(":").append(port);
 		}
-		basicUrl = basicUrlBuilder.toString();	
+		if(endpoint!=null&&!endpoint.isEmpty()&&endpoint.startsWith("/")){
+			basicUrlBuilder.append(endpoint).append("?");
+		}
+		basicUrl = basicUrlBuilder.toString();
+		
 	}
 	
 	private void refreshToken() {

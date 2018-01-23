@@ -1,10 +1,11 @@
 package io.github.d2edev.ccc.requests.system;
 
 
-import io.github.d2edev.ccc.api.Request;
+import io.github.d2edev.ccc.api.AbstractCamRequest;
+import io.github.d2edev.ccc.api.CamRequest;
 
-@Request("getstreamnum")
-public class GetActiveStreamsQ{
-
+@CamRequest(cmd="getstreamnum")
+public class GetActiveStreamsQ extends AbstractCamRequest{
+	{command="getstreamnum";}
 
 }

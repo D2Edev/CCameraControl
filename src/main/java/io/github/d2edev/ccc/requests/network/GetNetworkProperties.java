@@ -1,9 +1,14 @@
 package io.github.d2edev.ccc.requests.network;
 
 
-import io.github.d2edev.ccc.api.Request;
+import io.github.d2edev.ccc.api.AbstractCamRequest;
+import io.github.d2edev.ccc.api.CamRequest;
 
-@Request("getnetattr")
-public class GetNetworkProperties {
+@CamRequest(cmd="getnetattr")
+public class GetNetworkProperties  extends AbstractCamRequest{
+	
+	{
+		command="getnetattr";
+	}
 
 }

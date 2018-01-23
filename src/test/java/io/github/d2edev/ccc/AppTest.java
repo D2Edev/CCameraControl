@@ -34,14 +34,13 @@ import io.github.d2edev.ccc.services.NetworkService;
 import io.github.d2edev.ccc.services.VideoService;
 
 public class AppTest {
-	private static final String ENDPOINT = "/cgi-bin/hi3510/param.cgi";
 	IPCamera camera;
 	Random random;
 
 	@Before
 	public void init() {
 		try {
-			camera = new IPCamera("192.168.0.211", 80, ENDPOINT, "admin", "admin");
+			camera = new IPCamera("192.168.0.212", 80, "admin", "admin");
 			random = new Random();
 		} catch (Exception e) {
 			fail("Failed initing camera");
@@ -208,4 +207,9 @@ public class AppTest {
 		}
 	}
 
+	public static void main(String[] args) {
+		AppTest at=new AppTest();
+		at.init();
+		at.testOverlayPropertiesGetSet();
+	}
 }

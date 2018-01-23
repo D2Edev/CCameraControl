@@ -13,7 +13,7 @@ import io.github.d2edev.ccc.services.VideoService;
 public class IPCamera {
 	
 	public static final int DEFAULT_HTTP_PORT = 80;
-	public static final String DEFAULT_ENDPOINT = "/cgi-bin/hi3510/param.cgi";
+	
 
 	private SystemService systemService;
 	private VideoService videoService;
@@ -23,22 +23,22 @@ public class IPCamera {
 	
 
 	public IPCamera(String host) {
-		this(host, 0,DEFAULT_ENDPOINT,null, null);
+		this(host, DEFAULT_HTTP_PORT,null, null);
 	}
 
 	public IPCamera(String host, int port){
-		this(host, port, DEFAULT_ENDPOINT,null, null);
+		this(host, port, null, null);
 	}
 
 
 
-	public IPCamera(String host, int port,String endpoint,String login, String password) {
+	public IPCamera(String host, int port,String login, String password) {
 		if(host==null||host.isEmpty())throw new IllegalArgumentException("Hostname not valid");
 		if(port<1||port>65535){
 			port=DEFAULT_HTTP_PORT;			
 		}
 //		checkIfOnline();
-		client=new CameraHttpClient(host,port,login,password,endpoint);
+		client=new CameraHttpClient(host,port,login,password);
 		videoService=new VideoService(client);
 		systemService=new SystemService(client);
 		networkService=new NetworkService(client);
@@ -94,14 +94,6 @@ public class IPCamera {
 
 	public void setPassword(String password) {
 		client.setPassword(password);
-	}
-	
-	public String getEndpoint() {
-		return client.getEndpoint();
-	}
-	
-	public void setEndpoint(String endpoint) {
-		client.setEndpoint(endpoint);
 	}
 
 	public SystemService getSystemService() {

@@ -7,15 +7,18 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * Describes command to be used in query after marshalling1
+ * Describes command to be used in query after marshalling
  * i.e @QueryCommand("getvideoattr") gives "...?cmd=getvideoattr.."
  * @author ddmitry
  *
  */
 @Retention(RUNTIME)
 @Target(TYPE)
-public @interface Request {
+public @interface CamRequest {
 
-	String value();
+	public static final String PARAM_ENDPOINT = "/cgi-bin/hi3510/param.cgi?";
+	
+	String cmd() default "";
+	String endpoint() default PARAM_ENDPOINT;
 	
 }

@@ -2,15 +2,17 @@ package io.github.d2edev.ccc.requests.network;
 
 
 import io.github.d2edev.ccc.api.GetModel;
-import io.github.d2edev.ccc.api.Request;
+import io.github.d2edev.ccc.api.AbstractCamRequest;
+import io.github.d2edev.ccc.api.CamRequest;
 import io.github.d2edev.ccc.api.SetModel;
 import io.github.d2edev.ccc.models.NetworkProperties;
 
-@Request("setnetattr")
-public class SetNetworkProperties{
+@CamRequest(cmd="setnetattr")
+public class SetNetworkProperties extends AbstractCamRequest{
 	
 	private NetworkProperties properties;
-
+	{command="setnetattr";}
+	
 	@GetModel
 	public NetworkProperties getProperties() {
 		return properties;

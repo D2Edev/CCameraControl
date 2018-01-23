@@ -2,7 +2,7 @@ package io.github.d2edev.ccc;
 
 
 import io.github.d2edev.ccc.api.MarshallException;
-import io.github.d2edev.ccc.base.Marshaller;
+import io.github.d2edev.ccc.base.StringMarshaller;
 import io.github.d2edev.ccc.enums.ImageQuality;
 import io.github.d2edev.ccc.enums.RateControl;
 import io.github.d2edev.ccc.enums.StreamID;
@@ -13,7 +13,7 @@ import io.github.d2edev.ccc.services.SystemService;
 
 public class QuickTest {
 
-	private static final String ENDPOINT = "/cgi-bin/hi3510/param.cgi";
+	private static final String IP = "192.168.0.212";
 
 	public static void main(String[] args) {
 //		new QuickTest().set();
@@ -22,7 +22,7 @@ public class QuickTest {
 
 	private void time() {
 		try {
-			IPCamera camera=new IPCamera("192.168.43.20", 80, ENDPOINT, "admin", "admin");
+			IPCamera camera=new IPCamera(IP, 80, "admin", "admin");
 			SystemService service=camera.getSystemService();
 			ServerTime time=service.getServerTime();
 //			time.setDateTime(new Date());
@@ -48,7 +48,7 @@ public class QuickTest {
 		SetVideoEncoderProperties sp=new SetVideoEncoderProperties();
 		sp.setProperties(p);
 		sp.setStreamID(StreamID.Main);
-		Marshaller m = new Marshaller();
+		StringMarshaller m = new StringMarshaller();
 		try {
 			String result=m.marshall(sp);
 			System.out.println(result);

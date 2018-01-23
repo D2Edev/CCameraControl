@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import io.github.d2edev.ccc.api.MarshallException;
-import io.github.d2edev.ccc.base.Marshaller;
+import io.github.d2edev.ccc.base.StringMarshaller;
 import io.github.d2edev.ccc.requests.network.GetNetworkProperties;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -52,7 +52,7 @@ public class VariableListCreator {
 		byte[] encoded = Base64.getEncoder().encode(auth.getBytes());
 		String content = "Basic " + new String(encoded);
 
-		Marshaller m = new Marshaller();
+		StringMarshaller m = new StringMarshaller();
 
 		String cmd = PREFIX + m.marshall(request);
 		 System.out.println(cmd);

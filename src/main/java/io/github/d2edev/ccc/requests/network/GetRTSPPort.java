@@ -1,8 +1,13 @@
 package io.github.d2edev.ccc.requests.network;
 
-import io.github.d2edev.ccc.api.Request;
+import io.github.d2edev.ccc.api.AbstractCamRequest;
+import io.github.d2edev.ccc.api.CamRequest;
 
-@Request("getrtspport")
-public class GetRTSPPort {
+@CamRequest(cmd="getrtspport")
+public class GetRTSPPort  extends AbstractCamRequest{
+	
+	{
+		command="getrtspport";
+	}
 
 }
