@@ -1,5 +1,6 @@
 package io.github.d2edev.ccc.base;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -16,6 +17,7 @@ import io.github.d2edev.ccc.api.AbstractCamRequest;
 import io.github.d2edev.ccc.api.CamRequest;
 import io.github.d2edev.ccc.api.ValueProvider;
 import okhttp3.FormBody;
+import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.Request;
 import okhttp3.Request.Builder;
@@ -23,22 +25,62 @@ import okhttp3.RequestBody;
 
 public class RequestMarshaller implements Marshaller<AbstractCamRequest, Request.Builder> {
 
+	private static final byte[] EMPTY_BODY = new byte[0];
+
 	@Override
 	public Builder marshall(AbstractCamRequest request) throws MarshallException {
 		if (request == null)
 			throw new MarshallException("Null, can't marshall");
-		String url = request.getBasicURL() + request.getEndpoint();
-//		System.out.println(url);
+		StringBuilder urlBuilder = new StringBuilder(request.getBasicURL()).append(request.getEndpoint());
+		Builder rqBuilder = new Request.Builder();
+		String command = request.getCamCommand();
+		String method = request.getMethod();
+		RequestBody rb = null;
 		List<Entry<String, Object>> paramList = new ArrayList<>();
-		paramList.add(new AbstractMap.SimpleEntry<>("cmd", request.getCamCommand()));
-		fillParameterList(request, paramList);
-		FormBody.Builder bodyBuilder = new FormBody.Builder();
-		for (Entry<String, Object> entry : paramList) {
-			bodyBuilder.add(entry.getKey(), entry.getValue().toString());
+		switch (method) {
+		case AbstractCamRequest.METHOD_GET: {
+			if (command != null && !command.isEmpty()) {
+				urlBuilder.append("?cmd=").append(command);
+				fillParameterList(request, paramList);
+				for (Entry<String, Object> entry : paramList) {
+					urlBuilder.append("&").append("-").append(entry.getKey()).append("=").append(entry.getValue());
+				}
+			}
+			return rqBuilder.get().url(urlBuilder.toString());
 		}
-		System.out.println(paramList);
-		Builder rqb = new Request.Builder().url(url).post(bodyBuilder.build());
-		return rqb;
+		case AbstractCamRequest.METHOD_POST: {
+			if (command != null && !command.isEmpty()) {
+				paramList.add(new AbstractMap.SimpleEntry<>("cmd", command));
+			}
+			fillParameterList(request, paramList);
+			RequestBody rqBody = null;
+			if (request.isBinary()) {
+				MultipartBody.Builder bodyBuilder = new MultipartBody.Builder();
+				bodyBuilder.setType(MultipartBody.FORM);
+				for (Entry<String, Object> entry : paramList) {
+					Object data = entry.getValue();
+					if (data instanceof File) {
+						File file = (File) data;
+						bodyBuilder.addFormDataPart(entry.getKey(), file.getName(),
+								RequestBody.create(MediaType.parse("application/octet-stream"), file));
+					}
+				}
+				rqBody = bodyBuilder.build();
+
+			} else {
+				FormBody.Builder bodyBuilder = new FormBody.Builder();
+				for (Entry<String, Object> entry : paramList) {
+					Object value = entry.getValue();
+					bodyBuilder.add(entry.getKey(), entry.getValue().toString());
+				}
+				rqBody = bodyBuilder.build();
+			}
+			return rqBuilder.post(rqBody).url(urlBuilder.toString());
+		}
+
+		default:
+			throw new MarshallException("Can't marshall, unknown http method: " + method);
+		}
 	}
 
 	private void fillParameterList(Object request, List<Entry<String, Object>> list) throws MarshallException {

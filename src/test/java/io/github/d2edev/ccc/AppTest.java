@@ -123,7 +123,7 @@ public class AppTest {
 			System.out.println(props);
 			props.setState(random.nextBoolean() ? IntegerState.ENABLED : IntegerState.DISABLED);
 			props.setName(UUID.randomUUID().toString().substring(0, 11));
-			service.setOverlayProperties(props, OSDRegion.CAPTION);
+			System.out.println(service.setOverlayProperties(props, OSDRegion.CAPTION));
 			OSDProperties anotherProps = service.getOverlayProperties(OSDRegion.CAPTION);
 			assertEquals(props, anotherProps);
 			System.out.println(anotherProps);

@@ -23,29 +23,36 @@ import io.github.d2edev.ccc.enums.WifiKeyEncryption;
 import io.github.d2edev.ccc.models.SimpleResponse;
 import io.github.d2edev.ccc.models.WirelessNetwork;
 import io.github.d2edev.ccc.models.WirelessNetworks;
+import okhttp3.Response;
 
 public class Unmarshaller {
-	
-	Pattern netElementPattern=Pattern.compile("(\\w+)\\[(\\d+)\\]=\\\"(.+)\\\".*");
 
-	public <T> T unmarshall(Reader charStream, Class<T> returnClass) throws UnmarshallException {
+	Pattern netElementPattern = Pattern.compile("(\\w+)\\[(\\d+)\\]=\\\"(.+)\\\".*");
+
+	public <T> T unmarshall(Response response, Class<T> returnClass) throws UnmarshallException {
 		if (returnClass == null)
 			throw new UnmarshallException("Null return argument");
+		if (returnClass.equals(byte[].class)) {
+			try {
+				return (T) response.body().bytes();
+			} catch (IOException e) {
+				throw new UnmarshallException(e.getMessage());
+			}
+		}
 		if (!returnClass.isAnnotationPresent(Model.class)) {
 			throw new UnmarshallException("Model type not set");
 		}
 		String modelType = returnClass.getAnnotation(Model.class).value();
 		switch (modelType) {
 		case Model.SIMPLE: {
-			return unmarshallSimpleObject(charStream, returnClass);
+			return unmarshallSimpleObject(response, returnClass);
 		}
 		case Model.COMPLEX: {
-			return unmarshalComplexObject(charStream, returnClass);
+			return unmarshalComplexObject(response.body().charStream(), returnClass);
 		}
 		case Model.NETWORKLIST: {
-			return unmarshalNetworkList(charStream, returnClass);
+			return unmarshalNetworkList(response.body().charStream(), returnClass);
 		}
-
 		default:
 			throw new UnmarshallException("Unknown return type");
 		}
@@ -58,31 +65,32 @@ public class Unmarshaller {
 			String line = null;
 			boolean replyDetected = false;
 			StringBuilder contentBuilder = new StringBuilder("Can't process. Unknown structure: ");
-			Map<String, WirelessNetwork> networkMap=new HashMap<>();
+			Map<String, WirelessNetwork> networkMap = new HashMap<>();
 			try {
 				while ((line = reader.readLine()) != null) {
-					Matcher eltMatcher=netElementPattern.matcher(line);
-					if(eltMatcher.matches()) {
-						String varName=eltMatcher.group(1);
-						String key=eltMatcher.group(2);
-						String value=eltMatcher.group(3);
-						System.out.println(varName+":"+key+":"+value);
-						WirelessNetwork network=networkMap.get(key);
-						if(network==null) {
-							network=new WirelessNetwork();
+					Matcher eltMatcher = netElementPattern.matcher(line);
+					if (eltMatcher.matches()) {
+						String varName = eltMatcher.group(1);
+						String key = eltMatcher.group(2);
+						String value = eltMatcher.group(3);
+						// System.out.println(varName+":"+key+":"+value);
+						WirelessNetwork network = networkMap.get(key);
+						if (network == null) {
+							network = new WirelessNetwork();
 							networkMap.put(key, network);
 						}
 						try {
-							updateNetworkParameter(network,varName,value);
+							updateNetworkParameter(network, varName, value);
 						} catch (Exception e) {
 							// TODO process somehow?
 						}
 					}
 				}
-				if(networkMap.isEmpty())throw new UnmarshallException("No network data in input stream");
+				if (networkMap.isEmpty())
+					throw new UnmarshallException("No network data in input stream");
 				WirelessNetworks networks = new WirelessNetworks();
 				networks.setNetworks(new ArrayList<>(networkMap.values()));
-				return (T)networks;
+				return (T) networks;
 			} catch (IOException e) {
 				throw new UnmarshallException(e.getMessage());
 			}
@@ -96,84 +104,54 @@ public class Unmarshaller {
 		}
 	}
 
-	private void updateNetworkParameter (WirelessNetwork network, String varName, String value) throws Exception{
+	private void updateNetworkParameter(WirelessNetwork network, String varName, String value) throws Exception {
 		switch (varName) {
-		case "wchannel":{
-			network.setChannel((int)getTypedValue(value, int.class));
+		case "wchannel": {
+			network.setChannel((int) getTypedValue(value, int.class));
 			break;
 		}
-		case "wrssi":{
-			network.setStrength((int)getTypedValue(value, int.class));
+		case "wrssi": {
+			network.setStrength((int) getTypedValue(value, int.class));
 			break;
-		}	
-		case "wenc":{
+		}
+		case "wenc": {
 			network.setKeyEncryption(WifiKeyEncryption.valueOf(value));
 			break;
 		}
-		case "wessid":{
+		case "wessid": {
 			network.setSSID(value);
 			break;
 		}
-		case "wauth":{
+		case "wauth": {
 			network.setWiFiSecurityMode(WiFiSecurityMode.parseString(value));
 			break;
 		}
 		default:
 			break;
 		}
-		
+
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T> T unmarshallSimpleObject(Reader charStream, Class<T> returnClass) throws UnmarshallException {
-		BufferedReader reader = new BufferedReader(charStream);
+	private <T> T unmarshallSimpleObject(Response response, Class<T> returnClass) throws UnmarshallException {
+		String reply;
 		try {
-			String line = null;
-			boolean replyDetected = false;
-			StringBuilder contentBuilder = new StringBuilder("Can't process. Unknown structure: ");
-			String result = null;
-			String message = null;
-			try {
-				while ((line = reader.readLine()) != null) {
-					contentBuilder.append(line).append("<LineEnd>");
-					if (line.startsWith("[")) {
-						result = line.substring(1, line.indexOf("]"));
-						message = line.substring(line.indexOf("]") + 1);
-						replyDetected = true;
-						break;
-					}
-				}
-				if (replyDetected) {
-					switch (result.toLowerCase()) {
-					case "succeed": {
-						SimpleResponse response = new SimpleResponse();
-						response.setSuccessfull(true);
-						response.setMessage(message);
-						return (T) response;
-					}
-					case "error": {
-						SimpleResponse response = new SimpleResponse();
-						response.setSuccessfull(false);
-						response.setMessage(message);
-						return (T) response;
-					}
-					default:
-						throw new UnmarshallException(contentBuilder.toString());
-					}
-				} else {
-
-					throw new UnmarshallException(contentBuilder.toString());
-				}
-			} catch (IOException e) {
-				throw new UnmarshallException(e.getMessage());
+			reply = response.body().string().toLowerCase();
+			if (reply.contains("succeed")) {
+				SimpleResponse r = new SimpleResponse();
+				r.setSuccessfull(true);
+				r.setMessage(reply);
+				return (T) r;
 			}
-		} finally {
-			if (reader != null) {
-				try {
-					reader.close();
-				} catch (IOException none) {
-				}
+			if (reply.contains("error")) {
+				SimpleResponse r = new SimpleResponse();
+				r.setSuccessfull(false);
+				r.setMessage(reply);
+				return (T) r;
 			}
+			throw new UnmarshallException("Can't ubnmarshall: " + reply);
+		} catch (IOException e) {
+			throw new UnmarshallException("Can't ubnmarshall: " + e.getMessage());
 		}
 	}
 
@@ -332,16 +310,24 @@ public class Unmarshaller {
 	}
 
 	private Object treatAsBoolean(String value) {
-		if("on".equals(value.toLowerCase()))return Boolean.TRUE;
-		if("enabled".equals(value.toLowerCase()))return Boolean.TRUE;
-		if("1".equals(value.toLowerCase()))return Boolean.TRUE;
-		if("true".equals(value.toLowerCase()))return Boolean.TRUE;
-		if("off".equals(value.toLowerCase()))return Boolean.FALSE;
-		if("disabled".equals(value.toLowerCase()))return Boolean.FALSE;
-		if("0".equals(value.toLowerCase()))return Boolean.FALSE;
-		if("false".equals(value.toLowerCase()))return Boolean.FALSE;
-		throw new IllegalArgumentException("Cant't treat as boolean: "+value);
-		
+		if ("on".equals(value.toLowerCase()))
+			return Boolean.TRUE;
+		if ("enabled".equals(value.toLowerCase()))
+			return Boolean.TRUE;
+		if ("1".equals(value.toLowerCase()))
+			return Boolean.TRUE;
+		if ("true".equals(value.toLowerCase()))
+			return Boolean.TRUE;
+		if ("off".equals(value.toLowerCase()))
+			return Boolean.FALSE;
+		if ("disabled".equals(value.toLowerCase()))
+			return Boolean.FALSE;
+		if ("0".equals(value.toLowerCase()))
+			return Boolean.FALSE;
+		if ("false".equals(value.toLowerCase()))
+			return Boolean.FALSE;
+		throw new IllegalArgumentException("Cant't treat as boolean: " + value);
+
 	}
 
 }

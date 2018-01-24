@@ -2,14 +2,20 @@ package io.github.d2edev.ccc;
 
 
 import io.github.d2edev.ccc.api.MarshallException;
+import io.github.d2edev.ccc.base.CameraHttpClient;
 import io.github.d2edev.ccc.base.StringMarshaller;
 import io.github.d2edev.ccc.enums.ImageQuality;
+import io.github.d2edev.ccc.enums.OSDRegion;
 import io.github.d2edev.ccc.enums.RateControl;
 import io.github.d2edev.ccc.enums.StreamID;
+import io.github.d2edev.ccc.models.OSDProperties;
 import io.github.d2edev.ccc.models.ServerTime;
 import io.github.d2edev.ccc.models.VideoEncoderProperties;
+import io.github.d2edev.ccc.requests.video.GetOverlayProperties;
+import io.github.d2edev.ccc.requests.video.SetOverlayProperties;
 import io.github.d2edev.ccc.requests.video.SetVideoEncoderProperties;
 import io.github.d2edev.ccc.services.SystemService;
+import io.github.d2edev.ccc.services.VideoService;
 
 public class QuickTest {
 
@@ -17,7 +23,7 @@ public class QuickTest {
 
 	public static void main(String[] args) {
 //		new QuickTest().set();
-		new QuickTest().time();
+		new QuickTest().setCaption();
 	}
 
 	private void time() {
@@ -36,6 +42,27 @@ public class QuickTest {
 		
 	}
 
+	private void setCaption() {
+		try {
+			CameraHttpClient c=new CameraHttpClient(IP, IPCamera.DEFAULT_HTTP_PORT, "admin", "admin");
+			GetOverlayProperties get=new GetOverlayProperties();
+			get.setRegion(OSDRegion.CAPTION);
+			OSDProperties props=c.processRequest(get, OSDProperties.class);
+			props.setName("DFGH");
+			SetOverlayProperties set=new SetOverlayProperties();
+			set.setProperties(props);
+			set.setRegion(OSDRegion.CAPTION);
+			System.out.println(c.processRequest(set).body().string());
+			
+			
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
 	// @Test
 	public void set() {
 		System.out.println("Marshaller test");
