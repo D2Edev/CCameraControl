@@ -2,7 +2,8 @@ package io.github.d2edev.ccc.api;
 
 public class AbstractCamRequest implements CamRequestNew{
 	
-	public static final String PARAM_ENDPOINT = "/cgi-bin/hi3510/param.cgi?";
+	public static final String PARAM_ENDPOINT = "/cgi-bin/hi3510/param.cgi";
+//	public static final String PARAM_ENDPOINT = "/cgi-bin/hi3510/param.cgi?";
 
 	protected String command;
 	protected String endpoint=PARAM_ENDPOINT;

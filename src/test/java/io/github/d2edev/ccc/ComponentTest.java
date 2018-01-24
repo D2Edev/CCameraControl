@@ -4,10 +4,12 @@ import java.io.IOException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
+import io.github.d2edev.ccc.api.AbstractCamRequest;
 import io.github.d2edev.ccc.api.MarshallException;
 import io.github.d2edev.ccc.api.UnmarshallException;
 import io.github.d2edev.ccc.base.CameraHttpClient;
 import io.github.d2edev.ccc.enums.CameraTimeZone;
+import io.github.d2edev.ccc.enums.OSDRegion;
 import io.github.d2edev.ccc.enums.StringState;
 import io.github.d2edev.ccc.models.RTSPPort;
 import io.github.d2edev.ccc.models.ServerTime;
@@ -15,21 +17,24 @@ import io.github.d2edev.ccc.models.SimpleResponse;
 import io.github.d2edev.ccc.requests.network.GetRTSPPort;
 import io.github.d2edev.ccc.requests.system.GetServerTime;
 import io.github.d2edev.ccc.requests.system.SetServerTime;
+import io.github.d2edev.ccc.requests.video.GetOverlayProperties;
 
 public class ComponentTest {
 
-	private static final String IP = "192.168.0.212";
+	private static final String IP = "192.168.0.103";
 
 	public static void main(String[] args) {
 		ComponentTest cp = new ComponentTest();
 		GetRTSPPort grp = new GetRTSPPort();
-		Object req = grp;
+		GetOverlayProperties gop=new GetOverlayProperties();
+		gop.setRegion(OSDRegion.CAPTION);
+		AbstractCamRequest req = grp;
 		cp.processForString(req);
 		cp.processForObject(req, RTSPPort.class);
 
 	}
 
-	public void processForObject(Object request, Class<?> respClass) {
+	public void processForObject(AbstractCamRequest request, Class<?> respClass) {
 		CameraHttpClient client = new CameraHttpClient(IP, 80, "admin", "admin");
 		try {
 			System.out.println(client.processRequest(request, respClass));
@@ -39,7 +44,7 @@ public class ComponentTest {
 		}
 	}
 
-	private void processForString(Object obj) {
+	private void processForString(AbstractCamRequest obj) {
 		CameraHttpClient client = new CameraHttpClient(IP, 80, "admin", "admin");
 		try {
 			System.out.println(client.processRequest(obj));

@@ -15,27 +15,30 @@ import io.github.d2edev.ccc.api.Marshaller;
 import io.github.d2edev.ccc.api.AbstractCamRequest;
 import io.github.d2edev.ccc.api.CamRequest;
 import io.github.d2edev.ccc.api.ValueProvider;
+import okhttp3.FormBody;
+import okhttp3.MultipartBody;
 import okhttp3.Request;
+import okhttp3.Request.Builder;
+import okhttp3.RequestBody;
 
-public class RequestMarshaller implements Marshaller<AbstractCamRequest,Request> {
+public class RequestMarshaller implements Marshaller<AbstractCamRequest, Request.Builder> {
 
 	@Override
-	public Request marshall(AbstractCamRequest object) throws MarshallException {
-		CamRequest request = object.getClass().getAnnotation(CamRequest.class);
+	public Builder marshall(AbstractCamRequest request) throws MarshallException {
 		if (request == null)
-			throw new MarshallException("Object type must be annotated with @Request");
-		StringBuilder builder = new StringBuilder(request.endpoint());
-		String command=request.cmd();
-		if(command.isEmpty()) return builder.toString();
-		builder.append("cmd").append("=").append(command);
+			throw new MarshallException("Null, can't marshall");
+		String url = request.getBasicURL() + request.getEndpoint();
+//		System.out.println(url);
 		List<Entry<String, Object>> paramList = new ArrayList<>();
-		fillParameterList(object, paramList);
-		if (paramList.size() == 0)
-			return builder.toString();
+		paramList.add(new AbstractMap.SimpleEntry<>("cmd", request.getCamCommand()));
+		fillParameterList(request, paramList);
+		FormBody.Builder bodyBuilder = new FormBody.Builder();
 		for (Entry<String, Object> entry : paramList) {
-			builder.append("&").append("-").append(entry.getKey()).append("=").append(entry.getValue());
+			bodyBuilder.add(entry.getKey(), entry.getValue().toString());
 		}
-		return builder.toString();
+		System.out.println(paramList);
+		Builder rqb = new Request.Builder().url(url).post(bodyBuilder.build());
+		return rqb;
 	}
 
 	private void fillParameterList(Object request, List<Entry<String, Object>> list) throws MarshallException {
@@ -46,11 +49,11 @@ public class RequestMarshaller implements Marshaller<AbstractCamRequest,Request>
 		for (Method method : methods) {
 			if (method.isAnnotationPresent(GetModelValue.class)) {
 				try {
-					String key = method.getAnnotation(GetModelValue.class).key();
+					String key = "-" + method.getAnnotation(GetModelValue.class).key();
 					Object value = getPropertyFieldValue(method, request);
-					if(value!=null){
-						//ignore 'null' values
-						list.add(new AbstractMap.SimpleEntry<>(key, value));						
+					if (value != null) {
+						// ignore 'null' values
+						list.add(new AbstractMap.SimpleEntry<>(key, value));
 					}
 				} catch (Exception e) {
 					throw new MarshallException(e.getMessage());

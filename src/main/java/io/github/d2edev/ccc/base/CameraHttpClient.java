@@ -3,7 +3,9 @@ package io.github.d2edev.ccc.base;
 import java.io.IOException;
 import java.util.Base64;
 
+import io.github.d2edev.ccc.api.AbstractCamRequest;
 import io.github.d2edev.ccc.api.MarshallException;
+import io.github.d2edev.ccc.api.Marshaller;
 import io.github.d2edev.ccc.api.UnmarshallException;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -19,7 +21,7 @@ public class CameraHttpClient {
 	private boolean useAuth;
 	private String authData;
 	private String basicUrl;
-	private StringMarshaller marshaller=new StringMarshaller();
+	private Marshaller<AbstractCamRequest, Request.Builder> marshaller=new RequestMarshaller();
 	private Unmarshaller unmarshaller=new Unmarshaller();
 	private String host;
 	private String password;
@@ -41,16 +43,14 @@ public class CameraHttpClient {
 	}
 
 	//blocking
-	public <T>T processRequest(Object object,Class<T> responseClass) throws MarshallException, IOException, UnmarshallException{
-		String query=marshaller.marshall(object);
-		String command=new StringBuilder(basicUrl).append(query).toString();
-		
-		Builder rqb = new Request.Builder().url(command);
+	public <T>T processRequest(AbstractCamRequest camRq,Class<T> responseClass) throws MarshallException, IOException, UnmarshallException{
+		camRq.setBasicURL(basicUrl);
+		Builder rqb = marshaller.marshall(camRq);
 		if(useAuth){
 			rqb.addHeader("Authorization", authData);
 		}
-//		System.out.println("request: "+command);
 		Response response=client.newCall(rqb.build()).execute();
+		System.out.println(response.code());
 		if(response.isSuccessful()){
 			return unmarshaller.unmarshall(response.body().charStream(), responseClass);
 		}else{
@@ -60,10 +60,9 @@ public class CameraHttpClient {
 	}
 	
 	//blocking, helper method
-	public String processRequest(Object object) throws MarshallException, IOException, UnmarshallException{
-		String query=marshaller.marshall(object);
-		String command=new StringBuilder(basicUrl).append(query).toString();
-		Builder rqb = new Request.Builder().url(command);
+	public String processRequest(AbstractCamRequest camRq) throws MarshallException, IOException, UnmarshallException{
+		camRq.setBasicURL(basicUrl);
+		Builder rqb = marshaller.marshall(camRq);
 //		Builder rqb = new Request.Builder().url(command).post(RequestBody.create(null, EMPTY_BODY));
 		if(useAuth){
 			rqb.addHeader("Authorization", authData);
