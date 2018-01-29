@@ -1,5 +1,6 @@
 package io.github.d2edev.ccc.services;
 
+import java.io.File;
 import java.io.IOException;
 
 import io.github.d2edev.ccc.api.AbstractService;
@@ -12,6 +13,8 @@ import io.github.d2edev.ccc.models.ServerInfo;
 import io.github.d2edev.ccc.models.ServerTime;
 import io.github.d2edev.ccc.models.SimpleResponse;
 import io.github.d2edev.ccc.requests.system.GetActiveStreamsQ;
+import io.github.d2edev.ccc.requests.system.MakeBackup;
+import io.github.d2edev.ccc.requests.system.MakeRestore;
 import io.github.d2edev.ccc.requests.system.GetDeviceType;
 import io.github.d2edev.ccc.requests.system.GetServerInfo;
 import io.github.d2edev.ccc.requests.system.GetServerTime;
@@ -50,5 +53,15 @@ public class SystemService extends AbstractService {
 		request.setServerTime(time);
 		return client.processRequest(request, SimpleResponse.class).isSuccessfull();
 
+	}
+	
+	public byte[] getBackupData() throws MarshallException, IOException, UnmarshallException{
+		return client.processRequest(new MakeBackup(),byte [].class);
+	}
+	
+	public SimpleResponse restoreSettings(File file) throws MarshallException, IOException, UnmarshallException{
+		MakeRestore sr=new MakeRestore();
+		sr.setBackupFilePath(file);
+		return client.processRequest(sr, SimpleResponse.class);
 	}
 }

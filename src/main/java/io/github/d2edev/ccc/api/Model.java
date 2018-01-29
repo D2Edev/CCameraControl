@@ -17,8 +17,9 @@ import java.lang.annotation.Target;
 public @interface Model {
 	
 	public static final String COMPLEX="complex";
-	public static final String NETWORKLIST="dynamic";
+	public static final String NETWORKLIST="net";
 	public static final String SIMPLE="simple";
+	public static final String BYTE = "byte";
 
 	String value() default COMPLEX;
 	

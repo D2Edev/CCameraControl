@@ -1,5 +1,6 @@
 package io.github.d2edev.ccc;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -15,23 +16,28 @@ import io.github.d2edev.ccc.models.RTSPPort;
 import io.github.d2edev.ccc.models.ServerTime;
 import io.github.d2edev.ccc.models.SimpleResponse;
 import io.github.d2edev.ccc.requests.network.GetRTSPPort;
+import io.github.d2edev.ccc.requests.system.MakeBackup;
+import io.github.d2edev.ccc.requests.system.MakeRestore;
 import io.github.d2edev.ccc.requests.system.GetServerTime;
 import io.github.d2edev.ccc.requests.system.SetServerTime;
 import io.github.d2edev.ccc.requests.video.GetOverlayProperties;
+import okhttp3.Response;
 
 public class ComponentTest {
 
-	private static final String IP = "192.168.0.103";
+	private static final String IP = "192.168.0.212";
 
 	public static void main(String[] args) {
 		ComponentTest cp = new ComponentTest();
-		GetRTSPPort grp = new GetRTSPPort();
-		GetOverlayProperties gop=new GetOverlayProperties();
-		gop.setRegion(OSDRegion.CAPTION);
-		AbstractCamRequest req = gop;
-		cp.processForString(req);
-		cp.processForObject(req, RTSPPort.class);
-
+//		GetRTSPPort grp = new GetRTSPPort();
+//		GetOverlayProperties gop=new GetOverlayProperties();
+//		gop.setRegion(OSDRegion.CAPTION);
+//		SettingsBackup gbd=new SettingsBackup();
+		MakeRestore r=new MakeRestore();
+		r.setBackupFilePath(new File("backup.bin"));
+		AbstractCamRequest req = r;
+//		cp.processForString(req);
+		cp.processForObject(req, SimpleResponse.class);
 	}
 
 	public void processForObject(AbstractCamRequest request, Class<?> respClass) {
@@ -47,7 +53,9 @@ public class ComponentTest {
 	private void processForString(AbstractCamRequest obj) {
 		CameraHttpClient client = new CameraHttpClient(IP, 80, "admin", "admin");
 		try {
-			System.out.println(client.processRequest(obj));
+			Response r=client.processRequest(obj);
+			
+			System.out.println(r.body().string());
 		} catch (MarshallException | IOException | UnmarshallException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
