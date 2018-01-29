@@ -28,7 +28,7 @@ public class ComponentTest {
 		GetRTSPPort grp = new GetRTSPPort();
 		GetOverlayProperties gop=new GetOverlayProperties();
 		gop.setRegion(OSDRegion.CAPTION);
-		AbstractCamRequest req = grp;
+		AbstractCamRequest req = gop;
 		cp.processForString(req);
 		cp.processForObject(req, RTSPPort.class);
 
