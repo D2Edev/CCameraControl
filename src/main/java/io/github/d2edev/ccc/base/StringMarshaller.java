@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
+import io.github.d2edev.ccc.api.CamRequest;
 import io.github.d2edev.ccc.api.GetModel;
 import io.github.d2edev.ccc.api.GetModelValue;
 import io.github.d2edev.ccc.api.MarshallException;
 import io.github.d2edev.ccc.api.Marshaller;
-import io.github.d2edev.ccc.api.CamRequest;
 import io.github.d2edev.ccc.api.ValueProvider;
 
 public class StringMarshaller implements Marshaller<Object,String> {

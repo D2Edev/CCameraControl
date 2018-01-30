@@ -15,7 +15,6 @@ import io.github.d2edev.ccc.requests.video.GetOverlayProperties;
 import io.github.d2edev.ccc.requests.video.SetOverlayProperties;
 import io.github.d2edev.ccc.requests.video.SetVideoEncoderProperties;
 import io.github.d2edev.ccc.services.SystemService;
-import io.github.d2edev.ccc.services.VideoService;
 
 public class QuickTest {
 

@@ -1,10 +1,10 @@
 package io.github.d2edev.ccc.requests.video;
 
 
-import io.github.d2edev.ccc.api.GetModel;
-import io.github.d2edev.ccc.api.GetModelValue;
 import io.github.d2edev.ccc.api.AbstractCamRequest;
 import io.github.d2edev.ccc.api.CamRequest;
+import io.github.d2edev.ccc.api.GetModel;
+import io.github.d2edev.ccc.api.GetModelValue;
 import io.github.d2edev.ccc.api.SetModel;
 import io.github.d2edev.ccc.api.SetModelValue;
 import io.github.d2edev.ccc.enums.StreamID;
