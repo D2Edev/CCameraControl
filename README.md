@@ -14,8 +14,7 @@ NOTE: project still in development; any part of it could be changed without warn
 Start camera instance  as simple as:
 
 ``` java
-	final String ENDPOINT = "/cgi-bin/hi3510/param.cgi";
-	IPCamera camera = new IPCamera("192.168.0.201", 80, ENDPOINT, "admin", "admin");
+	IPCamera camera = new IPCamera("192.168.0.201", 80, "admin", "admin");
 
 ```
 then get respective camera service and perform needed action.
@@ -46,13 +45,24 @@ Example three - getting and changing camera time:
 ``` java
 	SystemService service=camera.getSystemService();
 	ServerTime time = service.getServerTime();
-	ServerTime time=service.getServerTime();
 	time.setDaylightModeStatus(StringState.ENABLED);
 	ZoneId zid=ZoneId.of(CameraTimeZone.EUROPE_MOSCOW.stringValue());
 	ZonedDateTime zdt=ZonedDateTime.now(zid);
 	time.setDateTime(zdt);
 	ServerTime changed= service.getServerTime();
 	System.out.println("check:" + changed);
+```
+
+Example four - backing camera settings up:
+
+``` java
+	byte []data=cam.getSystemService().getBackupData();
+	System.out.println(data.length);
+	try (FileOutputStream fileOuputStream = new FileOutputStream("backup.bin")) {
+	  fileOuputStream.write(data);
+	} catch (IOException e) {
+	  e.printStackTrace();
+	}
 ```
 ## TODOS
 
