@@ -4,11 +4,11 @@
 
 	<groupId>io.github.d2edev</groupId>
 	<artifactId>cgi-camera-control</artifactId>
-	<version>0.0.1</version>
+	<version>1.180403</version>
 	<packaging>jar</packaging>
 
-	<name>cgi-camera-wrapper</name>
-	<url>http://maven.apache.org</url>
+	<name>cgi-camera-contro</name>
+	<url>https://github.com/D2Edev/CCameraControl</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
