@@ -7,7 +7,7 @@
 	<version>1.180403</version>
 	<packaging>jar</packaging>
 
-	<name>cgi-camera-contro</name>
+	<name>CGI camera control</name>
 	<url>https://github.com/D2Edev/CCameraControl</url>
 
 	<properties>
