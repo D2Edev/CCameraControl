@@ -4,7 +4,7 @@
 
 	<groupId>io.github.d2edev</groupId>
 	<artifactId>cgi-camera-control</artifactId>
-	<version>0.0.1</version>
+	<version>1.180530-dev</version>
 	<packaging>jar</packaging>
 
 	<name>cgi-camera-wrapper</name>
