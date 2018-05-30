@@ -82,6 +82,7 @@ public enum CameraTimeZone implements ValueProvider{
 
 	private CameraTimeZone(String id,String details) {
 		this.id = id;
+		this.details=details;
 	}
 
 	private String id;

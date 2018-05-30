@@ -54,7 +54,7 @@ public class Unmarshaller {
 			return unmarshalNetworkList(response.body().charStream(), returnClass);
 		}
 		default:
-			throw new UnmarshallException("Unknown return type");
+			throw new UnmarshallException("Unknown model type");
 		}
 	}
 
